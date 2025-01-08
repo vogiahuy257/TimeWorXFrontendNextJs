@@ -1,0 +1,32 @@
+
+
+#Edit
+{
+     background: linear-gradient(135deg, #e9defa,#fbfcdb);
+}
+
+#Edit .box
+{
+     background:transparent;
+}
+
+#Edit .button
+{
+    background-color: var(--color-black);
+    color: var(--color-white);
+    padding: 5px 15px;
+    border-radius: var(--border-radius-sSmall);
+    margin-left: auto;
+    border: 1px solid var(--color-black);
+}
+
+#Edit .button:hover
+{
+    background-color: transparent;
+    color: var(--color-black);
+}
+
+#Edit .block-button
+{
+    position: absolute;
+}

@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+/* Global Styles */
+:root{
+    --color-yellow: #f1c21b; 
+    --color-yellow-rgb: 241, 194, 27;
+    --color-cream: #FEF8E8;
+    --color-black: #000000; 
+    --color-black-rgb: 0, 0, 0;
+    --color-black-gray: #30393E; 
+    --color-gray: #D9D9D9;
+    --color-white: rgb(255, 255, 255);
+    --color-white-rgb: 255, 255, 255; 
+    --color-whiteGray:rgb(240, 240, 240);
+    --color-light-gray: #F9F9F9;
+    --color-light-blue: #117add;
+    --color-light-blue-rgb: 101, 172, 240;
+    --color-blue:rgba(45, 106, 185, 0.9);
+    --color-blue-rgb: 45, 106, 185;
+    --color-red: rgb(218, 30, 40);
+    --color-red-rgb: 218, 30, 40;
+    --color-green: #25a249;
+    --background-y-p: linear-gradient(135deg, #f7d7ff,#fbfcdb);
+    --background: linear-gradient(135deg, #F2F8FC,#e6f7ff);
+    --background-blue: linear-gradient(135deg, rgba(45, 106, 185, 0.9), rgba(77, 144, 214, 0.9));
+    --bg-color-blue-while: #F2F8FC;
+    --color-shadow:rgba(68, 68, 68, 0.418);
+
+    /* Font Sizes */
+    --font-size-2sSSmall: 0.675rem;
+    --font-size-sSSmall: 0.75rem;
+    --font-size-sSmall: 0.8rem;
+    --font-size-small: 0.875rem;
+    --font-size-medium: 0.9rem;
+    --font-size-large: 1rem;
+    --font-size-xlarge: 1.25rem;
+    
+    /* Font Weights */
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 550;
+
+    /* Border Radius */
+    
+    --border-radius-sSmall: 8px;
+    --border-radius-small: 10px;
+    --border-radius-medium: 16px;
+    --border-radius-large: 18px;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 80px;
+    height: 80px;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background-color: #ffffff;
+}
+
+a{
+    color: rgb(8, 24, 255);
+    text-decoration: none;
+}
+
+a:hover
+{
+    color: var(--color-yellow);
+}
+
+li
+{
+    list-style: none;
+}
+
+@layer utilities {
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+        display: block;
+    }
+  
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: var(--color-whiteGray); 
+        border-radius: var(--border-radius-medium); 
+    }
+  
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: var(--color-black); 
+        cursor: pointer;
+        border-radius: var(--border-radius-medium);
+    }
+  
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-black-gray);
+    }
+  }
+
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE và Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari và Opera */
+}
+
+#confirmation-form {
+    --color-bg:  var(--color-light-blue-rgb);   /*màu này đậm hơn nha tại đặt biến bị gà */
+   --color-content: var(--color-light-blue);
+
+    background-color: rgba(var(--color-bg), 1);
+    box-shadow: 0 0 18px rgba(var(--color-bg), 0.6);
+    color: #fff;
+
+    transform: translate(-50%,-20%);
+    opacity: 0;  /* Ẩn lúc đầu */
+    animation: slide-up 0.2s ease-in-out forwards;
+}
+
+#confirmation-form.error{
+    --color-bg:  246, 75, 60;  /*rgba*/
+   --color-content: #C81912;
+
+}
+
+@keyframes slide-up {
+    from {
+        transform: translate(-50%,-20%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%,-50%);
+        opacity: 1;
+    }
+}
+
+#confirmation-form .icon-confirmation .bg-icon-config
+{
+    color: var(--color-content);
+}
+
+#confirmation-form .icon-confirmation:not(.icon-bottom){
+    --size: 98px;
+
+    width: var(--size);
+    height: var(--size);
+}
+
+#confirmation-form .icon-confirmation .item-icon-config
+{
+    color: #fff;
+}
+
+#confirmation-form .btn button:nth-child(2)
+{
+    background-color: var(--color-content);
+    transition: background-color .2s ease-in-out;
+}
+
+#confirmation-form .btn button:nth-child(2):active
+{
+    background-color: #fff;
+    color: var(--color-content);
+}
+
+#confirmation-form .btn button:nth-child(2):hover
+{
+    background-color: var(--color-blue);
+}
+
+#confirmation-form .btn button:nth-child(1)
+{
+    background-color: rgba(var(--color-bg), 1);
+    transition: .2s ease-in-out;
+}
+
+#confirmation-form .btn button:nth-child(1):hover
+{
+    background-color: var(--color-red);
+}
+
+#confirmation-form.error .btn button:nth-child(1)
+{
+    background-color: var(--color-content);
+}
+
+#confirmation-form.error .btn button:nth-child(1):hover{
+    background-color: #F2F8FC;
+    color: var(--color-content);
+}

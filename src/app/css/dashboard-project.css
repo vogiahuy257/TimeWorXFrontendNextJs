@@ -1,0 +1,118 @@
+
+
+
+#dashboard .block #main #project svg
+{
+    background-repeat: no-repeat;
+}
+
+/* grid area */
+
+#dashboard .block #main .content main #project {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-areas:
+    "menu"
+    "main";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+}
+
+#dashboard .block #main .content main #project #menu {
+    grid-area: menu;
+    display: flex;
+    align-items: center;
+}
+
+#dashboard .block #main .content main #project #container {
+    grid-area: main;
+}
+
+/* menu */
+
+#dashboard .block #main .content main #project #menu .btn-create 
+{
+   background-color: var(--color-black);
+   padding: 8px 12px;
+   color: var(--color-white);
+   border-radius: var(--border-radius-small);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: 2px solid var(--color-black);
+   font-weight: var(--font-weight-regular);
+   font-size: var(--font-size-small);
+   transition: background-color 0.2s ease-in-out,color 0.2s ease-in-out;
+}
+
+#dashboard .block #main .content main #project #menu .btn-create:hover
+{
+    color: var(--color-black);
+    background-color: var(--color-white);
+}
+
+#dashboard .block #main .content main #project #menu .block-button-left svg
+{
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+}
+
+#dashboard .block #main .content main #project #menu .block-button-right
+{
+    margin-left: auto;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+}
+
+#dashboard .block #main .content main #project #menu .block-button-right .btn-delete
+{
+   background-color: var(--color-black);
+   padding: 8px 8px;
+   color: var(--color-white);
+   border-radius: var(--border-radius-small);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: 2px solid var(--color-black);
+   font-weight: var(--font-weight-regular);
+   transition: background-color 0.2s ease-in-out,color 0.2s ease-in-out;
+}
+
+#dashboard .block #main .content main #project #menu .block-button-right .btn-delete:hover
+{
+  color: var(--color-black);
+  background-color: var(--color-white);
+}
+
+#dashboard .block #main .content main #project #menu .block-button-right svg
+{
+  width: 22px;
+  height: 22px;
+}
+
+#dashboard .block #main .content main #project #menu .block-button-right .block-search
+{
+    position: relative;
+    margin-right: 14px;
+}
+
+#dashboard .block #main .content main #project #menu .block-button-right .block-search input{
+    position: relative;
+    height: 30px;
+    border-radius: var(--border-radius-medium);
+    background-color: var(--color-white);
+    border: 2px solid var(--color-black);
+    font-size: var(--font-size-sSmall);
+}
+
+#dashboard .block #main .content main #project #menu .block-button-right .block-search svg
+{
+   position: absolute;
+   top: 50%;
+   right: 10px;
+   transform: translateY(-50%);
+   color: var(--color-black);
+}
