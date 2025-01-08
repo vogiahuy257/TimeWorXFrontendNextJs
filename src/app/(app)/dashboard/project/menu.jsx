@@ -1,5 +1,5 @@
 import PrimaryButton from '@/components/Button'
-import '@/app/css/dashboard-project.css'
+
 const menu = ({ searchQuery,handleCreate , handleDeletedFormToggle,handleProjectAnalysis,handleSearch }) => {
     return (
         <section id='menu'>

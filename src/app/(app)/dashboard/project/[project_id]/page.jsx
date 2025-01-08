@@ -1,19 +1,19 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useAuthContext } from '@/hooks/context/AuthContext'
+import React,{ useEffect, useState } from 'react'
 import { useRouter,useParams } from 'next/navigation'
 import axios from '@/libs/axios'
 import {  toast } from 'react-toastify'
 import PrimaryButton from '@/components/Button'
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
-import TaskForm from '@/components/UI/Project/TaskForm'
-import DeletedTasks from '@/components/UI/Project/DeletedTasks'
-import TaskUsers from '@/components/UI/Project/TaskUsersForm'
-import TaskComments from '@/components/UI/Project/TaskComments'
-import ShowReportToTask from '@/components/UI/Project/ShowReportToTask'
-import '@/app/css/dashboard-project-view.css'
 import NavBar from './navbar'
-import { useAuthContext } from '@/hooks/context/AuthContext'
+
+const TaskForm = React.lazy(() => import('@/components/UI/Project/TaskForm'))
+const DeletedTasks = React.lazy(() => import('@/components/UI/Project/DeletedTasks'))
+const TaskUsers = React.lazy(() => import('@/components/UI/Project/TaskUsersForm'))
+const TaskComments = React.lazy(() => import('@/components/UI/Project/TaskComments'))
+const ShowReportToTask = React.lazy(() => import('@/components/UI/Project/ShowReportToTask'))
 
 const DashboardProjectView = () => {
 

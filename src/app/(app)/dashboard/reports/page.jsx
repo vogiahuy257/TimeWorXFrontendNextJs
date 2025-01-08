@@ -1,14 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import axios from '@/libs/axios'
+import { useAuthContext } from '@/hooks/context/AuthContext'
+import React,{ useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+
 import ReportProjectDetail from '@/components/UI/Report/ReportProjectDetail'
 import ReportTaskDone from '@/components/UI/Report/ReportTaskDone'
-import ReportTaskForm from '@/components/UI/Report/ReportTaskForm'
-import axios from '@/libs/axios'
 import SummaryReport from '@/components/UI/Report/SummaryReport'
-import SummaryReportForm from '@/components/UI/Report/SummaryReportForm'
-import { useAuthContext } from '@/hooks/context/AuthContext'
+
+const ReportTaskForm = React.lazy(() => import('@/components/UI/Report/ReportTaskForm'))
+const SummaryReportForm = React.lazy(() => import('@/components/UI/Report/SummaryReportForm'))
 
 export default function Report() {
     const user = useAuthContext()

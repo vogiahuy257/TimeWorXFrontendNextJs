@@ -2,14 +2,16 @@
 
 import LoginLinks from '@/app/LoginLinks'
 import { motion } from 'framer-motion'
+import { useAuth } from '@/hooks/auth'
 import '@/app/css/welcome.css'
 
 const page = () => {
+    const { user } = useAuth({ middleware: 'guest' })
     return (
         <div id='welcome' className="min-h-screen">
 
             {/* Navigation Bar */}
-            <LoginLinks />
+            <LoginLinks user={user}/>
 
             {/* Hero Section */}
             <section className="hero-welcome relative h-screen flex items-center justify-center text-center bg-gradient-to-b from-blue-50 to-white">

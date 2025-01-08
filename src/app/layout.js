@@ -2,24 +2,27 @@
 import '@/app/css/app.css'
 import '@/app/css/edit.css'
 
-
+export const metadata = {
+    title: 'TimeWorX',
+    icons: {
+        icon: '/image/logo-small.svg',
+    },
+    link: [
+        {
+            rel: 'stylesheet',
+            href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
+        },
+    ],
+};
 
 const RootLayout = ({ children }) => {
     return (
         <html lang="en">
-            <head>
-                
-                <link rel="icon" type="image/png" href="image/logo-small.svg"/>
-            </head>
             <body className="antialiased">
                 {children}
             </body>
         </html>
     )
-}
-
-export const metadata = {
-    title: 'TimeWorX',
 }
 
 export default RootLayout

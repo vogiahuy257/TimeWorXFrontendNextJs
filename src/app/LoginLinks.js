@@ -1,10 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { useAuth } from '@/hooks/auth'
 import { useState, useEffect } from 'react'
 
-const LoginLinks = () => {
+const LoginLinks = ({ user }) => {
   const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
@@ -12,7 +11,6 @@ const LoginLinks = () => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
-    const { user } = useAuth({ middleware: 'guest' })
 
     return (
         <nav className="fixed w-full bg-white bg-opacity-90 backdrop-blur-sm z-50 transition-all duration-300 ease-in-out" style={{ boxShadow: `0 0 ${scrollY / 5}px rgba(101, 172, 240,0.5)` }}>
