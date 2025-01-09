@@ -8,12 +8,34 @@ import {  toast } from 'react-toastify'
 import PrimaryButton from '@/components/Button'
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd"
 import NavBar from './navbar'
+import dynamic from 'next/dynamic'
 
-const TaskForm = React.lazy(() => import('@/components/UI/Project/TaskForm'))
-const DeletedTasks = React.lazy(() => import('@/components/UI/Project/DeletedTasks'))
-const TaskUsers = React.lazy(() => import('@/components/UI/Project/TaskUsersForm'))
-const TaskComments = React.lazy(() => import('@/components/UI/Project/TaskComments'))
-const ShowReportToTask = React.lazy(() => import('@/components/UI/Project/ShowReportToTask'))
+// Dynamic import for components
+const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), {
+    ssr: false,
+    loading: () => <p>Loading Task Form...</p>,
+})
+
+const DeletedTasks = dynamic(() => import('@/components/UI/Project/DeletedTasks'), {
+    ssr: false,
+    loading: () => <p>Loading Deleted Tasks...</p>,
+})
+
+const TaskUsers = dynamic(() => import('@/components/UI/Project/TaskUsersForm'), {
+    ssr: false,
+    loading: () => <p>Loading Task Users Form...</p>,
+})
+
+const TaskComments = dynamic(() => import('@/components/UI/Project/TaskComments'), {
+    ssr: false,
+    loading: () => <p>Loading Task Comments...</p>,
+})
+
+const ShowReportToTask = dynamic(() => import('@/components/UI/Project/ShowReportToTask'), {
+    ssr: false,
+    loading: () => <p>Loading Report to Task...</p>,
+})
+
 
 const DashboardProjectView = () => {
 
@@ -309,7 +331,6 @@ const DashboardProjectView = () => {
              {/* Hiển thị TaskForm */}
              {isFormOpen && (
                 <TaskForm 
-                    user={user}
                     onClose={toggleForm} 
                     projectId={project_id} 
                     refreshTasks={fetchProjectData} 

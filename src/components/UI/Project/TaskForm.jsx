@@ -4,9 +4,11 @@ import PrimaryButton from "@/components/Button"
 import { toast } from "react-toastify"
 import ConfirmationForm from "@/components/ConfirmationForm"
 import axios from "@/libs/axios"
+import { useAuthContext } from '@/hooks/context/AuthContext'
 
-const TaskForm = ({ user, onClose,projectId, refreshTasks, task, task_status,project_deadline,is_staff }) => {
-    const user_id = user.id
+const TaskForm = ({  onClose,projectId, refreshTasks, task, task_status,project_deadline,is_staff }) => {
+    const user = useAuthContext()
+    const user_id = user?.id
     const [taskName, setTaskName] = useState('')
     const [deadline, setDeadLine] = useState('')
     const [description, setDescription] = useState('')
@@ -144,27 +146,31 @@ const TaskForm = ({ user, onClose,projectId, refreshTasks, task, task_status,pro
             if (task && projectId) 
             {
                 await axios.put(`/api/project-view/${projectId}/tasks/${task.id}`, taskData)
+                onClose()
                 toast.success("Task saved successfully!")
             } 
             else if(projectId)
             {
                 await axios.post(`/api/project-view/${projectId}/tasks`, taskData)
+                onClose()
                 toast.success("Task create successfully!")
             }
             
             else if(user_id != null && task)
             {
                 await axios.put(`/api/personal-plans/${task.id}`, taskData)
+                onClose()
                 toast.success("Task saved successfully!")
             }
             else if(user_id != null)
             {
                 await axios.post(`/api/personal-plans`, taskData)
+                onClose()
                 toast.success("Task create successfully!")
             }
             
             await refreshTasks(user_id)
-            onClose()
+            
         } 
         catch (error) 
         {

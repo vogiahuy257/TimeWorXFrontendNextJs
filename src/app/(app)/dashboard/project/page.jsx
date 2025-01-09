@@ -1,17 +1,35 @@
 'use client'
 
-import React,{ Suspense,useEffect, useState } from 'react'
+import React,{ useEffect, useState } from 'react'
 import axios from '@/libs/axios'
 import { useAuthContext } from '@/hooks/context/AuthContext'
 import {  toast } from 'react-toastify'
-import CardProject from '@/components/UI/Project/CardProject'
 import Menu from './menu'
+import dynamic from 'next/dynamic'
 
+// Dynamic import for components
+const CardProject = dynamic(() => import('@/components/UI/Project/CardProject'), {
+    ssr: true
+})
 
-const CreateProjectForm = React.lazy(() => import('@/components/UI/Project/CreateProjectForm'))
-const DeletedProjectsForm = React.lazy(() => import('@/components/UI/Project/DeletedProjectsForm'))
-const ProjectAnalysis = React.lazy(() => import('@/components/UI/Project/ProjectAnalysis'))
-const ConfirmationForm = React.lazy(() => import('@/components/ConfirmationForm'))
+const CreateProjectForm = dynamic(() => import('@/components/UI/Project/CreateProjectForm'), {
+    ssr: true,
+    loading: () => <p>Loading Create Project Form...</p>,
+})
+
+const DeletedProjectsForm = dynamic(() => import('@/components/UI/Project/DeletedProjectsForm'), {
+    ssr: true,
+    loading: () => <p>Loading Deleted Projects Form...</p>,
+})
+
+const ProjectAnalysis = dynamic(() => import('@/components/UI/Project/ProjectAnalysis'), {
+    ssr: false,
+    loading: () => <p>Loading Project Analysis...</p>,
+})
+
+const ConfirmationForm = dynamic(() => import('@/components/ConfirmationForm'), {
+    ssr: true
+})
 
 export default function Folder() {
      const user = useAuthContext()
@@ -212,16 +230,13 @@ export default function Folder() {
             </section>
 
             {isOpenProjectAnalysis && (
-                <Suspense fallback={<div>Loading Project Analysis...</div>}>
                     <ProjectAnalysis 
                         userId={user.id} 
                         onClose={handleProjectAnalysis}
                     />
-                </Suspense>
             )}
             {/* from model */}
             {isFormOpen && (
-                <Suspense fallback={<div>Loading Create Project Form...</div>}>
                     <CreateProjectForm
                         onClose={() => setIsFormOpen(false)}
                         onSubmit={handleSubmitForm}
@@ -229,7 +244,6 @@ export default function Folder() {
                         project={editProject}
                         user_id={user.id}
                     />
-                </Suspense>
             )}
 
                 {onChangeDeteleProject && (

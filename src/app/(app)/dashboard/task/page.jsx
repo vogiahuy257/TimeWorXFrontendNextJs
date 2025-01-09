@@ -1,16 +1,26 @@
 'use client'
 
+// External Libraries
 import { useEffect, useState } from 'react'
 import axios from '@/libs/axios'
-import {  toast } from 'react-toastify'
-import PrimaryButton from '@/components/Button'
+import { toast } from 'react-toastify'
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
-import TaskForm from '@/components/UI/Project/TaskForm'
-import DeletedTasks from '@/components/UI/Project/DeletedTasks'
-import TaskComments from '@/components/UI/Project/TaskComments'
-import ReportForm from '@/components/UI/Task/ReportForm'
-import '@/app/css/dashboard-project-view.css'
+
+// Components (Lazy load for better performance)
+import dynamic from 'next/dynamic'
+
+// Dynamically imported components
+const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), { ssr: false, loading: () => <p>Loading TaskForm...</p> })
+const DeletedTasks = dynamic(() => import('@/components/UI/Project/DeletedTasks'), { ssr: false, loading: () => <p>Loading DeletedTasks...</p> })
+const TaskComments = dynamic(() => import('@/components/UI/Project/TaskComments'), { ssr: false, loading: () => <p>Loading TaskComments...</p> })
+const ReportForm = dynamic(() => import('@/components/UI/Task/ReportForm'), { ssr: false, loading: () => <p>Loading ReportForm...</p> })
+
+// Custom hooks
 import { useAuthContext } from '@/hooks/context/AuthContext'
+
+// UI Components
+import PrimaryButton from '@/components/Button'
+
 
 export default function Task() {
 
@@ -34,7 +44,6 @@ export default function Task() {
 
     const toggleDeletedTasks = () => {
         setShowDeletedTasks(!showDeletedTasks)
-        console.log(showDeletedTasks)
     }
 
     const toggleComment = () => {
@@ -49,6 +58,8 @@ export default function Task() {
     
 
     const handleAddTask = (status) => {
+        setIsStaff(false)
+        setSelectedProjectId(null)
         setSelectedTask(null)
         setTaskStatus(status)
         toggleForm() 

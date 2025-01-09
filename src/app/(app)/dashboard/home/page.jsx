@@ -1,13 +1,21 @@
 'use client'
 
-import React, { Suspense, useState, useEffect } from 'react'
+import React, {  useState, useEffect } from 'react'
 import axios from '@/libs/axios'
 import Link from 'next/link'
-import MeetingForm from '@/components/UI/Meeting/MeetingForm'
+import dynamic from 'next/dynamic'
 import { useAuthContext } from '@/hooks/context/AuthContext'
 
 // Lazy load for meeting list
-const MeetingList = React.lazy(() => import('@/components/UI/Home/MeetingList'));
+const MeetingList = dynamic(() => import('@/components/UI/Home/MeetingList'), {
+    ssr: true,
+    loading: () => <p className='m-auto w-100'>Loading meetings...</p>,
+})
+
+const MeetingForm = dynamic(() => import('@/components/UI/Meeting/MeetingForm'), {
+    ssr: true,
+    loading: () => <p className='m-auto w-100'>Loading form...</p>,
+})
 
 const HomeClient = () => {
     const user = useAuthContext()
@@ -38,7 +46,7 @@ const HomeClient = () => {
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [user])
 
     return (
         <section id="home" className="overflow-auto scrollbar-hide">
@@ -56,9 +64,7 @@ const HomeClient = () => {
                         </svg>
                     </button>
                 </div>
-                <Suspense fallback={<p className='m-auto w-100'>Loading meetings...</p>}>
-                    <MeetingList meetings={meetings} handleOpenFormCreateMeeting={handleOpenFormCreateMeeting} handleEditMeeting={handleEditMeeting} />
-                </Suspense>
+                <MeetingList meetings={meetings} handleEditMeeting={handleEditMeeting} />
             </div>
 
             <div className='box box-content flex justify-center items-center flex-col relative'>

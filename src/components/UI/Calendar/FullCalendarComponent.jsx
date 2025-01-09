@@ -1,16 +1,20 @@
 'use client'
+
+// External Libraries
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { format, addDays, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns'
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import listPlugin from '@fullcalendar/list'
 import axios from '@/libs/axios'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import MeetingForm from '@/components/UI/Meeting/MeetingForm'
-import './css/customCalendar.css'
 
+// Dynamically Imported Components
+import dynamic from 'next/dynamic'
+
+// Dynamically load FullCalendar and MeetingForm for better performance
+const FullCalendar = dynamic(() => import('@fullcalendar/react'), { ssr: false, loading: () => <p>Loading Calendar...</p> })
+const MeetingForm = dynamic(() => import('@/components/UI/Meeting/MeetingForm'), { loading: () => <p>Loading Meeting Form...</p> })
+
+// Custom Styles
+import './css/customCalendar.css'
 
 const SimpleCalendar = ({ selectedDate, onChange }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate))
@@ -69,19 +73,19 @@ function FullCalendarComponent({ user }) {
   const [currentView, setCurrentView] = useState('dayGridMonth')
   const calendarRef = useRef(null)
 
-  const [meetings, setMeetings] = useState([]);
-  const [currentMeeting, setCurrentMeeting] = useState(null);
-  const [isFormOpen, setIsFormOpen] = useState(false); 
+  const [meetings, setMeetings] = useState([])
+  const [currentMeeting, setCurrentMeeting] = useState(null)
+  const [isFormOpen, setIsFormOpen] = useState(false) 
 
   const handleOpenFormCreateMeeting = () => {
-        setCurrentMeeting(null);
-        setIsFormOpen(!isFormOpen);
-    };
+        setCurrentMeeting(null)
+        setIsFormOpen(!isFormOpen)
+    }
 
     const handleEditMeeting = (meeting) => {
-        setCurrentMeeting(meeting);
-        setIsFormOpen(true);
-    };
+        setCurrentMeeting(meeting)
+        setIsFormOpen(true)
+    }
 
   const fetchProjects = async () => {
     try {
@@ -100,7 +104,7 @@ function FullCalendarComponent({ user }) {
           isProject: true
         },
       }))
-      setEvents(prevEvents => [...prevEvents, ...mappedEvents]);
+      setEvents(prevEvents => [...prevEvents, ...mappedEvents])
       setProjects(projectData.projects)
     } catch (error) {
       console.error('Error fetching projects:', error)
@@ -110,7 +114,7 @@ function FullCalendarComponent({ user }) {
   const getDataMeeting = () => {
       axios.get('/api/meetings')
       .then(response => {
-        const meetingsData = response.data;
+        const meetingsData = response.data
 
         const mappedEvents = meetingsData.map((task) => ({
           id: task.meeting_id,
@@ -122,20 +126,18 @@ function FullCalendarComponent({ user }) {
           created_by: task.creator.name,
           type:"meeting"
         }))
-        setEvents(mappedEvents);
-
-        setMeetings(response.data);
-          
+        setEvents(mappedEvents)
+        setMeetings(response.data)
       })
       .catch(error => {
-          console.error('Error fetching meetings:', error);
-      });
+          console.error('Error fetching meetings:', error)
+      })
   }
 
   useEffect(() => {
-    getDataMeeting();
+    getDataMeeting()
     fetchProjects()
-  }, [user]);
+  }, [user])
 
   useEffect(() => {
     fetchEvents(selectedProjectId)
@@ -152,10 +154,10 @@ function FullCalendarComponent({ user }) {
         const response = await axios.get(url)
         const taskData = response.data.tasks
         const mappedEvents = Object.values(taskData).flat().map((task) => {
-          const [day, month, yearTime] = task.deadline.split('-');
-          const [year, time] = yearTime.split(' ');
-          const [hour, minute] = time.split(':');
-          const formattedDeadline = new Date(`${year}-${month}-${day}T${hour}:${minute}:00Z`).toISOString();
+          const [day, month, yearTime] = task.deadline.split('-')
+          const [year, time] = yearTime.split(' ')
+          const [hour, minute] = time.split(':')
+          const formattedDeadline = new Date(`${year}-${month}-${day}T${hour}:${minute}:00Z`).toISOString()
           
           return {
             id: task.id,
@@ -170,11 +172,11 @@ function FullCalendarComponent({ user }) {
               userCount: task.user_count,
               isProject: false
             },
-          };
-        });
-        setEvents(prevEvents => [...prevEvents, ...mappedEvents]);
+          }
+        })
+        setEvents(prevEvents => [...prevEvents, ...mappedEvents])
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching events:', error)
       }
     }
 }
@@ -182,9 +184,9 @@ function FullCalendarComponent({ user }) {
     const { event } = info
 
     // Kiểm tra loại sự kiện dựa trên thuộc tính extendedProps (hoặc thêm thuộc tính riêng để phân biệt)
-    const isProject = event.extendedProps.isProject; // giả sử có thuộc tính isProject trong extendedProps
+    const isProject = event.extendedProps.isProject // giả sử có thuộc tính isProject trong extendedProps
 
-    if(event.type_event == 'meeting') return;
+    if(event.type_event == 'meeting') return
 
     axios.post(`/api/calendar/update-event/${event.id}`, {
         start: event.start,
@@ -192,11 +194,11 @@ function FullCalendarComponent({ user }) {
         isProject: isProject,
       })
       .then(response => {
-        console.log(response.data.message);
+        console.log(response.data.message)
       })
       .catch(error => {
-        console.error("There was an error updating the event:", error);
-      });
+        console.error("There was an error updating the event:", error)
+      })
       setEvents((prevEvents) =>
         prevEvents.map((e) =>
           e.id === event.id ? { ...e, start: event.start, end: event.end } : e
@@ -207,19 +209,19 @@ function FullCalendarComponent({ user }) {
   const handleEventResize = useCallback((info) => {
     const { event } = info
     // Kiểm tra loại sự kiện dựa trên thuộc tính extendedProps (hoặc thêm thuộc tính riêng để phân biệt)
-    const isProject = event.extendedProps.isProject; // giả sử có thuộc tính isProject trong extendedProps
-    if(event.type_event == 'meeting') return;
+    const isProject = event.extendedProps.isProject // giả sử có thuộc tính isProject trong extendedProps
+    if(event.type_event == 'meeting') return
     axios.post(`/api/calendar/update-event/${event.id}`, {
       start: event.start,
       end: event.end,
       isProject: isProject,
     })
     .then(response => {
-      console.log(response.data.message);
+      console.log(response.data.message)
     })
     .catch(error => {
-      console.error("There was an error updating the event:", error);
-    });
+      console.error("There was an error updating the event:", error)
+    })
 
     setEvents((prevEvents) =>
       prevEvents.map((e) =>
@@ -234,9 +236,9 @@ function FullCalendarComponent({ user }) {
       'in-progress': 'bg-yellow-400 border-yellow-500 shadow-yellow-300',
       'verify': 'bg-red-400 border-red-500 shadow-red-300',
       'done': 'bg-green-400 border-green-500 shadow-green-300',
-    };
+    }
     
-    const backgroundColor = calendarColors[eventInfo.event.extendedProps.status] || 'bg-gray-600 border-gray-700 shadow-gray-300';
+    const backgroundColor = calendarColors[eventInfo.event.extendedProps.status] || 'bg-gray-600 border-gray-700 shadow-gray-300'
   
     return (
       <div className={`${backgroundColor} w-full h-full mb-1 rounded-md border text-white shadow-md`}>
@@ -262,24 +264,24 @@ function FullCalendarComponent({ user }) {
           </div>
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   const todayEvents = events.filter(event => {
-    const now = new Date(); // Lấy thời gian hiện tại
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0); // Bắt đầu ngày hôm nay (00:00:00)
-    const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999); // Kết thúc ngày hôm nay (23:59:59)
+    const now = new Date() // Lấy thời gian hiện tại
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) // Bắt đầu ngày hôm nay (00:00:00)
+    const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999) // Kết thúc ngày hôm nay (23:59:59)
   
-    const eventStart = new Date(event.start); // Thời gian bắt đầu của sự kiện
-    const eventEnd = new Date(event.end); // Thời gian kết thúc của sự kiện
+    const eventStart = new Date(event.start) // Thời gian bắt đầu của sự kiện
+    const eventEnd = new Date(event.end) // Thời gian kết thúc của sự kiện
   
     // Kiểm tra nếu sự kiện nằm trong khoảng thời gian của hôm nay
     return (
       (eventStart >= todayStart && eventStart <= todayEnd) || // Bắt đầu trong hôm nay
       (eventEnd >= todayStart && eventEnd <= todayEnd) || // Kết thúc trong hôm nay
       (eventStart <= todayStart && eventEnd >= todayEnd) // Bao trùm cả ngày hôm nay
-    )&& !(event.type && event.type === 'meeting');
-  });
+    )&& !(event.type && event.type === 'meeting')
+  })
   
 
   const handleDateSelect = (selectInfo) => {
@@ -287,12 +289,12 @@ function FullCalendarComponent({ user }) {
   }
 
   const handleDateChange = (newDate) => {
-  setDate(newDate);
+  setDate(newDate)
   if (calendarRef.current && calendarRef.current.getApi) {
-    const calendarApi = calendarRef.current.getApi();
-    calendarApi.gotoDate(newDate);
+    const calendarApi = calendarRef.current.getApi()
+    calendarApi.gotoDate(newDate)
   }
-};
+}
 
 
   const handleViewChange = (newView) => {
@@ -441,7 +443,7 @@ function FullCalendarComponent({ user }) {
             eventResize={handleEventResize}
             select={handleDateSelect}
             eventClassNames={(event) => {
-              return ['bg-transparent rounded-md border-none text-sm'];
+              return ['bg-transparent rounded-md border-none text-sm']
             }}
             height="100%"
           />

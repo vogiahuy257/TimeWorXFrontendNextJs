@@ -1,16 +1,21 @@
 'use client'
 
+// External Libraries
+import { useEffect, useState } from 'react'
 import axios from '@/libs/axios'
-import { useAuthContext } from '@/hooks/context/AuthContext'
-import React,{ useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import dynamic from 'next/dynamic'
 
-import ReportProjectDetail from '@/components/UI/Report/ReportProjectDetail'
-import ReportTaskDone from '@/components/UI/Report/ReportTaskDone'
-import SummaryReport from '@/components/UI/Report/SummaryReport'
+// Dynamically Imported Components
+const ReportProjectDetail = dynamic(() => import('@/components/UI/Report/ReportProjectDetail'), { ssr: false, loading: () => <p>Loading ReportProjectDetail...</p> })
+const ReportTaskDone = dynamic(() => import('@/components/UI/Report/ReportTaskDone'), { ssr: false, loading: () => <p>Loading ReportTaskDone...</p> })
+const SummaryReport = dynamic(() => import('@/components/UI/Report/SummaryReport'), { ssr: false, loading: () => <p>Loading SummaryReport...</p> })
 
-const ReportTaskForm = React.lazy(() => import('@/components/UI/Report/ReportTaskForm'))
-const SummaryReportForm = React.lazy(() => import('@/components/UI/Report/SummaryReportForm'))
+const ReportTaskForm = dynamic(() => import('@/components/UI/Report/ReportTaskForm'), { ssr: false, loading: () => <p>Loading ReportTaskForm...</p> })
+const SummaryReportForm = dynamic(() => import('@/components/UI/Report/SummaryReportForm'), { ssr: false, loading: () => <p>Loading SummaryReportForm...</p> })
+
+// Custom Hook
+import { useAuthContext } from '@/hooks/context/AuthContext'
 
 export default function Report() {
     const user = useAuthContext()
