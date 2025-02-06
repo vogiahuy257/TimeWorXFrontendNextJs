@@ -222,7 +222,6 @@ export default function Folder() {
                 
                 {isDeletedFormOpen && (
                     <DeletedProjectsForm
-                        user={user}
                         resetPage={fetchProjectData}
                         onClose={handleDeletedFormToggle}
                     />

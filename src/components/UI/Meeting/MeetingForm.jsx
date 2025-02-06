@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react"
 import axios from "@/libs/axios"
 import { toast } from "react-toastify"
 import "./css/meeting.css"
+import { useAuthContext } from '@/hooks/context/AuthContext'
 
-const MeetingForm =  ({user, styles, onClose ,meeting ,getData}) => {
+const MeetingForm =  ({ styles, onClose ,meeting ,getData}) => {
   
+  const user = useAuthContext()
   const [formData, setFormData] = useState({
     meeting_name: "",
     meeting_description: "",
     meeting_date: "",
     meeting_time: "",
     meeting_type: "",
-    created_by_user_id: user?.id,
+    created_by_user_id: user.id,
     user_ids: [],
   })
 

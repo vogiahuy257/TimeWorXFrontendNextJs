@@ -1,43 +1,44 @@
 import React, { useEffect,useState } from 'react';
+import axios from '@/libs/axios';
 import { toast } from 'react-toastify';
 
 const UploadMultipleFiler = ({ onFilesChange, setIsLink, setFileSizeError, existingFiles=[] }) => {
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const maxFileSize = 25 * 1024 * 1024; // 25MB
 
+    const fetchFiles = async () => {
+        if (existingFiles.length > 0) {
+            const files = await Promise.all(existingFiles.map(async (file) => {
+                try {
+                    // Tải file từ URL
+                        const fullPath = `/storage/${file.path}`;
+                        const response = await axios(fullPath);
+                        const blob = await response.blob();
+    
+                        // Tạo đối tượng File từ Blob
+                        const newFile = new File([blob], file.name, { type: file.type });
+    
+                        return {
+                            file: newFile,
+                            path: file.path,
+                            type: file.type,
+                            isApiFile: true
+                        };
+                    
+                } catch (error) {
+                    toast.error('Error fetching file:', error);
+                    return null;
+                }
+            }));
+
+            // Loại bỏ các file null nếu fetch lỗi
+            const validFiles = files.filter(file => file !== null);
+
+            setUploadedFiles(validFiles);
+        }
+    };
+
     useEffect(() => {
-        const fetchFiles = async () => {
-            if (existingFiles.length > 0) {
-                const files = await Promise.all(existingFiles.map(async (file) => {
-                    try {
-                        // Tải file từ URL
-                            const fullPath = `/storage/${file.path}`;
-                            const response = await fetch(fullPath);
-                            const blob = await response.blob();
-        
-                            // Tạo đối tượng File từ Blob
-                            const newFile = new File([blob], file.name, { type: file.type });
-        
-                            return {
-                                file: newFile,
-                                path: file.path,
-                                type: file.type,
-                                isApiFile: true
-                            };
-                        
-                    } catch (error) {
-                        toast.error('Error fetching file:', error);
-                        return null;
-                    }
-                }));
-    
-                // Loại bỏ các file null nếu fetch lỗi
-                const validFiles = files.filter(file => file !== null);
-    
-                setUploadedFiles(validFiles);
-            }
-        };
-    
         fetchFiles();
     }, [existingFiles]);
 

@@ -321,7 +321,6 @@ const DashboardProjectView = () => {
             {/* Hiển thị bình luận */}
             {showComments && (
                 <TaskComments 
-                    user={user}
                     taskId={selectedTask.id} 
                     onClose={() => setShowComments(false)} 
                     isManagerComment = {true}

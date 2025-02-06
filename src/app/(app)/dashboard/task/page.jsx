@@ -346,7 +346,7 @@ export default function Task() {
 
              
                 {/* hiển thị ReportForm */}
-             {showReportForm && <ReportForm user={user} task={selectedTask} onClose={() => setShowReportForm(false)}/>}
+             {showReportForm && <ReportForm task={selectedTask} onClose={() => setShowReportForm(false)}/>}
                 {/* Hiển thị TaskForm */}
                 {isFormOpen && <TaskForm 
                     onClose={toggleForm} 

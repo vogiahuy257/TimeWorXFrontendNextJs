@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import axios from '@/libs/axios'
+import { useAuthContext } from '@/hooks/context/AuthContext'
 
-const ReportComment = ({ user,taskId, is_project_manager }) => {
+const ReportComment = ({ taskId, is_project_manager }) => {
 
+    const user  = useAuthContext()
     const [comments, setComments] = useState([])
     const [pinnedComments, setPinnedComments] = useState([])
     const [newComment, setNewComment] = useState('')

@@ -3,6 +3,10 @@
 // External Libraries
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { format, addDays, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import listPlugin from '@fullcalendar/list'
 import axios from '@/libs/axios'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -450,7 +454,7 @@ function FullCalendarComponent({ user }) {
         </div>
       </div>
       {isFormOpen && (
-                <MeetingForm user = {user} styles={"z-50"} onClose={handleOpenFormCreateMeeting} meeting={currentMeeting} getData = {getDataMeeting}/>
+                <MeetingForm styles={"z-50"} onClose={handleOpenFormCreateMeeting} meeting={currentMeeting} getData = {getDataMeeting}/>
             )}
     </div>
   )

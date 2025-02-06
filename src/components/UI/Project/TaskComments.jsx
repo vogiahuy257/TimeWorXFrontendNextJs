@@ -4,9 +4,12 @@ import { toast } from 'react-toastify'
 import PrimaryButton from '@/components/Button'
 import TextareaAutosize from 'react-textarea-autosize'
 import './css/TaskComments.css'
+import { useAuthContext } from '@/hooks/context/AuthContext'
 
 
-const TaskComments = ({ user, taskId, onClose,isManagerComment }) => {
+const TaskComments = ({ taskId, onClose,isManagerComment }) => {
+    
+    const user  = useAuthContext()
     const [commentsData, setCommentsData] = useState([])
     const [selectedUser, setSelectedUser] = useState(null)
     const [commentContent, setCommentContent] = useState('')

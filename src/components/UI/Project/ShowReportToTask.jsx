@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import ReportComment from './ReportComment'
+import FileLink from '@/components/FileLink'
 
 const ShowReportToTask = ({ task, onClose ,updateTaskStatus }) => {
     const [reportData, setReportData] = useState(null)
@@ -99,13 +100,9 @@ const ShowReportToTask = ({ task, onClose ,updateTaskStatus }) => {
                                         file.type !== "link" ? 
                                         (
                                             <p key={index} className="text-sm flex items-center group">
-                                            <a 
-                                                href={`/storage/${file.path}`} 
-                                                download={file.name} 
-                                                className="flex items-center transition-colors duration-300 text-blue-600 hover:text-blue-800 hover:underline"
-                                            >
-                                                {file.name}
-                                            </a>
+                                            <FileLink
+                                                file={file}
+                                            />
                                         </p>
                                         ) : 
                                         (

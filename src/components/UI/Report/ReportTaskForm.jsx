@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import axios from '@/libs/axios'
 import ReportComment from '../Project/ReportComment'
+import { useAuthContext } from '@/hooks/context/AuthContext'
 
-const ReportTaskForm = ({ user,task, onClose }) => {
+const ReportTaskForm = ({ task, onClose }) => {
+    const user  = useAuthContext()
     const [reportData, setReportData] = useState(null)
     const [loading, setLoading] = useState(true)
 

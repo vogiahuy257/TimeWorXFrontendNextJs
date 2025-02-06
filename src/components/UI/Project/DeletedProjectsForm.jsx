@@ -4,9 +4,10 @@ import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import "./css/DeletedProjectFrom.css"
-
-const DeletedProjectsForm = ({ user ,resetPage, onClose }) => {
+import { useAuthContext } from '@/hooks/context/AuthContext'
+const DeletedProjectsForm = ({ resetPage, onClose }) => {
     
+    const user  = useAuthContext()
     const [deletedProjects, setDeletedProjects] = useState([])
     const fetchDeletedProjects = () => {
         axios.get(`/api/projects/deleted/${user.id}`)

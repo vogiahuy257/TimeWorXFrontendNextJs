@@ -2,8 +2,10 @@ import { useState,useRef,useEffect } from 'react'
 import FileSelection from './ComponentsSummaryReportForm/FileSelection'
 import Dropdown from './ComponentsSummaryReportForm/Dropdown'
 import './css/SummaryReportForm.css'
+import { useAuthContext } from '@/hooks/context/AuthContext'
 
-export default function SummaryReportForm({ user, handleOpenForm,projectIdChange }) {
+export default function SummaryReportForm({ handleOpenForm,projectIdChange }) {
+    const user  = useAuthContext()
     // Khai báo các state cho các trường trong form
     const [reportName, setReportName] = useState('')
     const [project, setProject] = useState('')

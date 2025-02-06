@@ -76,7 +76,7 @@ const HomeClient = () => {
                 <img src="/image/cheese-hi.svg" alt="cheese" className='absolute -bottom-3 right-28 be-cheese' />
             </div>
             {isFormOpen && (
-                <MeetingForm user={user} onClose={handleOpenFormCreateMeeting} meeting={currentMeeting} getData = {getData}/>
+                <MeetingForm onClose={handleOpenFormCreateMeeting} meeting={currentMeeting} getData = {getData}/>
             )}
         </section>
     )

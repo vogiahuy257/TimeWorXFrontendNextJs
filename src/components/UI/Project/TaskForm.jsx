@@ -8,7 +8,7 @@ import { useAuthContext } from '@/hooks/context/AuthContext'
 
 const TaskForm = ({  onClose,projectId, refreshTasks, task, task_status,project_deadline,is_staff }) => {
     const user = useAuthContext()
-    const user_id = user?.id
+    const user_id = user.id
     const [taskName, setTaskName] = useState('')
     const [deadline, setDeadLine] = useState('')
     const [description, setDescription] = useState('')

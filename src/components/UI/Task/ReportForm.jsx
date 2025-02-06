@@ -1,12 +1,14 @@
 import React, { useState,useEffect } from 'react';
 import UploadMultipleFiler from './UploadMultipleFiler';
-import axios from 'axios';
+import axios from '@/libs/axios';
 import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ReportComment from '../Project/ReportComment';
+import { useAuthContext } from '@/hooks/context/AuthContext'
 
-const ReportForm = ({ user, onClose ,task }) => {
+const ReportForm = ({ onClose ,task }) => {
 
+    const user  = useAuthContext()
     //form input
     const [completionGoal, setCompletionGoal] = useState('');
     const [todayWork, setTodayWork] = useState('');
