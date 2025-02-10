@@ -1,10 +1,12 @@
 import React from 'react'
 
 interface IconFileSelectionProps {
-  filetype: 'docx' | 'doc' | 'xlsx' | 'txt' | 'ppt' | 'pdf' | 'svg' | 'png' | 'jpg' | 'jpeg' | 'gif' | 'bmp' | 'tiff' | 'webp'
+  filename: string
 }
 
-export const IconFileSelection: React.FC<IconFileSelectionProps> = ({ filetype }) => {
+export const IconFileSelection: React.FC<IconFileSelectionProps> = ({ filename }) => {
+  const filetype = filename ? filename.split('.').pop() || "" : "";
+
   const getIcon = () => {
     switch (filetype) {
       case 'docx':
@@ -116,10 +118,6 @@ export const IconFileSelection: React.FC<IconFileSelectionProps> = ({ filetype }
     }
   }
 
-  return (
-    <div className="file-icon" aria-label={`${filetype} file icon`}>
-      {getIcon()}
-    </div>
-  )
+  return getIcon()
 }
 

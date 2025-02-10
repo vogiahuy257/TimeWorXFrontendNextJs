@@ -1,72 +1,51 @@
 import React, { useEffect,useState } from 'react';
 import axios from '@/libs/axios';
+import FileDownloadButton from '@/components/FileDownloadButton';
+import { IconFileSelection } from '@/components/IconFileSelection';
 import { toast } from 'react-toastify';
 
 const UploadMultipleFiler = ({ onFilesChange, setIsLink, setFileSizeError, existingFiles=[] }) => {
-    const [uploadedFiles, setUploadedFiles] = useState([]);
+    // state for uploaded files
+    const [uploadedFiles, setUploadedFiles] = useState([])
+    // loading state for existing files
+    const [loading, setLoading] = useState(true)
+    // max file size
     const maxFileSize = 25 * 1024 * 1024; // 25MB
 
-    const fetchFiles = async () => {
-        if (existingFiles.length > 0) {
-            const files = await Promise.all(existingFiles.map(async (file) => {
-                try {
-                    // Tải file từ URL
-                        const fullPath = `/storage/${file.path}`;
-                        const response = await axios(fullPath);
-                        const blob = await response.blob();
-    
-                        // Tạo đối tượng File từ Blob
-                        const newFile = new File([blob], file.name, { type: file.type });
-    
-                        return {
-                            file: newFile,
-                            path: file.path,
-                            type: file.type,
-                            isApiFile: true
-                        };
-                    
-                } catch (error) {
-                    toast.error('Error fetching file:', error);
-                    return null;
-                }
-            }));
-
-            // Loại bỏ các file null nếu fetch lỗi
-            const validFiles = files.filter(file => file !== null);
-
-            setUploadedFiles(validFiles);
-        }
-    };
-
+    // Fetch existing files from the server
     useEffect(() => {
+
+        if (existingFiles.length === 0) {
+            setLoading(false);
+            return; // Không cần tải nếu không có file nào
+        }
+
+        setLoading(true);
+
+        const fetchFiles = async () => {
+            const files = await Promise.all(
+                existingFiles.map(async (file) => {
+                    try {
+                        const response = await axios.get(`/api/files/download?path=${file.path}`, {
+                            responseType: "blob",
+                        });
+                        const blob = new Blob([response.data], { type: file.type });
+                        return { file: new File([blob], file.name, { type: file.type }), path: file.path, isApiFile: true };
+                    } catch (error) {
+                        toast.error(`Error loading file: ${file.name}`);
+                        return null;
+                    }
+                })
+            );
+
+            const validFiles = files.filter((file) => file !== null);
+            setUploadedFiles(validFiles);
+            setLoading(false);
+        };
+
         fetchFiles();
     }, [existingFiles]);
 
-    // const handleFileChange = (e) => {
-    //     const files = Array.from(e.target.files);
-    //     const validFiles = [];
-    //     const invalidFiles = [];
-
-    //     files.forEach(file => {
-    //         if (file.size <= maxFileSize) {
-    //             validFiles.push(file);
-    //         } else {
-    //             invalidFiles.push(file);
-    //         }
-    //     });
-
-    //     if (invalidFiles.length > 0) {
-    //         const errorMsg = `Your file size exceeds the limit, you can send the document link here`;
-    //         setFileSizeError(errorMsg);
-    //         setIsLink(true); 
-    //     } else {
-    //         setFileSizeError(''); 
-    //         setIsLink(false);
-    //     }
-
-    //     setUploadedFiles(prevFiles => [...prevFiles, ...validFiles]);
-    //     onFilesChange([...uploadedFiles, ...validFiles]);
-    // };
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
         const validFiles = [];
@@ -106,29 +85,7 @@ const UploadMultipleFiler = ({ onFilesChange, setIsLink, setFileSizeError, exist
         setUploadedFiles(updatedFiles);
         onFilesChange(updatedFiles);
     };
-
-    const createDownloadUrl = (file) => {
-        if (file instanceof File) {
-            return {
-                url: URL.createObjectURL(file),
-                name: file.name,
-                type: file.type,
-            };
-        }
-        return { url: '', name: '', type: '' };
-    };
-
-    const handleDownload = (file) => {
-        const { url, name, type } = createDownloadUrl(file);
-            // Nếu là file tải lên từ người dùng
-            const a = document.createElement('a');
-            a.href = url; // Sử dụng URL đã tạo
-            a.download = name; // Đặt tên file
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url); // Giải phóng URL
-    };
+    
 
     return (
         <div className="p-4 border border-gray-300 rounded-lg">
@@ -142,19 +99,22 @@ const UploadMultipleFiler = ({ onFilesChange, setIsLink, setFileSizeError, exist
                 />
             </label>
 
-            {uploadedFiles.length > 0 && (
-                <div className="mt-4">
-                    <ul className="list-disc list-inside space-y-2">
+            
+            {loading ? (
+                <div className="flex justify-center items-center mt-4">
+                    <span className="text-gray-500">Loading files...</span>
+                </div>
+            ) : (
+                uploadedFiles.length > 0 && (
+                    <div className="mt-4">
+                        <ul className="list-disc list-inside space-y-2">
                             {uploadedFiles.map((file, index) => (
                                 file.type !== 'link' && (
                                     <li key={index} className="flex justify-between items-center">
-                                        <span
-                                            onClick={() => handleDownload(file.file)} 
-                                            className="text-blue-500 hover:underline cursor-pointer truncate max-w-xs inline-block"
-                                            title={file.file.name}
-                                        >
-                                            {file.file.name}
-                                        </span>
+                                        <div className='flex gap-2 items-center'>
+                                            <IconFileSelection filename={file.file.name} />
+                                            <FileDownloadButton fileData={file} />
+                                        </div>
                                         <h1 
                                             className="text-red-500 hover:text-red-700 transition cursor-pointer"
                                             onClick={() => removeFile(index)}
@@ -166,11 +126,12 @@ const UploadMultipleFiler = ({ onFilesChange, setIsLink, setFileSizeError, exist
                                     </li>
                                 )
                             ))}
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
+                )
             )}
         </div>
-    );
-};
+    )
+}
 
-export default UploadMultipleFiler;
+export default UploadMultipleFiler

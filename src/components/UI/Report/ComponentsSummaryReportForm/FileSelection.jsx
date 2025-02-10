@@ -1,5 +1,5 @@
 
-import { IconFileSelection } from './icon-file-selection'
+import { IconFileSelection } from '@/components/IconFileSelection'
 
 const FileSelection = ({ files, selectedFiles, onChange }) => {
 

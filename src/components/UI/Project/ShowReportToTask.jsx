@@ -2,26 +2,56 @@ import { useState, useEffect } from 'react'
 import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import ReportComment from './ReportComment'
-import FileLink from '@/components/FileLink'
+import { IconFileSelection } from "@/components/IconFileSelection"
+import FileDownloadButton from '@/components/FileDownloadButton'
 
 const ShowReportToTask = ({ task, onClose ,updateTaskStatus }) => {
     const [reportData, setReportData] = useState(null)
     const [loading, setLoading] = useState(true)
 
-    // Function to fetch report data
-    const fetchReportData = () => {
-        axios.get(`/api/reports/${task.id}`, { params: { project_id: task.project_id, task_id: task.id } })
-            .then((response) => {
-                setReportData(response.data)
-                setLoading(false)
-            })
-            .catch(() => {
-                toast.error('Failed to load report data')
-                setLoading(false)
-            })
-    }
-
     useEffect(() => {
+        // Function to fetch report data
+        const fetchReportData = async () => {
+            try {
+                const response = await axios.get(`/api/reports/${task.id}`, {
+                    params: { project_id: task.project_id, task_id: task.id }
+                });
+        
+                let report = response.data;
+        
+                if (report.files && !report.isLink && report.files.length > 0) {
+                    const formattedFiles = await Promise.all(
+                        report.files.map(async (file) => {
+                            try {
+                                const fileBlob = await axios.get(`/api/files/download?path=${file.path}`, {
+                                    responseType: "blob",
+                                });
+        
+                                return {
+                                    file: new File([fileBlob.data], file.name, { type: file.type }),
+                                    path: file.path,
+                                    type: file.type,
+                                    isApiFile: true,
+                                };
+                            } catch (error) {
+                                toast.error(`Error loading file: ${file.name}`);
+                                return null;
+                            }
+                        })
+                    );
+        
+                    // Lọc bỏ file null (trường hợp lỗi tải file)
+                    report.files = formattedFiles.filter((file) => file !== null)
+                }
+        
+                setReportData(report)
+                setLoading(false)
+            } catch (error) {
+                toast.error("Failed to load report data")
+                setLoading(false)
+            }
+        };
+
         fetchReportData()
     }, [task])
 
@@ -99,14 +129,13 @@ const ShowReportToTask = ({ task, onClose ,updateTaskStatus }) => {
                                     reportData.files.map((file, index) => (
                                         file.type !== "link" ? 
                                         (
-                                            <p key={index} className="text-sm flex items-center group">
-                                            <FileLink
-                                                file={file}
-                                            />
-                                        </p>
+                                            <p key={index} className="text-sm flex gap-2 items-center group my-1">
+                                                <IconFileSelection filename={file.file.name} />
+                                                <FileDownloadButton fileData={file} />
+                                            </p>
                                         ) : 
                                         (
-                                                <p className=' text-yellow-500'>No documents have been created for the report</p>
+                                            <p className=' text-yellow-500'>No documents have been created for the report</p>
                                         )
                                     ))
                                 )}
