@@ -1,8 +1,8 @@
-import React, { useEffect,useState } from 'react';
-import axios from '@/libs/axios';
-import FileDownloadButton from '@/components/FileDownloadButton';
-import { IconFileSelection } from '@/components/IconFileSelection';
-import { toast } from 'react-toastify';
+import React, { useEffect,useState } from 'react'
+import axios from '@/libs/axios'
+import FileDownloadButton from '@/components/FileDownloadButton'
+import { IconFileSelection } from '@/components/IconFileSelection'
+import { toast } from 'react-toastify'
 
 const UploadMultipleFiler = ({ onFilesChange, setIsLink, setFileSizeError, existingFiles=[] }) => {
     // state for uploaded files
@@ -10,17 +10,17 @@ const UploadMultipleFiler = ({ onFilesChange, setIsLink, setFileSizeError, exist
     // loading state for existing files
     const [loading, setLoading] = useState(true)
     // max file size
-    const maxFileSize = 25 * 1024 * 1024; // 25MB
+    const maxFileSize = 25 * 1024 * 1024 // 25MB
 
     // Fetch existing files from the server
     useEffect(() => {
 
         if (existingFiles.length === 0) {
-            setLoading(false);
-            return; // Không cần tải nếu không có file nào
+            setLoading(false)
+            return // Không cần tải nếu không có file nào
         }
 
-        setLoading(true);
+        setLoading(true)
 
         const fetchFiles = async () => {
             const files = await Promise.all(
@@ -28,28 +28,28 @@ const UploadMultipleFiler = ({ onFilesChange, setIsLink, setFileSizeError, exist
                     try {
                         const response = await axios.get(`/api/files/download?path=${file.path}`, {
                             responseType: "blob",
-                        });
-                        const blob = new Blob([response.data], { type: file.type });
-                        return { file: new File([blob], file.name, { type: file.type }), path: file.path, isApiFile: true };
+                        })
+                        const blob = new Blob([response.data], { type: file.type })
+                        return { file: new File([blob], file.name, { type: file.type }), path: file.path, isApiFile: true }
                     } catch (error) {
-                        toast.error(`Error loading file: ${file.name}`);
-                        return null;
+                        toast.error(`Error loading file: ${file.name}`)
+                        return null
                     }
                 })
-            );
+            )
 
-            const validFiles = files.filter((file) => file !== null);
-            setUploadedFiles(validFiles);
-            setLoading(false);
-        };
+            const validFiles = files.filter((file) => file !== null)
+            setUploadedFiles(validFiles)
+            setLoading(false)
+        }
 
-        fetchFiles();
-    }, [existingFiles]);
+        fetchFiles()
+    }, [existingFiles])
 
     const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        const validFiles = [];
-        const invalidFiles = [];
+        const files = Array.from(e.target.files)
+        const validFiles = []
+        const invalidFiles = []
     
         files.forEach(file => {
             if (file.size <= maxFileSize) {
@@ -59,32 +59,32 @@ const UploadMultipleFiler = ({ onFilesChange, setIsLink, setFileSizeError, exist
                     path: '',  // Đường dẫn sẽ được tạo khi upload lên server
                     type: file.type,
                     isApiFile: false  // Không phải file từ API
-                };
-                validFiles.push(newFile);
+                }
+                validFiles.push(newFile)
             } else {
-                invalidFiles.push(file);
+                invalidFiles.push(file)
             }
-        });
+        })
     
         if (invalidFiles.length > 0) {
-            const errorMsg = `Your file size exceeds the limit, you can send the document link here`;
-            setFileSizeError(errorMsg);
-            setIsLink(true); 
+            const errorMsg = `Your file size exceeds the limit, you can send the document link here`
+            setFileSizeError(errorMsg)
+            setIsLink(true) 
         } else {
-            setFileSizeError(''); 
-            setIsLink(false);
+            setFileSizeError('') 
+            setIsLink(false)
         }
     
-        setUploadedFiles(prevFiles => [...prevFiles, ...validFiles]);
-        onFilesChange([...uploadedFiles, ...validFiles]);
-    };
+        setUploadedFiles(prevFiles => [...prevFiles, ...validFiles])
+        onFilesChange([...uploadedFiles, ...validFiles])
+    }
     
 
     const removeFile = (index) => {
-        const updatedFiles = uploadedFiles.filter((_, i) => i !== index);
-        setUploadedFiles(updatedFiles);
-        onFilesChange(updatedFiles);
-    };
+        const updatedFiles = uploadedFiles.filter((_, i) => i !== index)
+        setUploadedFiles(updatedFiles)
+        onFilesChange(updatedFiles)
+    }
     
 
     return (

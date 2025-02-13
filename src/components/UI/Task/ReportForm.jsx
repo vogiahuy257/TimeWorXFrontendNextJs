@@ -1,26 +1,26 @@
-import React, { useState,useEffect } from 'react';
-import UploadMultipleFiler from './UploadMultipleFiler';
-import axios from '@/libs/axios';
-import {  toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import ReportComment from '../Project/ReportComment';
+import React, { useState,useEffect } from 'react'
+import UploadMultipleFiler from './UploadMultipleFiler'
+import axios from '@/libs/axios'
+import {  toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import ReportComment from '../Project/ReportComment'
 import { useAuthContext } from '@/hooks/context/AuthContext'
 
 const ReportForm = ({ onClose ,task }) => {
 
     const user  = useAuthContext()
     //form input
-    const [completionGoal, setCompletionGoal] = useState('');
-    const [todayWork, setTodayWork] = useState('');
-    const [nextSteps, setNextSteps] = useState('');
-    const [issues, setIssues] = useState('');
+    const [completionGoal, setCompletionGoal] = useState('')
+    const [todayWork, setTodayWork] = useState('')
+    const [nextSteps, setNextSteps] = useState('')
+    const [issues, setIssues] = useState('')
     //docment
-    const [documents, setDocuments] = useState([]);
-    const [documentLink, setDocumentLink] = useState('');
-    const [isLink, setIsLink] = useState(false);
-    const [fileSizeError, setFileSizeError] = useState('');
-    const [existingReport, setExistingReport] = useState(false);
-    const [isExistingReport, setIsExistingReport] = useState(false);
+    const [documents, setDocuments] = useState([])
+    const [documentLink, setDocumentLink] = useState('')
+    const [isLink, setIsLink] = useState(false)
+    const [fileSizeError, setFileSizeError] = useState('')
+    const [existingReport, setExistingReport] = useState(false)
+    const [isExistingReport, setIsExistingReport] = useState(false)
 
     useEffect(() => {
         axios.get(`/api/reports/${task.id}`, {
@@ -29,99 +29,99 @@ const ReportForm = ({ onClose ,task }) => {
                 task_id: task.id
             }
         }).then((response) => {
-            const report = response.data;
+            const report = response.data
             if(report.length == 0)
             {
-                setIsExistingReport(false);
+                setIsExistingReport(false)
             }
             else
             {
-                setIsExistingReport(true);
+                setIsExistingReport(true)
             }
                 if (report) 
                 {
-                    setExistingReport(report);
-                    setCompletionGoal(report.completion_goal || '');
-                    setTodayWork(report.today_work || '');
-                    setNextSteps(report.next_steps || '');
-                    setIssues(report.issues || '');
-                    setIsLink(report.isLink);
+                    setExistingReport(report)
+                    setCompletionGoal(report.completion_goal || '')
+                    setTodayWork(report.today_work || '')
+                    setNextSteps(report.next_steps || '')
+                    setIssues(report.issues || '')
+                    setIsLink(report.isLink)
 
                     if (report.isLink) {
-                        setDocumentLink(report.files && report.files.length > 0 ? report.files[0].path : '');
+                        setDocumentLink(report.files && report.files.length > 0 ? report.files[0].path : '')
                     } else {
-                        setDocuments(report.files || []);
+                        setDocuments(report.files || [])
                     }
                 }
             })
             .catch((error) => {
-                const message = error.response?.data?.message || 'Error submitting report. Please try again.';
-                toast.error(`Error: ${message}`);
-                onClose();
-            });
-    }, [task]); 
+                const message = error.response?.data?.message || 'Error submitting report. Please try again.'
+                toast.error(`Error: ${message}`)
+                onClose()
+            })
+    }, [task]) 
 
     const getCurrentDate = () => {
-        const date = new Date();
-        const day = String(date.getDate()).padStart(2, '0'); 
-        const month = String(date.getMonth() + 1).padStart(2, '0'); 
-        const year = date.getFullYear(); 
+        const date = new Date()
+        const day = String(date.getDate()).padStart(2, '0') 
+        const month = String(date.getMonth() + 1).padStart(2, '0') 
+        const year = date.getFullYear() 
     
-        return `${day}-${month}-${year}`; 
-    };
+        return `${day}-${month}-${year}` 
+    }
      
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         
-        const reportData = new FormData();
-        reportData.append('report_by_user_id', user.id);
-        reportData.append('project_id', task.project_id);
-        reportData.append('task_id', task.id);
-        reportData.append('completion_goal', completionGoal);
-        const formattedTodayWork = todayWork.replace(/\n/g, '<br>');
-        reportData.append('today_work', formattedTodayWork);
-        reportData.append('next_steps', nextSteps);
-        reportData.append('issues', issues);
-        reportData.append('isLink', isLink ? '1' : '0');
+        const reportData = new FormData()
+        reportData.append('report_by_user_id', user.id)
+        reportData.append('project_id', task.project_id)
+        reportData.append('task_id', task.id)
+        reportData.append('completion_goal', completionGoal)
+        const formattedTodayWork = todayWork.replace(/\n/g, '<br>')
+        reportData.append('today_work', formattedTodayWork)
+        reportData.append('next_steps', nextSteps)
+        reportData.append('issues', issues)
+        reportData.append('isLink', isLink ? '1' : '0')
     
         // Nếu là link thì chỉ append link
         if (isLink) 
         {
-            reportData.append('documents', documentLink);
+            reportData.append('documents', documentLink)
         } 
         else
         {
             documents.forEach((file, index) => {
                 if (file instanceof File)
                 {
-                    reportData.append(`documents[${index}]`, file);
+                    reportData.append(`documents[${index}]`, file)
                 }
                 else if (file.file instanceof File)
                 {
-                    reportData.append(`documents[${index}]`, file.file);
+                    reportData.append(`documents[${index}]`, file.file)
                 }
-            });
+            })
         }
 
         const headers = {
              'Content-Type': 'multipart/form-data'
-        };
+        }
         
-        const method = 'post';
-        const url = isExistingReport ? `/api/reports/${existingReport.report_id}` : '/api/reports';
-        const data = reportData;
+        const method = 'post'
+        const url = isExistingReport ? `/api/reports/${existingReport.report_id}` : '/api/reports'
+        const data = reportData
 
         axios[method](url, data, { headers })
         .then((response) => {
-            toast.success(response?.data?.message);
-            onClose();
+            toast.success(response?.data?.message)
+            onClose()
         })
         .catch((error) => {
-            const message = error.response?.message || 'Error submitting report. Please try again.';
-            toast.error(message);
-            onClose();
-        });
-    };
+            const message = error.response?.message || 'Error submitting report. Please try again.'
+            toast.error(message)
+            onClose()
+        })
+    }
     
     
     
@@ -238,7 +238,7 @@ const ReportForm = ({ onClose ,task }) => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default ReportForm;
+export default ReportForm

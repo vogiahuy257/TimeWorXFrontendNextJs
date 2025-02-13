@@ -41,6 +41,7 @@ export default function Folder() {
     const [editProject, setEditProject] = useState([]) 
     const [searchQuery, setSearchQuery] = useState('')
     const [onChangeDeteleProject, setOnChangeDeteleProject] = useState(null)
+    const [loadingData, setLoadingDaTa] = useState(true)
     
     const statusOrder = {
         "verify": 1,
@@ -62,7 +63,6 @@ export default function Folder() {
             
             if (response?.data) {
                 const sortedProjects = sortProjectsByStatus(response.data)
-    
                 // Cập nhật state
                 setProjects(sortedProjects)
                 setFilteredProjects(sortedProjects)
@@ -74,8 +74,12 @@ export default function Folder() {
             const errorMessage = error.response?.data?.message || "Unexpected error occurred."
             toast.error(`Error fetching projects: ${errorMessage}`)
         }
+        finally {
+            setLoadingDaTa(false)
+        }
     }
     //hàm tìm kiếm theo mỗi lần nhấn cho project
+    //old
     const handleSearch = (e) => {
         const query = e.target.value
         setSearchQuery(query)
@@ -89,9 +93,16 @@ export default function Folder() {
         fetchProjectData()
     }, [])
 
+    // old
+    // useEffect(() => {
+    //     setFilteredProjects(sortProjectsByStatus(filteredProjects))
+    // }, [searchQuery])
+
+    // new
     useEffect(() => {
-        setFilteredProjects(sortProjectsByStatus(filteredProjects))
-    }, [searchQuery])
+        setFilteredProjects(sortProjectsByStatus(projects));
+    }, [projects]);
+    
 
     const handleDeletedFormToggle = () =>{
         setIsDeletedFormOpen(!isDeletedFormOpen)
@@ -190,7 +201,6 @@ export default function Folder() {
     }
 
     return (
-        
         <section id='project' >
             {/* menu top */}
             <Menu
@@ -203,30 +213,31 @@ export default function Folder() {
             {/* main */}
             <section id='container'>
                 <div className='mainContainer w-full'>
-
                     <div className='block-project'>
-
                       {/* title is class name done, to-do, in-progress, verify */}
-                      {filteredProjects.map(project => (
-                            <CardProject
-                                key={project.project_id}
-                                project={project}
-                                formatDateRange={formatDateRange}
-                                handleDelete={isDeteleProject}
-                                handleEdit={handleEdit}
-                            />
-                        ))}
-
+                      {loadingData ? (
+                            <p className="text-center text-gray-500">Loading projects...</p>
+                        ) : (
+                            filteredProjects.map(project => (
+                                <CardProject
+                                    key={project.project_id}
+                                    project={project}
+                                    formatDateRange={formatDateRange}
+                                    handleDelete={isDeteleProject}
+                                    handleEdit={handleEdit}
+                                />
+                            ))
+                        )}
                     </div>
                 </div>
-                
-                {isDeletedFormOpen && (
+            </section>
+            
+            {isDeletedFormOpen && (
                     <DeletedProjectsForm
                         resetPage={fetchProjectData}
                         onClose={handleDeletedFormToggle}
                     />
-                )}
-            </section>
+            )}
 
             {isOpenProjectAnalysis && (
                     <ProjectAnalysis 
@@ -234,7 +245,7 @@ export default function Folder() {
                         onClose={handleProjectAnalysis}
                     />
             )}
-            {/* from model */}
+
             {isFormOpen && (
                     <CreateProjectForm
                         onClose={() => setIsFormOpen(false)}
@@ -245,6 +256,7 @@ export default function Folder() {
                     />
             )}
 
+            {/* from history */}
                 {onChangeDeteleProject && (
                     <ConfirmationForm
                         type={'help'}

@@ -7,14 +7,13 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'
+import FullCalendar from '@fullcalendar/react';
 import axios from '@/libs/axios'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 // Dynamically Imported Components
 import dynamic from 'next/dynamic'
 
-// Dynamically load FullCalendar and MeetingForm for better performance
-const FullCalendar = dynamic(() => import('@fullcalendar/react'), { ssr: false, loading: () => <p>Loading Calendar...</p> })
 const MeetingForm = dynamic(() => import('@/components/UI/Meeting/MeetingForm'), { loading: () => <p>Loading Meeting Form...</p> })
 
 // Custom Styles
@@ -41,7 +40,7 @@ const SimpleCalendar = ({ selectedDate, onChange }) => {
   }
 
   return (
-    <div className="p-4 w-full h-auto border rounded-md">
+    <div className="p-4 w-full h-auto border rounded-md shadow-md">
       <div className="flex justify-between items-center mb-4">
         <button onClick={handlePrevMonth}><ChevronLeft className="h-4 w-4" /></button>
         <span>{format(currentMonth, 'MMMM yyyy')}</span>
@@ -55,7 +54,7 @@ const SimpleCalendar = ({ selectedDate, onChange }) => {
           <button
             key={date.toString()}
             onClick={() => onChange(date)}
-            className={`p-2 text-center rounded-full ${
+            className={`p-1 text-center rounded-xl ${
               format(date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
                 ? 'bg-blue-500 text-white'
                 : 'hover:bg-gray-200'
@@ -64,6 +63,15 @@ const SimpleCalendar = ({ selectedDate, onChange }) => {
             {format(date, 'd')}
           </button>
         ))}
+      </div>
+      
+      <div className='flex items-center mt-2'>
+          <button 
+            className="btn-today px-2 py-[0.1rem] rounded" 
+            onClick={() => onChange(new Date())}
+          >
+            Today
+          </button>
       </div>
     </div>
   )
@@ -93,7 +101,7 @@ function FullCalendarComponent({ user }) {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get(`/api/projects/${user.id}/projects-tasks`)
+      const response = await axios.get(`/api/v1/projects/getall`)
       const projectData = response.data
       const mappedEvents = projectData.projects.map((task) => ({
         id: task.project_id,
@@ -108,7 +116,7 @@ function FullCalendarComponent({ user }) {
           isProject: true
         },
       }))
-      setEvents(prevEvents => [...prevEvents, ...mappedEvents])
+      setEvents(mappedEvents)
       setProjects(projectData.projects)
     } catch (error) {
       console.error('Error fetching projects:', error)
@@ -140,7 +148,6 @@ function FullCalendarComponent({ user }) {
 
   useEffect(() => {
     getDataMeeting()
-    fetchProjects()
   }, [user])
 
   useEffect(() => {
@@ -149,13 +156,12 @@ function FullCalendarComponent({ user }) {
 
 
   const fetchEvents = async (projectId) => {
-    if (projectId === 'allproject') {
+    if ( projectId === 'allproject') {
       return fetchProjects()
     }
-    else if(projectId){
+    if(projectId){
       try {
-        const url = `/api/project-view/${projectId}`
-        const response = await axios.get(url)
+        const response = await axios.get(`/api/project-view/${projectId}`)
         const taskData = response.data.tasks
         const mappedEvents = Object.values(taskData).flat().map((task) => {
           const [day, month, yearTime] = task.deadline.split('-')
@@ -178,12 +184,14 @@ function FullCalendarComponent({ user }) {
             },
           }
         })
-        setEvents(prevEvents => [...prevEvents, ...mappedEvents])
+        // Clear previous events before adding new ones
+        setEvents(mappedEvents)
       } catch (error) {
         console.error('Error fetching events:', error)
       }
     }
-}
+  }
+
   const handleEventDrop = useCallback((info) => {
     const { event } = info
 
@@ -271,20 +279,25 @@ function FullCalendarComponent({ user }) {
     )
   }
 
+  // kiểm tra xem thời gian của sự kiện có thuộc ngày trong hôm nay không
   const todayEvents = events.filter(event => {
-    const now = new Date() // Lấy thời gian hiện tại
-    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) // Bắt đầu ngày hôm nay (00:00:00)
-    const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999) // Kết thúc ngày hôm nay (23:59:59)
+    const now = new Date()
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) 
+    const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999)
   
-    const eventStart = new Date(event.start) // Thời gian bắt đầu của sự kiện
-    const eventEnd = new Date(event.end) // Thời gian kết thúc của sự kiện
+    const eventStart = new Date(event.start)
+    const eventEnd = new Date(event.end)
   
-    // Kiểm tra nếu sự kiện nằm trong khoảng thời gian của hôm nay
+    // Kiểm tra nếu sự kiện kéo dài cả ngày
+    const isAllDay = 
+      eventStart.getHours() === 0 && eventStart.getMinutes() === 0 &&
+      eventEnd.getHours() === 23 && eventEnd.getMinutes() === 59
+  
     return (
-      (eventStart >= todayStart && eventStart <= todayEnd) || // Bắt đầu trong hôm nay
-      (eventEnd >= todayStart && eventEnd <= todayEnd) || // Kết thúc trong hôm nay
-      (eventStart <= todayStart && eventEnd >= todayEnd) // Bao trùm cả ngày hôm nay
-    )&& !(event.type && event.type === 'meeting')
+      (eventStart >= todayStart && eventStart <= todayEnd) || 
+      (eventEnd >= todayStart && eventEnd <= todayEnd) || 
+      (eventStart <= todayStart && eventEnd >= todayEnd)
+    ) && !(event.type && event.type === 'meeting')
   })
   
 
@@ -314,17 +327,11 @@ function FullCalendarComponent({ user }) {
       {/* Sidebar */}
       <div className="w-1/4 max-h-[590px] overflow-auto border-r p-2 pr-4 flex flex-col scrollbar-hide">
        
-        <div className="mb-4 relative">
-          <SimpleCalendar
-            selectedDate={date}
-            onChange={handleDateChange}
-          />
-           <button 
-            className="btn-today px-2 rounded absolute right-3 bottom-3" 
-            onClick={() => handleDateChange(new Date())}
-          >
-            to day
-          </button>
+        <div className="mb-4">
+        <SimpleCalendar
+          selectedDate={date}
+          onChange={handleDateChange}
+        />
         </div>
         <div className="menu mb-4 flex gap-2 items-center">
 
@@ -335,21 +342,30 @@ function FullCalendarComponent({ user }) {
             onChange={(e) => setSelectedProjectId(e.target.value)}
           >
             <option value="allproject">All Project</option>
-            {projects.map((project) => (
+            {[...new Map(projects.map((p) => [p.project_id, p])).values()].map((project) => (
               <option key={project.project_id} value={project.project_id}>
                 Task to {project.project_name}
               </option>
             ))}
           </select>
+
         </div>
-        {todayEvents && selectedProjectId !== 'allproject' && (
-          <div className="p-4 space-y-2 flex-grow rounded-lg border border-gray-300 shadow-lg">
+
+        
+        {todayEvents.length > 0 && selectedProjectId !== 'allproject' && (
+          <div className="p-4 space-y-2 flex-grow rounded-lg border shadow-lg">
             <h2 className="font-base text-base">Today Task</h2>
-            <ul className="p-2 space-y-3 max-h-[150px] overflow-auto scrollbar-hide">
+            <ul className="space-y-3 max-h-[150px] overflow-auto scrollbar-hide">
               {todayEvents.map((event) => (
                 <li key={event.id} className="flex items-center p-3 rounded-md text-sm shadow-md border border-gray-300">
-                  <span className="font-medium ">{format(new Date(event.start), 'HH:mm')}</span> - 
-                  <span className="font-medium ">{format(new Date(event.end), 'HH:mm')}</span> 
+                  {event.isAllDay ? (
+                    <span className="font-medium">All Day</span>
+                  ) : (
+                    <>
+                      <span className="font-medium">{format(new Date(event.start), 'HH:mm')}</span> - 
+                      <span className="font-medium">{format(new Date(event.end), 'HH:mm')}</span> 
+                    </>
+                  )}
                   <span className="ml-auto">{event.title}</span>
                 </li>
               ))}
@@ -358,7 +374,7 @@ function FullCalendarComponent({ user }) {
         )}
 
         {meetings && (
-          <div className='p-4 mt-4 space-y-2 flex-grow rounded-lg border border-gray-300 shadow-lg'>
+          <div className='p-4 mt-4 space-y-2 flex-grow rounded-lg border shadow-lg'>
             <h2 className="font-base text-base">Your Meeting</h2>
                       {meetings.length === 0 ? (
                             <p className='mx-auto mt-[38%] px-4 py-2 rounded-md'>Không có cuộc họp nào.</p>
@@ -425,15 +441,7 @@ function FullCalendarComponent({ user }) {
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
-            initialView={currentView}
-            initialDate={date}
-            views={{
-              timeGridWeek: {
-                type: 'timeGrid',
-                duration: { days: 7 },
-                buttonText: 'week'
-              }
-            }}
+            initialView={currentView} // State quản lý view
             headerToolbar={false}
             editable={true}
             droppable={true}

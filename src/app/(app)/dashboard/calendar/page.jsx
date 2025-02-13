@@ -17,5 +17,5 @@ export default function Calendar() {
         <>
             <FullCalendarComponent user={user}/>
         </>
-    );
+    )
 }

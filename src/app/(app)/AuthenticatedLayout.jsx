@@ -225,7 +225,7 @@ const AuthenticatedLayout = ({ user , children}) => {
                                     <p>Chat</p>
                                 </Link>
                             </li> */}
-                            <div style={ url.startsWith('/dashboard/profile') ? { display: 'none' } : null }  className="box-active"></div>
+                            <div className="box-active" />
                         </ul>
                     </nav>
 

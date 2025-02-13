@@ -8,24 +8,24 @@ const ReportTaskDone = ({ project_id ,onOpenReportTaskForm }) => {
     const [endDate, setEndDate] = useState('all')
     const [dateOptions, setDateOptions] = useState([])
 
-    const fetchChartData = async () => {
-        try {
-            const response = await axios.get(`/api/tasks/${project_id}/done`)
-            const data = response.data
-            const sortedData = data.sort((a, b) => {
-                if (a.status_key === "verify" && b.status_key !== "verify") return -1
-                if (a.status_key !== "verify" && b.status_key === "verify") return 1
-                return 0
-            })
-            setTaskData(sortedData)
-            const uniqueDates = new Set(data.map(task => new Date(task.updated_at).toISOString().split('T')[0]))
-            setDateOptions(Array.from(uniqueDates))
-        } catch (error) {
-            toast.error("Failed to fetch project tasks.")
-        }
-    }
-
     useEffect(() => {
+        const fetchChartData = async () => {
+            try {
+                const response = await axios.get(`/api/tasks/${project_id}/done`)
+                const data = response.data
+                const sortedData = data.sort((a, b) => {
+                    if (a.status_key === "verify" && b.status_key !== "verify") return -1
+                    if (a.status_key !== "verify" && b.status_key === "verify") return 1
+                    return 0
+                })
+                setTaskData(sortedData)
+                const uniqueDates = new Set(data.map(task => new Date(task.updated_at).toISOString().split('T')[0]))
+                setDateOptions(Array.from(uniqueDates))
+            } catch (error) {
+                toast.error("Failed to fetch project tasks.")
+            }
+        }
+
         fetchChartData()
     }, [project_id])
 

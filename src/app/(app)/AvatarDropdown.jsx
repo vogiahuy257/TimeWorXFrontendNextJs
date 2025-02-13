@@ -1,10 +1,13 @@
 import Dropdown from '@/components/Dropdown'
 import { DropdownButton } from '@/components/DropdownLink'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
 
-const AvatarDropdown = (user) => {
+const AvatarDropdown = ({ user }) => {
 
     const { logout } = useAuth()
+
+    const router = useRouter()
 
     const handleProfileRedirect = () => {
         router.push('/profile')
@@ -47,7 +50,7 @@ const AvatarDropdown = (user) => {
                         </div>
             </Dropdown>
         </div>
-    );
-};
+    )
+}
 
-export default AvatarDropdown;
+export default AvatarDropdown

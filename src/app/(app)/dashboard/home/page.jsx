@@ -4,6 +4,7 @@ import React, {  useState, useEffect } from 'react'
 import axios from '@/libs/axios'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
 import { useAuthContext } from '@/hooks/context/AuthContext'
 
 // Lazy load for meeting list
@@ -40,7 +41,7 @@ const HomeClient = () => {
                 setMeetings(response.data)
             })
             .catch((error) => {
-                console.error('Error fetching meetings:', error)
+                console.warn('Error fetching meetings:', error)
             })
     }
 
@@ -51,8 +52,9 @@ const HomeClient = () => {
     return (
         <section id="home" className="overflow-auto scrollbar-hide">
             {/* Meeting Header */}
-            <div className="box box-header">
-            </div>
+            {/* <div className="box box-header">
+            chưa biết để gì nên để trống tính sau
+            </div> */}
 
             <div className="box box-meeting">
                 <div className="flex justify-center meeting-header w-full items-center p-3">
@@ -72,8 +74,14 @@ const HomeClient = () => {
                 <p className='pt-1 text-gray-500'>To start your project you need to click this button</p>
                 <Link href="/dashboard/project" className="btn-home mt-4 px-4 py-2 rounded-xl text-white bg-blue-700 text-center">Go Project</Link>
 
-
-                <img src="/image/cheese-hi.svg" alt="cheese" className='absolute -bottom-3 right-28 be-cheese' />
+                <Image
+                    src="/image/cheese-hi.svg"
+                    alt="cheese"
+                    width={150} // Điều chỉnh kích thước phù hợp
+                    height={150}
+                    className="absolute -bottom-3 right-28 be-cheese"
+                />
+                
             </div>
             {isFormOpen && (
                 <MeetingForm onClose={handleOpenFormCreateMeeting} meeting={currentMeeting} getData = {getData}/>

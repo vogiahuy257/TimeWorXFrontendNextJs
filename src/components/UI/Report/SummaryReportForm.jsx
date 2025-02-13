@@ -235,7 +235,7 @@ export default function SummaryReportForm({ handleOpenForm,projectIdChange }) {
                                 value={projectIssues}
                                 onChange={handleProjectIssuesChange}
                                 placeholder="Describe any project issues"
-                            ></textarea>
+                            />
                         </div>
                         {/* File Selection */}
                         <FileSelection
