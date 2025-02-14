@@ -7,7 +7,7 @@ import DashBoardProjectAnalysis from './analysis/DashBoardProjectAnalysis'
 import '@/app/css/dashboard-project-analysis.css'
 import axios from '@/libs/axios'
 
-export default function ProjectAnalysis({ userId, onClose }) {
+export default function ProjectAnalysis({ onClose }) {
     const [projects, setProjects] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectProject, setSelectProject] = useState('')
@@ -21,7 +21,7 @@ export default function ProjectAnalysis({ userId, onClose }) {
     const fetchProjectStatistics = async () => {
         try {
             const response = await axios.get(
-                `/api/projects/statistics/${userId}`,
+                `/api/v1/projects/statistics`,
             )
             setProjects(response.data) // axios trả dữ liệu trong `response.data`
         } catch (error) {
@@ -34,7 +34,7 @@ export default function ProjectAnalysis({ userId, onClose }) {
 
     useEffect(() => {
         fetchProjectStatistics()
-    }, [userId])
+    }, [])
 
     return (
         <section id="project-analysis">

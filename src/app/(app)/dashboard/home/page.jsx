@@ -5,7 +5,7 @@ import axios from '@/libs/axios'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import { useAuthContext } from '@/hooks/context/AuthContext'
+import MenuMeeting from '@/components/UI/Home/MenuMeeting'
 
 // Lazy load for meeting list
 const MeetingList = dynamic(() => import('@/components/UI/Home/MeetingList'), {
@@ -22,10 +22,10 @@ const MeetingForm = dynamic(
 )
 
 const HomeClient = () => {
-    const user = useAuthContext()
     const [isFormOpen, setIsFormOpen] = useState(false)
     const [meetings, setMeetings] = useState([])
     const [currentMeeting, setCurrentMeeting] = useState(null)
+    const [meetingLoadingData, setMeetingLoadingData] = useState(true);
 
     const handleOpenFormCreateMeeting = () => {
         setCurrentMeeting(null)
@@ -43,55 +43,33 @@ const HomeClient = () => {
             .then(response => {
                 setMeetings(response.data)
             })
-            .catch(() => {})
+            .finally(() => setMeetingLoadingData(false))
     }
 
     useEffect(() => {
         getData()
-    }, [user])
+    }, [])
 
     return (
         <section id="home" className="overflow-auto scrollbar-hide">
             {/* Meeting Header */}
-            {/* <div className="box box-header">
-            chưa biết để gì nên để trống tính sau
-            </div> */}
+            <div className="box box-header" />
 
             <div className="box box-meeting">
-                <div className="flex justify-center meeting-header w-full items-center p-3">
-                    <h1 className="text-meeting text-base font-base py-1 px-2 rounded-md">
-                        Your Meeting
-                    </h1>
-                    <button
-                        onClick={handleOpenFormCreateMeeting}
-                        className="ml-auto rounded-full flex justify-center items-center btn-add-meeting p-1"
-                    >
-                        <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M12 6L12 18"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                            />
-                            <path
-                                d="M18 12L6 12"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                            />
-                        </svg>
-                    </button>
-                </div>
-                <MeetingList
+                <MenuMeeting 
+                    handleOpenFormCreateMeeting = {handleOpenFormCreateMeeting}
+                />
+
+                {meetingLoadingData ? (
+                    <div className="m-auto w-full text-center h-full">Loading data...</div>
+                ):
+                (
+                    <MeetingList
                     meetings={meetings}
                     handleEditMeeting={handleEditMeeting}
                 />
+                )}  
+
             </div>
 
             <div className="box box-content flex justify-center items-center flex-col relative">
@@ -111,11 +89,12 @@ const HomeClient = () => {
                 <Image
                     src="/image/cheese-hi.svg"
                     alt="cheese"
-                    width={550} // Điều chỉnh kích thước phù hợp
+                    width={1000} // Điều chỉnh kích thước phù hợp
                     height={250}
                     className="absolute -bottom-3 right-28 be-cheese"
                 />
             </div>
+            
             {isFormOpen && (
                 <MeetingForm
                     onClose={handleOpenFormCreateMeeting}

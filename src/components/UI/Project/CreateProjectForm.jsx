@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import PrimaryButton from '@/components/Button'
 import './css/CreateProjectForm.css'
 
-const CreateProjectForm = ({ user_id, onClose, onSubmit, title, project }) => {
+const CreateProjectForm = ({  onClose, onSubmit, title, project }) => {
     const [projectName, setProjectName] = useState('')
     const [projectDescription, setProjectDescription] = useState('')
     const [startDate, setStartDate] = useState('')
@@ -112,7 +112,6 @@ const CreateProjectForm = ({ user_id, onClose, onSubmit, title, project }) => {
             start_date: startDate,
             end_date: endDate,
             project_status: 'to-do',
-            user_id: user_id,
         }
         onSubmit(projectData)
     }

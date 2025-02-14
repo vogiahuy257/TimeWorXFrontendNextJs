@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import axios from '@/libs/axios'
-import { useAuthContext } from '@/hooks/context/AuthContext'
 import { toast } from 'react-toastify'
 import Menu from './menu'
 import dynamic from 'next/dynamic'
@@ -47,7 +46,6 @@ const ConfirmationForm = dynamic(
 )
 
 export default function Folder() {
-    const user = useAuthContext()
     const [projects, setProjects] = useState([])
     const [filteredProjects, setFilteredProjects] = useState([])
     const [isDeletedFormOpen, setIsDeletedFormOpen] = useState(false)
@@ -74,8 +72,7 @@ export default function Folder() {
     //hàm gọi api lấy data
     const fetchProjectData = async () => {
         try {
-            const response = await axios.get(`/api/projects/${user.id}`)
-
+            const response = await axios.get(`/v1/projects/getall`)
             if (response?.data) {
                 const sortedProjects = sortProjectsByStatus(response.data)
                 // Cập nhật state
@@ -85,11 +82,8 @@ export default function Folder() {
                 setProjects([])
                 setFilteredProjects([])
             }
-        } catch (error) {
-            const errorMessage =
-                error.response?.data?.message || 'Unexpected error occurred.'
-            toast.error(`Error fetching projects: ${errorMessage}`)
-        } finally {
+        } 
+         finally {
             setLoadingDaTa(false)
         }
     }
@@ -107,11 +101,6 @@ export default function Folder() {
     useEffect(() => {
         fetchProjectData()
     }, [])
-
-    // old
-    // useEffect(() => {
-    //     setFilteredProjects(sortProjectsByStatus(filteredProjects))
-    // }, [searchQuery])
 
     // new
     useEffect(() => {
@@ -284,7 +273,6 @@ export default function Folder() {
 
             {isOpenProjectAnalysis && (
                 <ProjectAnalysis
-                    userId={user.id}
                     onClose={handleProjectAnalysis}
                 />
             )}
@@ -295,7 +283,6 @@ export default function Folder() {
                     onSubmit={handleSubmitForm}
                     title={editProject ? 'Edit Project' : 'Create Project'}
                     project={editProject}
-                    user_id={user.id}
                 />
             )}
 

@@ -1,6 +1,6 @@
 module.exports = {
     root: true,
-    parser: '@babel/eslint-parser',
+    parser: '@typescript-eslint/parser', // Dùng parser cho TypeScript
     settings: {
         react: {
             version: 'detect',
@@ -16,6 +16,7 @@ module.exports = {
         'eslint:recommended',
         'plugin:react/recommended',
         'plugin:@next/next/recommended',
+        'plugin:@typescript-eslint/recommended', // Hỗ trợ TypeScript
         'prettier',
     ],
     parserOptions: {
@@ -23,10 +24,7 @@ module.exports = {
             jsx: true,
         },
         ecmaVersion: 2020,
-        requireConfigFile: false,
-        babelOptions: {
-            presets: ['@babel/preset-react'],
-        },
+        sourceType: 'module',
     },
     rules: {
         'import/prefer-default-export': 0,
@@ -34,9 +32,8 @@ module.exports = {
         'no-nested-ternary': 0,
         'no-underscore-dangle': 0,
         'no-unused-expressions': ['error', { allowTernary: true }],
-        camelcase: 0,
         'react/self-closing-comp': 1,
-        'react/jsx-filename-extension': [1, { extensions: ['.js', 'jsx'] }],
+        'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
         'react/prop-types': 0,
         'react/destructuring-assignment': 0,
         'react/jsx-no-comment-textnodes': 0,
@@ -45,6 +42,9 @@ module.exports = {
         'react/no-unescaped-entities': 0,
         'react/require-default-props': 0,
         'react/react-in-jsx-scope': 0,
+        '@typescript-eslint/no-explicit-any': 0,
+        '@typescript-eslint/explicit-module-boundary-types': 0,
+        '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
         'linebreak-style': 'off',
         semi: ['error', 'never'],
     },
