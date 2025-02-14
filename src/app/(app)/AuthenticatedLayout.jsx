@@ -1,23 +1,21 @@
-
 import Link from 'next/link'
 import AvatarDropdown from './AvatarDropdown'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import '@/app/css/dashboard.css'
 
-const AuthenticatedLayout = ({ user , children}) => {
-
+const AuthenticatedLayout = ({ children }) => {
     const [darkMode, setDarkMode] = useState(false)
     const [expanded, setExpanded] = useState(false)
 
     const toggleDarkMode = () => {
         setDarkMode(!darkMode)
     }
-    
+
     const url = usePathname()
 
     return (
-        <section id="dashboard" className={darkMode ? "dark-mode" : ""}>
+        <section id="dashboard" className={darkMode ? 'dark-mode' : ''}>
             <div className="block">
                 <div className="block-menu-top">
                     <div className="block-notification">
@@ -39,10 +37,14 @@ const AuthenticatedLayout = ({ user , children}) => {
                             </svg>
                         </a>
                     </div>
-                    <AvatarDropdown user={user}/>
+                    <AvatarDropdown />
                 </div>
 
-                <div className={"block-menu-left" + (expanded ? " expanded" : "")}>
+                <div
+                    className={
+                        'block-menu-left' + (expanded ? ' expanded' : '')
+                    }
+                >
                     <div className="menu-top">
                         <button
                             onClick={() => {
@@ -71,7 +73,9 @@ const AuthenticatedLayout = ({ user , children}) => {
                         <ul>
                             <li
                                 className={
-                                    url.startsWith('/dashboard/home') ? 'active' : ''
+                                    url.startsWith('/dashboard/home')
+                                        ? 'active'
+                                        : ''
                                 }
                             >
                                 <Link href="/dashboard/home">
@@ -116,7 +120,9 @@ const AuthenticatedLayout = ({ user , children}) => {
                             </li>
                             <li
                                 className={
-                                    url.startsWith('/dashboard/project') ? 'active' : ''
+                                    url.startsWith('/dashboard/project')
+                                        ? 'active'
+                                        : ''
                                 }
                             >
                                 <Link href="/dashboard/project">
@@ -140,7 +146,9 @@ const AuthenticatedLayout = ({ user , children}) => {
                             </li>
                             <li
                                 className={
-                                    url.startsWith('/dashboard/task') ? 'active' : ''
+                                    url.startsWith('/dashboard/task')
+                                        ? 'active'
+                                        : ''
                                 }
                             >
                                 <Link href="/dashboard/task">
@@ -165,10 +173,12 @@ const AuthenticatedLayout = ({ user , children}) => {
 
                             <li
                                 className={
-                                   url.startsWith('/dashboard/calendar') ? 'active' : ''
+                                    url.startsWith('/dashboard/calendar')
+                                        ? 'active'
+                                        : ''
                                 }
                             >
-                                <Link href='/dashboard/calendar'>
+                                <Link href="/dashboard/calendar">
                                     <svg
                                         width="30"
                                         height="30"
@@ -190,13 +200,27 @@ const AuthenticatedLayout = ({ user , children}) => {
 
                             <li
                                 className={
-                                   url.startsWith('/dashboard/reports') ? 'active' : ''
+                                    url.startsWith('/dashboard/reports')
+                                        ? 'active'
+                                        : ''
                                 }
                             >
-                                <Link href = "/dashboard/reports">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M11.6998 21.6001H5.69979C4.37431 21.6001 3.2998 20.5256 3.2998 19.2001L3.2999 4.80013C3.29991 3.47466 4.37442 2.40015 5.6999 2.40015H16.5002C17.8256 2.40015 18.9002 3.47466 18.9002 4.80015V9.60015M7.50018 7.20015H14.7002M7.50018 10.8001H14.7002M14.7002 15.5541V18.4985C14.7002 19.9534 16.2516 21.2879 17.7065 21.2879C19.1615 21.2879 20.7002 19.9535 20.7002 18.4985V14.7793C20.7002 14.009 20.2574 13.2273 19.2723 13.2273C18.2186 13.2273 17.7065 14.009 17.7065 14.7793V18.3435M7.50018 14.4001H11.1002" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
+                                <Link href="/dashboard/reports">
+                                    <svg
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="M11.6998 21.6001H5.69979C4.37431 21.6001 3.2998 20.5256 3.2998 19.2001L3.2999 4.80013C3.29991 3.47466 4.37442 2.40015 5.6999 2.40015H16.5002C17.8256 2.40015 18.9002 3.47466 18.9002 4.80015V9.60015M7.50018 7.20015H14.7002M7.50018 10.8001H14.7002M14.7002 15.5541V18.4985C14.7002 19.9534 16.2516 21.2879 17.7065 21.2879C19.1615 21.2879 20.7002 19.9535 20.7002 18.4985V14.7793C20.7002 14.009 20.2574 13.2273 19.2723 13.2273C18.2186 13.2273 17.7065 14.009 17.7065 14.7793V18.3435M7.50018 14.4001H11.1002"
+                                            stroke="currentColor"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
 
                                     <p>Reports</p>
                                 </Link>
@@ -237,7 +261,7 @@ const AuthenticatedLayout = ({ user , children}) => {
                                     onClick={toggleDarkMode}
                                 >
                                     <a>
-                                        <svg></svg>
+                                        <svg />
                                         <p>{darkMode ? 'Dark' : 'Light'}</p>
                                     </a>
                                 </li>
@@ -265,9 +289,7 @@ const AuthenticatedLayout = ({ user , children}) => {
 
                 <section id="main">
                     <div className="content">
-                        <main className='overflow-x-hidden'>
-                            {children}
-                        </main>
+                        <main className="overflow-x-hidden">{children}</main>
                     </div>
                 </section>
             </div>

@@ -1,28 +1,30 @@
-
-
-
-#dashboard .block #main .content main #project-view #task-form
-{
-   background-color: transparent;
+#dashboard .block #main .content main #project-view #task-form {
+    background-color: transparent;
     width: 100%;
     height: 100%;
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%); 
+    transform: translate(-50%, -50%);
     z-index: 9999;
     border-radius: var(--border-radius-large);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container {
     width: 80%;
     max-width: 1000px;
     height: 95%;
     position: relative;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     padding: 10px;
     border-radius: var(--border-radius-medium);
     color: var(--color-black);
@@ -31,14 +33,29 @@
     -webkit-backdrop-filter: blur(10px);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form
-{
-   height: 100%;
-   display: flex;
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form {
+    height: 100%;
+    display: flex;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .task-form-header
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .task-form-header {
     width: 70%;
     box-shadow: 0 2px 8px var(--color-shadow);
     background-color: var(--color-white);
@@ -46,70 +63,179 @@
     border-radius: 0.5rem;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .form-group
-{
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-  font-weight: var(--font-weight-regular);
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .form-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    font-weight: var(--font-weight-regular);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .form-group label
-{
-   font-size: var(--font-size-small);
-   font-weight: var(--font-weight-medium);
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .form-group
+    label {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .form-group input,
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .form-group textarea
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .form-group
+    input,
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .form-group
+    textarea {
     width: 100%;
     border-radius: var(--border-radius-sSmall);
     color: var(--color-black);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .form-group textarea
-{
-    resize: none; 
-    overflow-y: auto; 
-    max-height: 300px; 
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .form-group
+    textarea {
+    resize: none;
+    overflow-y: auto;
+    max-height: 300px;
     margin-bottom: 10px;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .form-group.time-group input
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .form-group.time-group
+    input {
     border-radius: var(--border-radius-sSmall);
     width: 100%;
     max-width: 220px;
     color: var(--color-black);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .form-main
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .form-main {
     padding-bottom: 10px;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .user-list .user-item,
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .user-list .user-info
-{
-  display: flex;
-  background-color: var(--color-white);
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .user-list
+    .user-item,
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .user-list
+    .user-info {
+    display: flex;
+    background-color: var(--color-white);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .user-list .chat-button
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .user-list
+    .chat-button {
     margin-left: auto;
     margin-right: 15px;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .user-list .chat-button svg
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .user-list
+    .chat-button
+    svg {
     color: var(--color-black);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .user-list .user-item
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .user-list
+    .user-item {
     width: 100%;
     border: 1px solid var(--color-black);
     padding: 15px 0px;
@@ -117,22 +243,46 @@
     margin-top: 10px;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .user-list .user-info img
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .user-list
+    .user-info
+    img {
     margin-left: 15px;
     margin-right: 10px;
     border-radius: 100%;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-container form .user-list
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-container
+    form
+    .user-list {
     height: auto;
     max-height: 240px;
     overflow-y: auto;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button {
     width: 30%;
     min-width: 120px;
     position: relative;
@@ -141,8 +291,15 @@
     padding-left: 10px;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .close-button
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .close-button {
     position: fixed;
     top: 10px;
     right: 10px;
@@ -156,48 +313,94 @@
     padding: 2px;
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
-    transition: background-color .1s ease,color .1s ease;
+    transition:
+        background-color 0.1s ease,
+        color 0.1s ease;
     box-shadow: 0px -10px 0 var(--color-red);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .close-button:hover
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .close-button:hover {
     background-color: var(--color-red);
     color: var(--color-white);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .save-button
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .save-button {
     padding: 5px 8px;
     border-radius: var(--border-radius-sSmall);
     background-color: var(--color-white);
     color: var(--color-black);
     border: 2px solid var(--color-black);
-    transform: translate(0,0);
-    transition: box-shadow 0.1s ease-in-out,transform 0.1s ease-in-out;
+    transform: translate(0, 0);
+    transition:
+        box-shadow 0.1s ease-in-out,
+        transform 0.1s ease-in-out;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .save-button
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .save-button {
     background-color: var(--color-whiteGray);
     color: var(--color-black);
     border: 2px solid var(--color-light-blue);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .save-button:hover
-{
-    transform: translate(0,-3px);
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .save-button:hover {
+    transform: translate(0, -3px);
     box-shadow: 0 3px 0 var(--color-light-blue);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .save-button:active
-{
-    transform: translate(0,0);
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .save-button:active {
+    transform: translate(0, 0);
     box-shadow: none;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .user-box
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .user-box {
     height: auto;
     display: flex;
     flex-direction: column;
@@ -208,8 +411,16 @@
     background-color: var(--color-white);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .user-box ul
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .user-box
+    ul {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -217,45 +428,85 @@
     color: var(--color-black);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .user-box ul li
-{
-    display: flex;  
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .user-box
+    ul
+    li {
+    display: flex;
     align-items: center;
     width: 100%;
     border-radius: var(--border-radius-sSmall);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .user-box ul li:hover
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .user-box
+    ul
+    li:hover {
     background-color: rgba(var(--color-black-rgb), 0.1);
     cursor: pointer;
 }
 
-#dashboard .block #main .content main #project-view #task-form .active-task-count
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .active-task-count {
     color: rgba(var(--color-black-rgb), 0.9);
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .user-box ul li input
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .user-box
+    ul
+    li
+    input {
     margin-left: auto;
     border-radius: 3px;
     cursor: pointer;
 }
 
-#dashboard .block #main .content main #project-view #task-form .task-form-button .user-box h3
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    #task-form
+    .task-form-button
+    .user-box
+    h3 {
     font-weight: var(--font-weight-medium);
 }
 
-#dashboard .block #main .content main #project-view #task-form .text-error
-{
+#dashboard .block #main .content main #project-view #task-form .text-error {
     color: var(--color-red);
     font-size: var(--font-size-sSmall);
     margin-left: 2px;
     font-weight: var(--font-weight-medium);
 }
-#dashboard .block #main .content main #project-view #task-form .task-box
-{
+#dashboard .block #main .content main #project-view #task-form .task-box {
     background-color: var(--color-white);
 }

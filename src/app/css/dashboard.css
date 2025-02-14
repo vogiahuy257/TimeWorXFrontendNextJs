@@ -1,40 +1,37 @@
-
-#dashboard a{
+#dashboard a {
     color: var(--color-black);
 }
 
-#dashboard
-{
-   background: var(--background-y-p);
-   width: 100%;
-   height: 100vh;
-   position: relative;
-   color: var(--color-black);
-   transition: .3s;
-   font-family: "Poppins", system-ui;;
-   overflow: hidden;
+#dashboard {
+    background: var(--background-y-p);
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    color: var(--color-black);
+    transition: 0.3s;
+    font-family: 'Poppins', system-ui;
+    overflow: hidden;
 }
 
 #dashboard.dark-mode {
-    --color-black: #ffffff; 
-    --color-gray: #292B2C;
-    --color-white: #151515; 
-    --color-whiteGray:#232323;
+    --color-black: #ffffff;
+    --color-gray: #292b2c;
+    --color-white: #151515;
+    --color-whiteGray: #232323;
     --color-black-rgb: 255, 255, 255;
-    --color-white-rgb: 0, 0, 0; 
-    --color-black-gray: #d2d2d2; 
+    --color-white-rgb: 0, 0, 0;
+    --color-black-gray: #d2d2d2;
     --background: linear-gradient(155deg, #232222, #373737);
-    --color-shadow:#424242df;
+    --color-shadow: #424242df;
     --bg-color-blue-while: #222222;
 }
 
-#dashboard img{
+#dashboard img {
     width: 25px;
     height: 25px;
 }
 
-#dashboard .block
-{
+#dashboard .block {
     width: 90%;
     height: 100%;
     max-height: 690px;
@@ -48,25 +45,21 @@
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto 1fr;
-    grid-template-areas: 
-    "navbar-left navbar-top"
-    "navbar-left main";
-    ;
+    grid-template-areas:
+        'navbar-left navbar-top'
+        'navbar-left main';
     gap: 0px;
 }
 
-#dashboard .block .block-menu-top
-{
+#dashboard .block .block-menu-top {
     grid-area: navbar-top;
 }
 
-#dashboard .block .block-menu-left
-{
+#dashboard .block .block-menu-left {
     grid-area: navbar-left;
 }
 
-#dashboard .block #main
-{
+#dashboard .block #main {
     grid-area: main;
     background-color: var(--color-white);
     border-bottom-right-radius: var(--border-radius-large);
@@ -74,8 +67,7 @@
 
 /*------------------- block menu top -----------------*/
 
-#dashboard .block .block-menu-top
-{
+#dashboard .block .block-menu-top {
     position: relative;
     display: flex;
     justify-content: end;
@@ -84,14 +76,12 @@
     color: var(--color-black);
 }
 
-#dashboard .block .block-menu-top .box-avatar
-{
+#dashboard .block .block-menu-top .box-avatar {
     background-color: var(--color-white);
     width: 100%;
 }
 
-#dashboard .block .block-menu-top .box-avatar .button
-{
+#dashboard .block .block-menu-top .box-avatar .button {
     display: block;
     width: 100%;
     color: var(--color-black);
@@ -100,26 +90,22 @@
     border-radius: var(--border-radius-small);
 }
 
-#dashboard .block .block-menu-top .box-avatar .button:hover
-{
+#dashboard .block .block-menu-top .box-avatar .button:hover {
     background-color: var(--color-black);
     color: var(--color-white);
 }
 
-#dashboard .block .block-menu-top .block-notification a
-{
+#dashboard .block .block-menu-top .block-notification a {
     position: relative;
     color: var(--color-black);
 }
 
-#dashboard .block .block-menu-top .block-notification a svg
-{
+#dashboard .block .block-menu-top .block-notification a svg {
     width: 18px;
     height: auto;
 }
 
-#dashboard .block .block-menu-top .avatar-user
-{
+#dashboard .block .block-menu-top .avatar-user {
     width: 45px;
     height: 45px;
     background-color: var(--color-gray);
@@ -133,30 +119,25 @@
 
 /*------------------- block menu left -----------------*/
 
-  .block-menu-left
-{
+.block-menu-left {
     width: 90px;
     display: flex;
     flex-direction: column;
     text-align: center;
     position: relative;
-    transition: .5s;
+    transition: 0.5s;
     font-size: var(--font-size-sSSmall);
 }
 
-
-
-#dashboard .block .block-menu-left .menu-top
-{
+#dashboard .block .block-menu-left .menu-top {
     width: 90px;
-    height: 70px; 
+    height: 70px;
     display: flex;
     position: relative;
     color: var(--color-white);
 }
 
-#dashboard .block .block-menu-left .menu-top button
-{
+#dashboard .block .block-menu-left .menu-top button {
     width: 42px;
     height: 42px;
     display: flex;
@@ -165,15 +146,14 @@
     position: absolute;
     left: 50%;
     top: 56%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     background-color: var(--color-black);
     border-radius: var(--border-radius-small);
     cursor: pointer;
     color: var(--color-white);
 }
 
-#dashboard .block .block-menu-left .menu-top button svg
-{
+#dashboard .block .block-menu-left .menu-top button svg {
     width: 22px;
     height: 22px;
     transition: transform 0.3s ease-in-out;
@@ -183,7 +163,6 @@
     transform: rotate(240deg);
 }
 
-
 /* expand event */
 #dashboard .block .block-menu-left.expanded {
     width: 148px;
@@ -191,8 +170,7 @@
 
 /* expand event menu mid */
 #dashboard .block .block-menu-left.expanded .menu-bot li a p,
-#dashboard .block .block-menu-left.expanded .menu-mid li a p
-{
+#dashboard .block .block-menu-left.expanded .menu-mid li a p {
     top: 50%;
     left: 90%;
     width: 100%;
@@ -203,36 +181,30 @@
     text-align: left;
 }
 
-#dashboard .block .block-menu-left.expanded .menu-bot li 
-{
+#dashboard .block .block-menu-left.expanded .menu-bot li {
     margin-bottom: 10px;
 }
 
 #dashboard .block .block-menu-left.expanded .menu-mid li a svg,
-#dashboard .block .block-menu-left.expanded .menu-bot li a svg
-{
+#dashboard .block .block-menu-left.expanded .menu-bot li a svg {
     transform: translateX(calc(-150% - 7px));
 }
 
 /* expand event menu bottom */
-#dashboard .block .block-menu-left.expanded .menu-bot li a p
-{
+#dashboard .block .block-menu-left.expanded .menu-bot li a p {
     position: absolute;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 }
 
 /* menu mid */
-#dashboard .block .block-menu-left .menu-mid
-{
+#dashboard .block .block-menu-left .menu-mid {
     position: relative;
     left: 50%;
     top: 30px;
     transform: translate(-50%);
 }
 
-
-#dashboard .block .block-menu-left .menu-mid li
-{
+#dashboard .block .block-menu-left .menu-mid li {
     position: relative;
     margin-bottom: 15px;
     width: auto;
@@ -244,42 +216,47 @@
     z-index: 1;
 }
 
-
-#dashboard .block .block-menu-left .menu-mid li a svg
-{
+#dashboard .block .block-menu-left .menu-mid li a svg {
     transition: transform 0.3s ease-in-out;
     color: var(--color-black);
     width: 22px;
     height: auto;
 }
 
-#dashboard .block .block-menu-left .menu-mid li a p
-{
-   opacity: 0;
-   position: absolute;
-   top: 70%;
-   left: 50%;
-   transform: translate(-50%,-50%);
-   transition: opacity 0.3s ease-in-out;
-   transition: top 0.3s ease-in-out;
-   font-size: var(--font-size-sSSmall);
+#dashboard .block .block-menu-left .menu-mid li a p {
+    opacity: 0;
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease-in-out;
+    transition: top 0.3s ease-in-out;
+    font-size: var(--font-size-sSSmall);
 }
 
-#dashboard .block .block-menu-left:not(.expanded) .menu-mid li:not(.active):hover svg,
-#dashboard .block .block-menu-left:not(.expanded)  .menu-mid ul li.active a svg
-{
+#dashboard
+    .block
+    .block-menu-left:not(.expanded)
+    .menu-mid
+    li:not(.active):hover
+    svg,
+#dashboard .block .block-menu-left:not(.expanded) .menu-mid ul li.active a svg {
     transform: translateY(-30%);
 }
-#dashboard .block .block-menu-left:not(.expanded)  .menu-mid li:not(.active):hover p,
-#dashboard .block .block-menu-left:not(.expanded)  .menu-mid ul li.active a p
-{
+#dashboard
+    .block
+    .block-menu-left:not(.expanded)
+    .menu-mid
+    li:not(.active):hover
+    p,
+#dashboard .block .block-menu-left:not(.expanded) .menu-mid ul li.active a p {
     opacity: 1;
     color: var(--color-black);
 }
 
 /* custom box active */
 @property --box-activeMove {
-    syntax: "<translateY>"; 
+    syntax: '<translateY>';
     inherits: true;
     initial-value: -10%;
 }
@@ -298,15 +275,13 @@
 }
 
 #dashboard .block .block-menu-left .menu-mid .box-active::before,
-#dashboard .block .block-menu-left .menu-mid .box-active::after
-{
-     content: "";
-     width: 20px;
-     height: 20px;
+#dashboard .block .block-menu-left .menu-mid .box-active::after {
+    content: '';
+    width: 20px;
+    height: 20px;
 }
 
-#dashboard .block .block-menu-left .menu-mid .box-active::before
-{
+#dashboard .block .block-menu-left .menu-mid .box-active::before {
     position: absolute;
     top: -20px;
     right: 0;
@@ -314,8 +289,7 @@
     box-shadow: 5px 5px 0px var(--color-white);
 }
 
-#dashboard .block .block-menu-left .menu-mid .box-active::after
-{
+#dashboard .block .block-menu-left .menu-mid .box-active::after {
     position: absolute;
     bottom: -20px;
     right: 0;
@@ -323,30 +297,65 @@
     box-shadow: 5px -5px 0px var(--color-white);
 }
 
-#dashboard .block .block-menu-left .menu-mid ul li.active:nth-child(1) ~ .box-active {
+#dashboard
+    .block
+    .block-menu-left
+    .menu-mid
+    ul
+    li.active:nth-child(1)
+    ~ .box-active {
     --box-activeMove: -10%;
 }
 
-#dashboard .block .block-menu-left .menu-mid ul li.active:nth-child(2) ~ .box-active {
+#dashboard
+    .block
+    .block-menu-left
+    .menu-mid
+    ul
+    li.active:nth-child(2)
+    ~ .box-active {
     --box-activeMove: 100%;
 }
 
-#dashboard .block .block-menu-left .menu-mid ul li.active:nth-child(3) ~ .box-active {
+#dashboard
+    .block
+    .block-menu-left
+    .menu-mid
+    ul
+    li.active:nth-child(3)
+    ~ .box-active {
     --box-activeMove: 205%;
 }
 
-#dashboard .block .block-menu-left .menu-mid ul li.active:nth-child(4) ~ .box-active {
+#dashboard
+    .block
+    .block-menu-left
+    .menu-mid
+    ul
+    li.active:nth-child(4)
+    ~ .box-active {
     --box-activeMove: 310%;
 }
 
-#dashboard .block .block-menu-left .menu-mid ul li.active:nth-child(5) ~ .box-active {
+#dashboard
+    .block
+    .block-menu-left
+    .menu-mid
+    ul
+    li.active:nth-child(5)
+    ~ .box-active {
     --box-activeMove: 420%;
 }
 
-#dashboard .block .block-menu-left .menu-mid ul li.active:nth-child(6) ~ .box-active {
+#dashboard
+    .block
+    .block-menu-left
+    .menu-mid
+    ul
+    li.active:nth-child(6)
+    ~ .box-active {
     --box-activeMove: 525%;
 }
-
 
 /* menu left bottom */
 #dashboard .block .block-menu-left .menu-bot {
@@ -373,16 +382,24 @@
     height: 22px;
     margin: auto;
     background-repeat: no-repeat;
-    transition: transform 0.3s ease, background-image 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        background-image 0.3s ease;
     color: var(--color-black);
 }
 
-#dashboard.dark-mode .block .block-menu-left .menu-bot li#toggle-dark-mode a svg {
-    background-image: url("/image/icon-darkmode.svg");
+#dashboard.dark-mode
+    .block
+    .block-menu-left
+    .menu-bot
+    li#toggle-dark-mode
+    a
+    svg {
+    background-image: url('/image/icon-darkmode.svg');
 }
 
 #dashboard .block .block-menu-left .menu-bot li#toggle-dark-mode a svg {
-    background-image: url("/image/icon-lightmode.svg");
+    background-image: url('/image/icon-lightmode.svg');
 }
 
 #dashboard .block .block-menu-left:not(.expanded) .menu-bot li:hover a p {
@@ -398,14 +415,10 @@
     transform: translateY(50%);
 }
 
-
-
-
 /*---------------- custom main dashboard ----------------*/
 
-#dashboard .block #main .content::before
-{
-    content: "";
+#dashboard .block #main .content::before {
+    content: '';
     width: 15px;
     height: 15px;
     position: absolute;
@@ -415,17 +428,14 @@
     box-shadow: -5px -5px 0px var(--color-whiteGray);
 }
 
-#dashboard .block #main .content
-{
+#dashboard .block #main .content {
     --size-margin: 15px;
     position: relative;
     margin: var(--size-margin);
     height: calc(100% - calc(var(--size-margin) + var(--size-margin)));
-
 }
 
-#dashboard .block #main .content main
-{
+#dashboard .block #main .content main {
     height: 100%;
     overflow-y: auto;
     width: 100%;
@@ -433,12 +443,12 @@
 }
 
 #dashboard .block #main .content main::-webkit-scrollbar {
-    width: 3px; 
+    width: 3px;
     cursor: pointer;
 }
 
 #dashboard .block #main .content main::-webkit-scrollbar-thumb {
-    background-color: var(--color-black); 
+    background-color: var(--color-black);
     border-radius: 10px;
     border: 2px solid var(--color-white);
 }
@@ -447,28 +457,24 @@
     background-color: #2d3748;
 }
 
-
-#dashboard .block #main .content main .custom_toast
-{
+#dashboard .block #main .content main .custom_toast {
     position: fixed;
     padding: 10px;
     width: 350px;
 }
 
-#dashboard #customToastInfo
-{
-    margin-left: 5px
+#dashboard #customToastInfo {
+    margin-left: 5px;
 }
 
-#dashboard #customToastInfo .box-btn
-{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+#dashboard #customToastInfo .box-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
-#dashboard #customToastInfo .box-btn button{
+#dashboard #customToastInfo .box-btn button {
     background-color: var(--color-light-blue);
     color: var(--color-white);
     margin: 0px 5px;
@@ -476,13 +482,10 @@
     border-radius: 5px;
 }
 
-#dashboard #customToastInfo .box-btn button.btn-no
-{
+#dashboard #customToastInfo .box-btn button.btn-no {
     background-color: var(--color-red);
 }
 
-#dashboard #customToastInfo .box-btn button:hover
-{
+#dashboard #customToastInfo .box-btn button:hover {
     box-shadow: 0 0 2px var(--color-black);
 }
-

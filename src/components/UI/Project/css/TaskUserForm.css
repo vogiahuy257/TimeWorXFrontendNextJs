@@ -1,20 +1,16 @@
-
-
-#dashboard .block #main .content main #project-view .user-list-overlay
-{
+#dashboard .block #main .content main #project-view .user-list-overlay {
     background-color: transparent;
     width: 100%;
     height: 100%;
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%); 
+    transform: translate(-50%, -50%);
     z-index: 9999;
     border-radius: var(--border-radius-large);
 }
 
-#dashboard .block #main .content main #project-view .user-list-modal
-{
+#dashboard .block #main .content main #project-view .user-list-modal {
     width: 80%;
     max-width: 900px;
     height: 85%;
@@ -22,7 +18,7 @@
     display: flex;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     padding: 10px;
     border-radius: var(--border-radius-medium);
     color: var(--color-black);
@@ -31,8 +27,14 @@
     -webkit-backdrop-filter: blur(10px);
 }
 
-#dashboard .block #main .content main #project-view .user-list-modal .btn-close
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    .user-list-modal
+    .btn-close {
     position: absolute;
     top: 10px;
     right: 16px;
@@ -43,17 +45,24 @@
     padding: 2px;
     z-index: 999;
     box-shadow: 0px -10px 0px var(--color-black);
-    transition: background-color .1s ease-in-out,box-shadow .1s ease-in-out;
+    transition:
+        background-color 0.1s ease-in-out,
+        box-shadow 0.1s ease-in-out;
 }
 
-#dashboard .block #main .content main #project-view .user-list-modal .btn-close:hover
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project-view
+    .user-list-modal
+    .btn-close:hover {
     background-color: var(--color-red);
     box-shadow: 0px -10px 0px var(--color-red);
 }
 
-#dashboard .block #main #project-view .user-list-active
-{
+#dashboard .block #main #project-view .user-list-active {
     background-color: var(--color-white);
     width: 60%;
     border-radius: var(--border-radius-small);
@@ -61,8 +70,7 @@
     padding: 10px;
 }
 
-#dashboard .block #main #project-view .custom-li
-{
+#dashboard .block #main #project-view .custom-li {
     background-color: var(--color-white);
     color: var(--color-black);
     box-shadow: 0px 0px 8px var(--color-shadow);
@@ -70,8 +78,7 @@
 }
 
 #dashboard .block #main #project-view .user-list-active h2,
-#dashboard .block #main #project-view .user-list-search h2
-{
+#dashboard .block #main #project-view .user-list-search h2 {
     background-color: var(--color-black);
     color: var(--color-white);
     position: absolute;
@@ -82,8 +89,7 @@
     border-bottom-right-radius: var(--border-radius-small);
 }
 
-#dashboard .block #main #project-view .user-list-search
-{
+#dashboard .block #main #project-view .user-list-search {
     background-color: var(--color-white);
     width: 40%;
     border-radius: var(--border-radius-small);
@@ -91,26 +97,23 @@
     position: relative;
     padding: 10px;
 }
-#dashboard .block #main #project-view .user-list-search input
-{
+#dashboard .block #main #project-view .user-list-search input {
     background-color: var(--color-whiteGray);
     color: var(--color-black);
     font-size: var(--font-size-sSmall);
 }
 
-#dashboard .block #main #project-view .user-list-search .custom-btn-app
-{
+#dashboard .block #main #project-view .user-list-search .custom-btn-app {
     background-color: var(--color-black);
     color: var(--color-white);
     font-size: var(--font-size-large);
-    transition: background-color .2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
     position: relative;
 }
 
-#dashboard .block #main #project-view .user-list-search .custom-btn-app::after
-{
+#dashboard .block #main #project-view .user-list-search .custom-btn-app::after {
     position: absolute;
-    content: "Add User";
+    content: 'Add User';
     color: var(--color-white);
     background-color: var(--color-black);
     font-size: var(--font-size-sSmall);
@@ -121,27 +124,31 @@
     right: -24px;
     transform: translateY(-10px);
     opacity: 0;
-    transition: transform .2s ease-in-out,opacity .3s ease-in-out;
+    transition:
+        transform 0.2s ease-in-out,
+        opacity 0.3s ease-in-out;
 }
 
-
-#dashboard .block #main #project-view .user-list-search .custom-btn-app:hover::after{
+#dashboard
+    .block
+    #main
+    #project-view
+    .user-list-search
+    .custom-btn-app:hover::after {
     transform: translateY(-22px);
     opacity: 1;
 }
 
-
-#dashboard .block #main .content main #project-view .btn-out{
+#dashboard .block #main .content main #project-view .btn-out {
     background-color: var(--color-black);
     color: var(--color-white);
     border: 5px solid var(--color-white);
-    transition: background-color .2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 
-#dashboard .block #main .content main #project-view .btn-out::after
-{
+#dashboard .block #main .content main #project-view .btn-out::after {
     position: absolute;
-    content: "Remove User";
+    content: 'Remove User';
     color: var(--color-white);
     background-color: var(--color-black);
     font-size: var(--font-size-sSmall);
@@ -152,35 +159,32 @@
     right: -25px;
     transform: translateY(-10px);
     opacity: 0;
-    transition: transform .2s ease-in-out,opacity .3s ease-in-out;
+    transition:
+        transform 0.2s ease-in-out,
+        opacity 0.3s ease-in-out;
 }
 
-#dashboard .block #main .content main #project-view .btn-out:hover::after
-{
+#dashboard .block #main .content main #project-view .btn-out:hover::after {
     transform: translateY(-28px);
     opacity: 1;
 }
 
 #dashboard .block #main .content main #project-view .btn-out:hover,
-#dashboard .block #main #project-view .user-list-search .custom-btn-app:hover
-{
+#dashboard .block #main #project-view .user-list-search .custom-btn-app:hover {
     background-color: var(--color-blue);
 }
 #dashboard .block #main .content main #project-view .btn-out:active,
-#dashboard .block #main #project-view .user-list-search .custom-btn-app:active
-{
+#dashboard .block #main #project-view .user-list-search .custom-btn-app:active {
     transition: background-color 0.05s ease-in-out;
     background-color: var(--color-white);
     color: var(--color-blue);
 }
 
-#dashboard .block #main .content main #project-view .user-list
-{
+#dashboard .block #main .content main #project-view .user-list {
     background-color: rgba(var(--color-black-rgb), 0.1);
 }
 
-#dashboard .block #main #project-view .custom-select
-{
+#dashboard .block #main #project-view .custom-select {
     background-color: rgba(var(--color-white-rgb), 0.8);
     color: var(--color-black);
 }

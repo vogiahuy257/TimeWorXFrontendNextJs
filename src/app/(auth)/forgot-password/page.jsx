@@ -26,16 +26,19 @@ const Page = () => {
     }
 
     return (
-        <section id='login' className='forgot-password'>
-            <div className='block relative'>
-                <Link className="btn-back absolute -top-[46px] left-0 shadow" href="/login"  >
+        <section id="login" className="forgot-password">
+            <div className="block relative">
+                <Link
+                    className="btn-back absolute -top-[46px] left-0 shadow"
+                    href="/login"
+                >
                     back
                 </Link>
                 <div className="block-text">
                     <p>
-                        Forgot your password? No problem. Just let us know your email
-                        address and we will email you a password reset link that
-                        will allow you to choose a new one.
+                        Forgot your password? No problem. Just let us know your
+                        email address and we will email you a password reset
+                        link that will allow you to choose a new one.
                     </p>
                 </div>
 
@@ -44,7 +47,10 @@ const Page = () => {
 
                 <form onSubmit={submitForm}>
                     {/* Email Address */}
-                    <div className={`block-element ${email ? 'focused' : ''}`} data-label="Email">
+                    <div
+                        className={`block-element ${email ? 'focused' : ''}`}
+                        data-label="Email"
+                    >
                         <Input
                             id="email"
                             type="email"
@@ -60,7 +66,9 @@ const Page = () => {
                     </div>
 
                     <div className="block-button">
-                        <Button className={"button"}>Email Password Reset Link</Button>
+                        <Button className={'button'}>
+                            Email Password Reset Link
+                        </Button>
                     </div>
                 </form>
             </div>

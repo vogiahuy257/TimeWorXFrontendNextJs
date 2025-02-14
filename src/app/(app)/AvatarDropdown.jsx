@@ -3,8 +3,7 @@ import { DropdownButton } from '@/components/DropdownLink'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/auth'
 
-const AvatarDropdown = ({ user }) => {
-
+const AvatarDropdown = () => {
     const { logout } = useAuth()
 
     const router = useRouter()
@@ -36,18 +35,20 @@ const AvatarDropdown = ({ user }) => {
                             />
                         </svg>
                     </div>
-                            }>
-                            {/* Authentication */}
-                        <div className='p-2 box-avatar'>
-                            <DropdownButton onClick={handleProfileRedirect}
-                                className="button"
-                            >
-                                <span>Profiler</span>
-                            </DropdownButton>
-                            <DropdownButton onClick={logout} className="button">
-                                <span>Logout</span>
-                            </DropdownButton>
-                        </div>
+                }
+            >
+                {/* Authentication */}
+                <div className="p-2 box-avatar">
+                    <DropdownButton
+                        onClick={handleProfileRedirect}
+                        className="button"
+                    >
+                        <span>Profiler</span>
+                    </DropdownButton>
+                    <DropdownButton onClick={logout} className="button">
+                        <span>Logout</span>
+                    </DropdownButton>
+                </div>
             </Dropdown>
         </div>
     )

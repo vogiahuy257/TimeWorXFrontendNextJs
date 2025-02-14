@@ -1,34 +1,62 @@
-
-
 /* card */
-#dashboard .block #main .content main #project #container .block-project
-{
+#dashboard .block #main .content main #project #container .block-project {
     width: auto;
     display: flex;
     gap: 18px;
     justify-content: flex-start;
     flex-wrap: wrap;
     margin: auto;
-} 
+}
 
-#dashboard .block #main .content main #project #container .block-project .card.done {
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card.done {
     --color-title: var(--color-green); /* Green for done */
 }
 
-#dashboard .block #main .content main #project #container .block-project .card.to-do {
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card.to-do {
     --color-title: var(--color-light-blue); /* Blue for to-do */
 }
 
-#dashboard .block #main .content main #project #container .block-project .card.in-progress {
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card.in-progress {
     --color-title: var(--color-yellow); /* Yellow for in-progress */
 }
 
-#dashboard .block #main .content main #project #container .block-project .card.verify {
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card.verify {
     --color-title: var(--color-red); /* Red for verify */
 }
 
-#dashboard .block #main .content main #project #container .block-project .card
-{
+#dashboard .block #main .content main #project #container .block-project .card {
     --color-title: var(--color-black);
     width: 262px;
     height: 150px;
@@ -36,29 +64,54 @@
     color: var(--color-black);
     margin-top: 25px;
     margin-bottom: 25px;
-    transition: transform 0.3s ease-in-out,box-shadow 0.3s ease-in-out;
+    transition:
+        transform 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
     cursor: pointer;
     margin-left: 8px;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card:hover
-{
-    transform: translate3D(0, -10px, 0px);  
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card:hover {
+    transform: translate3D(0, -10px, 0px);
     box-shadow: 0 50px 10px var(--color-shadow);
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-title
-{
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   position: relative;
-   width: 100%;
-   height: 35px;
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 35px;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-title-text
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-title-text {
     background-color: var(--color-title);
     position: absolute;
     top: 0;
@@ -73,22 +126,38 @@
     font-size: 15px;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-title-text::before
-{
-    --size-box:20px;
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-title-text::before {
+    --size-box: 20px;
     position: absolute;
-    content: "";
+    content: '';
     background-color: transparent;
     width: var(--size-box);
     height: var(--size-box);
     bottom: 0;
-    right:  calc(var(--size-box) * -1);
-    border-bottom-left-radius:  var(--border-radius-small);
+    right: calc(var(--size-box) * -1);
+    border-bottom-left-radius: var(--border-radius-small);
     box-shadow: -5px 5px 0px var(--color-title);
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-title-date
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-title-date {
     font-size: 10px;
     position: absolute;
     top: 0;
@@ -103,8 +172,16 @@
     align-items: center;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header {
     background-color: var(--color-white);
     justify-content: center;
     align-items: center;
@@ -119,20 +196,37 @@
     flex-direction: column;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header::before
-{
-   content: "";
-   position: absolute;
-   top: 0;
-   left: 0;
-   width: 8%;
-   height: 10%;
-   border-top-left-radius: var(--border-radius-small);
-   box-shadow: -2px -5px 0 var(--color-title);
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8%;
+    height: 10%;
+    border-top-left-radius: var(--border-radius-small);
+    box-shadow: -2px -5px 0 var(--color-title);
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .text
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .text {
     position: absolute;
     top: 10px;
     left: 50%;
@@ -145,8 +239,18 @@
     height: 85%;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .text p.description
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .text
+    p.description {
     font-size: var(--font-size-sSmall);
     color: var(--color-black-gray);
     font-weight: var(--font-weight-light);
@@ -155,21 +259,48 @@
 }
 
 /* form edit and delete */
-#dashboard .block #main .content main #project #container .block-project .card .card-header .card-form
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .card-form {
     display: flex;
     align-items: center;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .btn-form
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .btn-form {
     display: flex;
     margin-left: auto;
     gap: 6px;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .btn
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .btn {
     background-color: var(--color-black);
     color: var(--color-white);
     display: flex;
@@ -178,27 +309,64 @@
     border-radius: 6px;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .btn svg
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .btn
+    svg {
     width: 62%;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .card-form-edit:hover
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .card-form-edit:hover {
     background-color: var(--color-light-blue);
     color: #ffffff;
     box-shadow: 0 0 4px var(--color-light-blue);
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .card-form-delete:hover
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .card-form-delete:hover {
     background-color: var(--color-red);
     color: #ffffff;
     box-shadow: 0 0 4px var(--color-red);
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom_complete
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom_complete {
     font-size: var(--font-size-small);
     display: flex;
     align-items: center;
@@ -209,8 +377,18 @@
     border-radius: var(--border-radius-sSmall);
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom_complete svg
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom_complete
+    svg {
     padding: 4px;
     height: 100%;
     color: var(--color-white);
@@ -221,8 +399,18 @@
     top: 0;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom_complete p
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom_complete
+    p {
     width: 100%;
     border-radius: var(--border-radius-sSmall);
     text-align: end;
@@ -230,8 +418,28 @@
 }
 
 /* custom - notification */
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-late-task,
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-near-task {
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-late-task,
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-near-task {
     border-radius: var(--border-radius-sSmall);
     font-size: var(--font-size-small);
     position: relative;
@@ -239,19 +447,58 @@
 }
 
 /* custom-late-task */
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-late-task {
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-late-task {
     background-color: rgba(var(--color-red-rgb), 0.3);
     color: var(--color-red);
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-late-task::before,
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-near-task::before,
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom_complete::before
-{
-    content: "late deadline";
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-late-task::before,
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-near-task::before,
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom_complete::before {
+    content: 'late deadline';
     margin-right: 2px;
     position: absolute;
-    top: -25px; 
+    top: -25px;
     left: 50%;
     transform: translateX(-30%);
     left: 8px;
@@ -269,40 +516,116 @@
     transition: opacity 0.2s ease-in-out;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom_complete::before
-{
-    content: "complete";
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom_complete::before {
+    content: 'complete';
     width: 60px;
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-near-task::before
-{
-    content: "near deadline";
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-near-task::before {
+    content: 'near deadline';
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-late-task:hover::before,
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-near-task:hover::before,
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom_complete:hover:before
-{
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-late-task:hover::before,
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-near-task:hover::before,
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom_complete:hover:before {
     opacity: 1;
 }
 
-
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-late-task p {
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-late-task
+    p {
     color: var(--color-red);
     margin-right: 2px;
 }
 
 /* custom-near-task */
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-near-task {
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-near-task {
     background-color: rgba(var(--color-yellow-rgb), 0.3);
     color: var(--color-yellow);
 }
 
-#dashboard .block #main .content main #project #container .block-project .card .card-header .custom-near-task p {
+#dashboard
+    .block
+    #main
+    .content
+    main
+    #project
+    #container
+    .block-project
+    .card
+    .card-header
+    .custom-near-task
+    p {
     color: var(--color-yellow);
     margin-right: 2px;
 }
-
-

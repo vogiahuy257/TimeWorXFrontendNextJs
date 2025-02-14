@@ -1,14 +1,13 @@
-
 #dashboard #home {
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-areas:
-        "content meeting"
-        "header meeting";
+        'content meeting'
+        'header meeting';
     grid-template-columns: 2fr 1fr;
-    grid-template-rows:  auto 200px;
-    font-family: "Poppins", sans-serif;
+    grid-template-rows: auto 200px;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Điều chỉnh các vùng của layout */
@@ -36,9 +35,9 @@
     #dashboard #home {
         grid-template-columns: 1fr; /* Chuyển sang 1 cột */
         grid-template-areas:
-            "header"
-            "meeting"
-            "content"; /* Thay đổi bố cục để các phần nằm trên nhau */
+            'header'
+            'meeting'
+            'content'; /* Thay đổi bố cục để các phần nằm trên nhau */
     }
 
     #dashboard #home .box-meeting {
@@ -50,68 +49,58 @@
     }
 }
 
-
 /* cấu hình tạm để sau này thiết kế sau */
-#dashboard #home .box:not(.box-content,.box-header)
-{
+#dashboard #home .box:not(.box-content, .box-header) {
     background-color: var(--color-white);
     box-shadow: 0px 0px 2px rgba(var(--color-black-rgb), 0.5);
     border-radius: var(--border-radius-sSmall);
     margin: 10px;
 }
 
-#dashboard #home .btn-home
-{
+#dashboard #home .btn-home {
     border: 1px solid var(--color-light-blue);
     color: #fff;
-    transition: .2s ease-in-out;
+    transition: 0.2s ease-in-out;
 }
-#dashboard #home .btn-home:hover
-{
+#dashboard #home .btn-home:hover {
     background-color: #ffff;
     color: var(--color-light-blue);
     box-shadow: 0px 0px 18px var(--color-light-blue);
 }
-#dashboard #home .btn-home:active
-{
+#dashboard #home .btn-home:active {
     background-color: #000000;
     color: #ffff;
 }
 #dashboard #home .box-header {
-    background-image: url("/image/logo-full.svg");
-    background-size: 60%; 
-    background-position:center;
-    background-repeat: no-repeat; 
+    background-image: url('/image/logo-full.svg');
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat;
     background-color: #ffff;
     box-shadow: 0px 0px 2px rgba(var(--color-black-rgb), 0.5);
     border-radius: var(--border-radius-sSmall);
     margin: 10px;
 }
 
-#dashboard #home .be-cheese
-{
+#dashboard #home .be-cheese {
     width: 138px;
     height: auto;
 }
 
-
-#dashboard #home .btn-add-meeting
-{
+#dashboard #home .btn-add-meeting {
     background-color: #000000;
     color: #ffff;
     box-shadow: 0 0 8px #ffff;
     position: relative;
-    transition: background-color .2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 
-#dashboard #home .btn-add-meeting svg
-{
+#dashboard #home .btn-add-meeting svg {
     transform: rotate(0deg);
-    transition: transform .2s ease-in-out;
+    transition: transform 0.2s ease-in-out;
 }
 
-#dashboard #home .btn-add-meeting::after
-{
+#dashboard #home .btn-add-meeting::after {
     content: 'created';
     background-color: #000000cb;
     font-size: var(--font-size-sSmall);
@@ -121,40 +110,35 @@
     position: absolute;
     transform: translateX(-28px);
     opacity: 0;
-    transition: transform .2s ease-in-out,opacity .2s ease-in-out;
+    transition:
+        transform 0.2s ease-in-out,
+        opacity 0.2s ease-in-out;
 }
 
-#dashboard #home .btn-add-meeting:hover::after
-{
+#dashboard #home .btn-add-meeting:hover::after {
     transform: translateX(-50px);
     opacity: 1;
 }
 
-
-#dashboard #home .btn-add-meeting:hover
-{
+#dashboard #home .btn-add-meeting:hover {
     background-color: var(--color-light-blue);
 }
 
-#dashboard #home .btn-add-meeting:hover svg
-{
+#dashboard #home .btn-add-meeting:hover svg {
     transform: rotate(-180deg);
 }
 
-#dashboard #home .btn-add-meeting:active
-{
+#dashboard #home .btn-add-meeting:active {
     background-color: #ffff;
     color: #000000;
 }
 
-#dashboard #home .text-meeting
-{
+#dashboard #home .text-meeting {
     background-color: #000000;
     box-shadow: 0 0 2px rgba(var(--color-black-rgb), 0.5);
     color: #ffff;
 }
 
-#dashboard #home .meeting-item:hover
-{
+#dashboard #home .meeting-item:hover {
     background-color: rgba(var(--color-black-rgb), 0.05);
 }

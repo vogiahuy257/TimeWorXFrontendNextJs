@@ -1,17 +1,16 @@
-
 /* Define the animation */
 @keyframes slideIn {
     0% {
-      opacity: 0;
-      height: 0rem; 
+        opacity: 0;
+        height: 0rem;
     }
     100% {
-      opacity: 1;
-      height: 14rem;
+        opacity: 1;
+        height: 14rem;
     }
-  }
-  
-  /* Apply the animation to the .custom-ul */
+}
+
+/* Apply the animation to the .custom-ul */
 .custom-ul {
     background-color: var(--color-white);
     color: var(--color-black);
@@ -19,48 +18,47 @@
     animation: slideIn 0.3s ease-in-out; /* Trigger the animation */
     box-shadow: inset 0 0px 2px #000000;
 }
-  
-.custom-ul li{
+
+.custom-ul li {
     cursor: pointer;
 }
 .custom-ul li:hover,
-.custom-ul li.active
-{
+.custom-ul li.active {
     background-color: #000;
     color: #ffffff;
     box-shadow: 0 4px 8px rgba(var(--color-black-rgb), 0.5);
-    transition: background-color .15s ease-in,color .15s ease-in;
+    transition:
+        background-color 0.15s ease-in,
+        color 0.15s ease-in;
 }
-.custom_button{
+.custom_button {
     background-color: var(--color-white);
 }
-.custom_button svg{
+.custom_button svg {
     transform: rotate(0deg);
-    transition: transform .2s ease-in;
+    transition: transform 0.2s ease-in;
 }
 
-.custom_button svg.active{
+.custom_button svg.active {
     transform: rotate(180deg);
 }
 
-.custom_drop_down .to-do{
+.custom_drop_down .to-do {
     background-color: var(--color-light-blue);
 }
 
-.custom_drop_down .in-progress
-{
+.custom_drop_down .in-progress {
     background-color: var(--color-yellow);
 }
 
-.custom_drop_down .verify{
+.custom_drop_down .verify {
     background-color: var(--color-red);
 }
 
-.custom_drop_down .done{
+.custom_drop_down .done {
     background-color: var(--color-green);
 }
 
-.custom_completed_task svg
-{
+.custom_completed_task svg {
     color: #34cf60;
 }

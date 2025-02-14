@@ -1,5 +1,4 @@
-
-#dashboard #form-meeting .main{
+#dashboard #form-meeting .main {
     border-radius: var(--border-radius-medium);
     color: var(--color-black);
     background-color: rgba(var(--color-black-rgb), 0.1);
@@ -7,68 +6,58 @@
     -webkit-backdrop-filter: blur(10px);
 }
 
-#dashboard #form-meeting .btn-close
-{
+#dashboard #form-meeting .btn-close {
     background-color: #000000;
     color: #fff;
-    transition: background-color .2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 
-#dashboard #form-meeting .btn-close:hover
-{
+#dashboard #form-meeting .btn-close:hover {
     background-color: var(--color-red);
 }
 
-#dashboard #form-meeting .btn-close:active
-{
+#dashboard #form-meeting .btn-close:active {
     background-color: #ffff;
     color: var(--color-red);
 }
 
-#dashboard #form-meeting .user-list-content
-{
+#dashboard #form-meeting .user-list-content {
     background-color: var(--color-white);
 }
 
 #dashboard #form-meeting .text-header,
-#dashboard #form-meeting p
-{
+#dashboard #form-meeting p {
     color: rgba(var(--color-black-rgb), 0.9);
 }
 
-#dashboard #form-meeting input:not([type="checkbox"]),
-#dashboard #form-meeting textarea
-{
+#dashboard #form-meeting input:not([type='checkbox']),
+#dashboard #form-meeting textarea {
     background-color: rgba(var(--color-white-rgb), 0.8);
     color: rgba(var(--color-black-rgb), 0.8);
 }
 
-#dashboard #form-meeting input[type="date"]::-webkit-calendar-picker-indicator,
-#dashboard #form-meeting input[type="time"]::-webkit-calendar-picker-indicator {
+#dashboard #form-meeting input[type='date']::-webkit-calendar-picker-indicator,
+#dashboard #form-meeting input[type='time']::-webkit-calendar-picker-indicator {
     color: #000000; /* Màu icon */
     cursor: pointer;
 }
 
-#dashboard #form-meeting input[type="date"],
-#dashboard #form-meeting input[type="time"] {
+#dashboard #form-meeting input[type='date'],
+#dashboard #form-meeting input[type='time'] {
     position: relative;
 }
 
-
-#dashboard #form-meeting .btn-submit
-{
+#dashboard #form-meeting .btn-submit {
     background-color: #000000;
     color: #fff;
-    transition: background-color .2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 
-#dashboard #form-meeting .btn-submit:hover
-{
+#dashboard #form-meeting .btn-submit:hover {
     background-color: var(--color-light-blue);
 }
 
-#dashboard #form-meeting .btn-submit:active
-{
+#dashboard #form-meeting .btn-submit:active {
     color: #000000;
     background-color: #fff;
     box-shadow: 0 0 6px var(--color-light-blue);

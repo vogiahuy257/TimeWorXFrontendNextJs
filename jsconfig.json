@@ -1,8 +1,8 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",  // Đặt baseUrl về thư mục gốc của dự án
-    "paths": {
-      "@/*": ["src/*"]  // Alias '@' trỏ tới thư mục 'src'
+    "compilerOptions": {
+        "baseUrl": ".", // Đặt baseUrl về thư mục gốc của dự án
+        "paths": {
+            "@/*": ["src/*"] // Alias '@' trỏ tới thư mục 'src'
+        }
     }
-  }
 }

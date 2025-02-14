@@ -1,7 +1,5 @@
 const Label = ({ className, children, ...props }) => (
-    <label
-        className={`${className}`}
-        {...props}>
+    <label className={`${className}`} {...props}>
         {children}
     </label>
 )

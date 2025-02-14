@@ -30,7 +30,7 @@ module.exports = {
     },
     rules: {
         'import/prefer-default-export': 0,
-        'no-console': 'warn',
+        'no-console': ['warn', { allow: ['warn', 'error'] }],
         'no-nested-ternary': 0,
         'no-underscore-dangle': 0,
         'no-unused-expressions': ['error', { allowTernary: true }],
@@ -45,7 +45,7 @@ module.exports = {
         'react/no-unescaped-entities': 0,
         'react/require-default-props': 0,
         'react/react-in-jsx-scope': 0,
-        "linebreak-style": "off",
+        'linebreak-style': 'off',
         semi: ['error', 'never'],
     },
 }

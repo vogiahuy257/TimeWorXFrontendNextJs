@@ -1,16 +1,14 @@
+import TaskCompletionPieChart from './TaskCompletionPieChart'
 
-import TaskCompletionPieChart from "./TaskCompletionPieChart"
-
-function CardProjectAnalysis({ projectName,labels, dataValues, colors }) {
-
-  return (
-      <TaskCompletionPieChart 
-        labels={labels} 
-        dataValues={dataValues} 
-        colors={colors} 
-        title={projectName}
-      />
-  );
+function CardProjectAnalysis({ projectName, labels, dataValues, colors }) {
+    return (
+        <TaskCompletionPieChart
+            labels={labels}
+            dataValues={dataValues}
+            colors={colors}
+            title={projectName}
+        />
+    )
 }
 
 export default CardProjectAnalysis

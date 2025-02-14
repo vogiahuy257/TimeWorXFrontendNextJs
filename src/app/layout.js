@@ -1,4 +1,3 @@
-
 import '@/app/css/app.css'
 import '@/app/css/edit.css'
 
@@ -13,14 +12,12 @@ export const metadata = {
             href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
         },
     ],
-};
+}
 
 const RootLayout = ({ children }) => {
     return (
         <html lang="en">
-            <body className="antialiased">
-                {children}
-            </body>
+            <body className="antialiased">{children}</body>
         </html>
     )
 }

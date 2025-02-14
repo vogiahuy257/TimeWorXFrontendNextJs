@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 
 // Tạo Context
-const AuthContext = createContext(null);
+const AuthContext = createContext(null)
 
 // Provider để bao bọc toàn bộ app
 export const AuthProvider = ({ user, children }) => {
