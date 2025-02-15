@@ -3,6 +3,7 @@ import ApplicationLogo from '@/components/ApplicationLogo'
 import '@/app/(auth)/css/login.css'
 
 const Layout = ({ children }) => {
+    
     return (
         <div>
             <div>

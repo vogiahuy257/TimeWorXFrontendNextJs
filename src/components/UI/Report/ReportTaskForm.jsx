@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from '@/libs/axios'
 import ReportComment from '../Project/ReportComment'
-import { useAuthContext } from '@/hooks/context/AuthContext'
 
 const ReportTaskForm = ({ task, onClose }) => {
-    const user = useAuthContext()
     const [reportData, setReportData] = useState(null)
 
     // Function to fetch report data
@@ -194,7 +192,6 @@ const ReportTaskForm = ({ task, onClose }) => {
                     <div className="w-[80%] mt-10 report-content-task-form h-auto bg-gray-100 py-4 px-2 rounded-lg shadow-md lg:w-1/2">
                         <ReportComment
                             taskId={task.task_id}
-                            user={user}
                             is_project_manager={true}
                         />
                     </div>

@@ -29,11 +29,7 @@ const SummaryReportForm = dynamic(
     { ssr: false, loading: () => <p>Loading SummaryReportForm...</p> },
 )
 
-// Custom Hook
-import { useAuthContext } from '@/hooks/context/AuthContext'
-
 export default function Report() {
-    const user = useAuthContext()
     const [projects, setProjects] = useState([])
     const [selectProject, setSelectProject] = useState([])
     const [isOpenShowReportToTask, setIsOpenShowReportToTask] = useState(false)
@@ -46,7 +42,7 @@ export default function Report() {
 
     const fetchProjectData = async () => {
         try {
-            const response = await axios.get(`/api/projects/${user.id}`)
+            const response = await axios.get(`/api/v1/projects/getall`)
             setProjects(response.data)
             setSelectProject(response.data[0])
         } catch (error) {
@@ -59,7 +55,7 @@ export default function Report() {
 
     useEffect(() => {
         fetchProjectData()
-    }, [user])
+    }, [])
 
     const handleProjectClick = project => {
         setSelectProject(project)
@@ -199,7 +195,6 @@ export default function Report() {
                             >
                                 <ReportProjectDetail
                                     project={selectProject}
-                                    user_id={user.id}
                                 />
                             </div>
                         </div>
@@ -220,14 +215,12 @@ export default function Report() {
             </div>
             {isOpenShowReportToTask && (
                 <ReportTaskForm
-                    user={user}
                     onClose={openFormReportToTask}
                     task={selectTask}
                 />
             )}
             {isOpenFormSummary && (
                 <SummaryReportForm
-                    user={user}
                     projectIdChange={selectProject.project_id}
                     handleOpenForm={handleOpenForm}
                 />

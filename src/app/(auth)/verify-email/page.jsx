@@ -2,15 +2,31 @@
 
 import Button from '@/components/Button'
 import { useAuth } from '@/hooks/auth'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
+import LoadingBox from '@/components/UI/loading/LoadingBox'
 
 const Page = () => {
-    const { logout, resendEmailVerification } = useAuth({
+    const { user,logout, resendEmailVerification } = useAuth({
         middleware: 'auth',
         redirectIfAuthenticated: '/dashboard/home',
     })
 
     const [status, setStatus] = useState(null)
+    const [isChecking, setIsChecking] = useState(true)
+
+    useEffect(() => {
+        if (user !== undefined) {
+            setIsChecking(false) // Khi user đã được xác định, dừng loading
+        }
+    }, [user])
+
+    if (isChecking || !user) {
+        return <LoadingBox /> // Hiển thị loading trước khi xác định trạng thái user
+    }
+
+    if (user.email_verified_at) {
+        return null // Nếu user đã xác thực email, không hiển thị form này
+    }
 
     return (
         <section id="login">

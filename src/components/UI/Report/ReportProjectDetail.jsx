@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import axios from '@/libs/axios'
 import ReportPieChart from './ReportPieChart'
 
-const ReportProjectDetail = ({ project, user_id }) => {
+const ReportProjectDetail = ({ project }) => {
     const [pieChartDataValues, setPieChartDataValues] = useState([0, 0, 0, 0]) // Khởi tạo dữ liệu biểu đồ
     const pieChartLabels = ['To Do', 'In-Progress', 'Verify']
     const pieChartColors = ['#117add', '#f1c21b', '#da1e28']
@@ -26,7 +26,7 @@ const ReportProjectDetail = ({ project, user_id }) => {
 
     useEffect(() => {
         fetchChartData()
-    }, [project.project_id, user_id])
+    }, [project.project_id])
 
     const formatDateRange = (startDate, endDate) => {
         const optionsWithYear = {

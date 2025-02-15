@@ -6,12 +6,8 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import MenuMeeting from '@/components/UI/Home/MenuMeeting'
-
-// Lazy load for meeting list
-const MeetingList = dynamic(() => import('@/components/UI/Home/MeetingList'), {
-    ssr: true,
-    loading: () => <p className="m-auto w-100">Loading meetings...</p>,
-})
+import LoadingBox from '@/components/UI/loading/LoadingBox'
+import MeetingList from '@/components/UI/Home/MeetingList'
 
 const MeetingForm = dynamic(
     () => import('@/components/UI/Meeting/MeetingForm'),
@@ -51,7 +47,7 @@ const HomeClient = () => {
     }, [])
 
     return (
-        <section id="home" className="overflow-auto scrollbar-hide">
+        <section id="home" className="">
             {/* Meeting Header */}
             <div className="box box-header" />
 
@@ -61,13 +57,15 @@ const HomeClient = () => {
                 />
 
                 {meetingLoadingData ? (
-                    <div className="m-auto w-full text-center h-full">Loading data...</div>
+                    <div className='w-full h-full relative'>
+                        <LoadingBox />
+                    </div>
                 ):
                 (
                     <MeetingList
-                    meetings={meetings}
-                    handleEditMeeting={handleEditMeeting}
-                />
+                        meetings={meetings}
+                        handleEditMeeting={handleEditMeeting}
+                    />
                 )}  
 
             </div>

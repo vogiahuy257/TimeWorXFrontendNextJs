@@ -5,6 +5,7 @@ import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import Menu from './menu'
 import dynamic from 'next/dynamic'
+import LoadingBox from '@/components/UI/loading/LoadingBox'
 
 // Dynamic import for components
 const CardProject = dynamic(
@@ -54,7 +55,7 @@ export default function Folder() {
     const [editProject, setEditProject] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
     const [onChangeDeteleProject, setOnChangeDeteleProject] = useState(null)
-    const [loadingData, setLoadingDaTa] = useState(true)
+    const [loadingData, setLoadingData] = useState(true)
 
     const statusOrder = {
         verify: 1,
@@ -69,22 +70,26 @@ export default function Folder() {
         })
     }
 
-    //hàm gọi api lấy data
     const fetchProjectData = async () => {
         try {
-            const response = await axios.get(`/v1/projects/getall`)
-            if (response?.data) {
+            setLoadingData(true) // Đảm bảo đặt loading true trước khi fetch
+            const response = await axios.get(`/api/v1/projects/getall`)
+
+            if (response?.data && Array.isArray(response.data)) {
                 const sortedProjects = sortProjectsByStatus(response.data)
-                // Cập nhật state
                 setProjects(sortedProjects)
                 setFilteredProjects(sortedProjects)
             } else {
                 setProjects([])
                 setFilteredProjects([])
+                console.warn('API returned unexpected data format:', response.data)
             }
-        } 
-         finally {
-            setLoadingDaTa(false)
+        } catch (error) {
+            console.warn('Error fetching project data:', error)
+            setProjects([])
+            setFilteredProjects([])
+        } finally {
+            setLoadingData(false) // Chắc chắn cập nhật trạng thái loading
         }
     }
     //hàm tìm kiếm theo mỗi lần nhấn cho project
@@ -246,9 +251,7 @@ export default function Folder() {
                     <div className="block-project">
                         {/* title is class name done, to-do, in-progress, verify */}
                         {loadingData ? (
-                            <p className="text-center text-gray-500">
-                                Loading projects...
-                            </p>
+                            <LoadingBox/>
                         ) : (
                             filteredProjects.map(project => (
                                 <CardProject

@@ -8,6 +8,7 @@ import PrimaryButton from '@/components/Button'
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
 import NavBar from './navbar'
 import dynamic from 'next/dynamic'
+import LoadingBox from '@/components/UI/loading/LoadingBox'
 
 // Dynamic import for components
 const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), {
@@ -201,7 +202,7 @@ const DashboardProjectView = () => {
         <section id="project-view">
             {/* Menu */}
             <NavBar
-                projectName={project.name}
+                projectName={project?.name}
                 countUserToProject={countUserToProject}
                 handleBackClick={handleBackClick}
                 toggleUserList={toggleUserList}
@@ -210,9 +211,7 @@ const DashboardProjectView = () => {
 
             {/* Main Project View */}
             {loadingDaTaTask ? (
-                <p className="text-center text-gray-500">
-                    Loading projects...
-                </p>
+                <LoadingBox/>
             ) :
             (
                 <main className="task-board">
