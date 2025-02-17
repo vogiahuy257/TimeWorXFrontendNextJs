@@ -9,11 +9,12 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
 import NavBar from './navbar'
 import dynamic from 'next/dynamic'
 import LoadingBox from '@/components/UI/loading/LoadingBox'
+import LoadingPage from '@/components/UI/loading/LoadingPage'
 
 // Dynamic import for components
 const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), {
     ssr: false,
-    loading: () => <p>Loading Task Form...</p>,
+    loading: () => <LoadingPage content={'Loading task form ...'}/>,
 })
 
 const DeletedTasks = dynamic(
@@ -113,7 +114,7 @@ const DashboardProjectView = () => {
                 toast.error(errorData.error)
             }
         } catch (error) {
-            toast.error('An error occurred while deleting the task.')
+            toast.error(`An error occurred while deleting the task.${error}`)
         }
     }
 
@@ -187,7 +188,7 @@ const DashboardProjectView = () => {
                 done: projectData.tasks['done'] || [],
             })
         } catch (error) {
-            toast.error('Error fetching project details or tasks')
+            toast.error(`Error fetching project details or tasks ${error}`)
         }
         finally {
             setLoadingDaTaTask(false)

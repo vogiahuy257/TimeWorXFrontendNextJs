@@ -37,7 +37,7 @@ const ShowReportToTask = ({ task, onClose, updateTaskStatus }) => {
                                     type: file.type,
                                     isApiFile: true,
                                 }
-                            } catch (error) {
+                            } catch {
                                 toast.error(`Error loading file: ${file.name}`)
                                 return null
                             }
@@ -49,7 +49,7 @@ const ShowReportToTask = ({ task, onClose, updateTaskStatus }) => {
                 }
 
                 setReportData(report)
-            } catch (error) {
+            } catch {
                 toast.error('Failed to load report data')
             }
         }

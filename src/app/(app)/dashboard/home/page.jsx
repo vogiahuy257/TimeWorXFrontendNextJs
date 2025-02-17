@@ -21,7 +21,7 @@ const HomeClient = () => {
     const [isFormOpen, setIsFormOpen] = useState(false)
     const [meetings, setMeetings] = useState([])
     const [currentMeeting, setCurrentMeeting] = useState(null)
-    const [meetingLoadingData, setMeetingLoadingData] = useState(true);
+    const [meetingLoadingData, setMeetingLoadingData] = useState(true)
 
     const handleOpenFormCreateMeeting = () => {
         setCurrentMeeting(null)

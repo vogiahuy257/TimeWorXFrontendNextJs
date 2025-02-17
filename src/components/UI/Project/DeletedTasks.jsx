@@ -20,7 +20,7 @@ const DeletedTasks = ({ resetPage, user_id, projectId }) => {
                 )
             }
             setDeletedTasks(response.data)
-        } catch (error) {
+        } catch {
             toast.error('Lỗi khi lấy danh sách các task đã xóa mềm')
         }
     }
@@ -39,7 +39,7 @@ const DeletedTasks = ({ resetPage, user_id, projectId }) => {
             fetchDeletedTasks()
             resetPage(user_id)
             toast.success('Restore task successfully')
-        } catch (error) {
+        } catch {
             toast.error('Error restoring task')
         }
     }
@@ -55,7 +55,7 @@ const DeletedTasks = ({ resetPage, user_id, projectId }) => {
             }
             fetchDeletedTasks()
             toast.success('Task has been permanently deleted')
-        } catch (error) {
+        } catch {
             toast.error('Error when permanently deleting task')
         }
     }

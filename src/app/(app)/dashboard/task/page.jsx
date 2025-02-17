@@ -223,7 +223,7 @@ export default function Task() {
             // Thiết lập trạng thái
             setTasks(mergedTasks)
         } catch (error) {
-            toast.error('Error fetching project details or tasks')
+            toast.error(`Error fetching project details or tasks ${error}`)
         }
     }
 

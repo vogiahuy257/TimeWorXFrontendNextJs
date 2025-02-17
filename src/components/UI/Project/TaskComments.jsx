@@ -46,7 +46,7 @@ const TaskComments = ({ taskId, onClose, isManagerComment }) => {
             }
 
             setCommentsData(response.data)
-        } catch (error) {
+        } catch {
             toast.error('Failed to fetch comments')
         }
     }
@@ -81,7 +81,7 @@ const TaskComments = ({ taskId, onClose, isManagerComment }) => {
             )
 
             setCommentContent('')
-        } catch (error) {
+        } catch {
             toast.error('Failed to add comment')
         }
     }

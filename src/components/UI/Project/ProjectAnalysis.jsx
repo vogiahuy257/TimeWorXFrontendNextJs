@@ -24,7 +24,7 @@ export default function ProjectAnalysis({ onClose }) {
                 `/api/v1/projects/statistics`,
             )
             setProjects(response.data) // axios trả dữ liệu trong `response.data`
-        } catch (error) {
+        } catch{
             toast.error('Error loading project statistics')
             onClose()
         } finally {

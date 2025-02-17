@@ -25,7 +25,7 @@ const TaskUsers = ({ projectId, onClose, setCountUserToProject }) => {
                 return acc
             }, {})
             setUserManagerStatus(initialStatus)
-        } catch (error) {
+        } catch {
             toast.error('Error fetching users.')
         }
     }
@@ -82,7 +82,7 @@ const TaskUsers = ({ projectId, onClose, setCountUserToProject }) => {
                 setUsers(
                     users.filter(existingUser => existingUser.id !== user.id),
                 )
-            } catch (error) {
+            } catch {
                 setMessageError(
                     error.response.data.message ||
                         'Error adding user to project.',

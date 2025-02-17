@@ -21,7 +21,7 @@ const FileDownloadButton: React.FC<FileDownloadProps> = ({ fileData }) => {
                 )
                 blob = new Blob([response.data], { type: fileData.file.type })
             } catch (error) {
-                toast.error('Download failed.')
+                toast.error(`Download failed: ${error}`)
                 return
             }
         } else {

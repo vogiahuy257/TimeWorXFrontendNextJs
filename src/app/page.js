@@ -2,7 +2,6 @@
 
 import LoginLinks from '@/app/LoginLinks'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import { useAuth } from '@/hooks/auth'
 import '@/app/css/welcome.css'
 

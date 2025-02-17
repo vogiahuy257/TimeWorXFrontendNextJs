@@ -19,7 +19,7 @@ const ReportProjectDetail = ({ project }) => {
                 data['in-progress'] || 0,
                 data['verify'] || 0,
             ])
-        } catch (error) {
+        } catch {
             toast.error('Failed to fetch project statistics.')
         }
     }

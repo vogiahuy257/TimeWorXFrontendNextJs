@@ -47,7 +47,7 @@ const UploadMultipleFiler = ({
                             isApiFile: true,
                         }
                     } catch (error) {
-                        toast.error(`Error loading file: ${file.name}`)
+                        toast.error(`Error loading file: ${file.name} \n error: ${error}`)
                         return null
                     }
                 }),

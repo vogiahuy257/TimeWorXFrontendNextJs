@@ -31,7 +31,7 @@ const ReportTaskDone = ({ project_id, onOpenReportTaskForm }) => {
                     ),
                 )
                 setDateOptions(Array.from(uniqueDates))
-            } catch (error) {
+            } catch {
                 toast.error('Failed to fetch project tasks.')
             }
         }

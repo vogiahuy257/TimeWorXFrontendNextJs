@@ -243,7 +243,7 @@ function FullCalendarComponent({ user }) {
                 )
             }
         } catch (error) {
-            toast.error('Failed to update event.')
+            toast.error('Failed to update event: '+error)
         }
     }, [])
 
@@ -275,7 +275,7 @@ function FullCalendarComponent({ user }) {
                 )
             }
         } catch (error) {
-            toast.error('Failed to update event.')
+            toast.error('Failed to update event: '+error)
         }
     }, [])
 
