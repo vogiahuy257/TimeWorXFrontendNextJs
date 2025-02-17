@@ -1,0 +1,57 @@
+.deleted_tasks {
+    background-color: rgba(var(--color-black-rgb), 0.4);
+    position: absolute;
+    z-index: 999999;
+    top: 50px;
+    right: 5px;
+    width: 100%;
+    max-width: 300px;
+    animation: fadeInUp 1s forwards;
+}
+
+@keyframes fadeInUp{
+    0%{
+        transform: translateX(50px);
+        opacity: 0;
+    }
+    90%{
+        opacity: 1;
+    }
+    100%{
+        transform: translateX(0px);
+    }
+}
+
+.deleted_tasks_ul{
+    height: 360px;
+    max-height: 360px;
+    background-color: var(--color-white);
+}
+
+.deleted_task_text {
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+    background-color: var(--color-white);
+}
+
+.deleted_tasks_li {
+    display: flex;
+    background-color: var(--color-white);
+    box-shadow: 0 2px 8px rgba(var(--color-black-rgb), 0.4);
+}
+
+.deleted_task_btn {
+    display: flex;
+    margin-left: auto;
+    gap: 8px;
+}
+
+.btn_restore:hover {
+    color: var(--color-light-blue);
+    transform: scale(1.1);
+}
+
+.btn_delete:hover {
+    color: var(--color-red);
+    transform: scale(1.1);
+}

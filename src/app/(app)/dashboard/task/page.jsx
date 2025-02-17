@@ -13,20 +13,20 @@ import dynamic from 'next/dynamic'
 
 // Dynamically imported components
 const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), {
-    ssr: false,
-    loading: () => <p>Loading TaskForm...</p>,
+    ssr: true,
+    loading: () => <LoadingPage/>,
 })
 const DeletedTasks = dynamic(
-    () => import('@/components/UI/Project/DeletedTasks'),
-    { ssr: false, loading: () => <p>Loading DeletedTasks...</p> },
+    () => import('@/components/UI/Project/HistoryBox'),
+    { ssr: true },
 )
 const TaskComments = dynamic(
     () => import('@/components/UI/Project/TaskComments'),
-    { ssr: false, loading: () => <p>Loading TaskComments...</p> },
+    { ssr: true, loading: () => <LoadingPage/> },
 )
 const ReportForm = dynamic(() => import('@/components/UI/Task/ReportForm'), {
-    ssr: false,
-    loading: () => <p>Loading ReportForm...</p>,
+    ssr: true,
+    loading: () => <LoadingPage/>,
 })
 
 // UI Components
@@ -568,11 +568,11 @@ export default function Task() {
 
             {/* Hiển thị History */}
             {showDeletedTasks && (
-                <DeletedTasks
-                    resetPage={fetchProjectData}
-                    project_id = {project_id}
-                />
-            )}
+                    <DeletedTasks
+                        resetPage={fetchProjectData}
+                        project_id = {false}
+                    />
+                )}
 
             {showComments && (
                 <TaskComments

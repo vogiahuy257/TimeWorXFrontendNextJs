@@ -18,7 +18,7 @@ const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), {
 })
 
 const DeletedTasks = dynamic(
-    () => import('@/components/UI/Project/DeletedTasks'),
+    () => import('@/components/UI/Project/HistoryBox'),
     {
         ssr: false,
         loading: () => <p>Loading Deleted Tasks...</p>,

@@ -24,18 +24,17 @@ const CreateProjectForm = dynamic(
     },
 )
 
-const DeletedProjectsForm = dynamic(
-    () => import('@/components/UI/Project/DeletedProjectsForm'),
+const HistoryBox = dynamic(
+    () => import('@/components/UI/Project/HistoryBox'),
     {
-        ssr: true,
-        loading: () => <LoadingPage/>,
+        ssr: true
     },
 )
 
 const ProjectAnalysis = dynamic(
     () => import('@/components/UI/Project/ProjectAnalysis'),
     {
-        ssr: false,
+        ssr: true,
         loading: () => <LoadingPage/>,
     },
 )
@@ -269,9 +268,9 @@ export default function Folder() {
             </section>
 
             {isDeletedFormOpen && (
-                <DeletedProjectsForm
+                <HistoryBox
                     resetPage={fetchProjectData}
-                    onClose={handleDeletedFormToggle}
+                    project_id={true}
                 />
             )}
 
