@@ -4,7 +4,7 @@ import '@/app/css/edit.css'
 export const metadata = {
     title: 'TimeWorX',
     icons: {
-        icon: '/image/logo-small.svg',
+        icon: '/logo-small.svg',
     },
     link: [
         {
