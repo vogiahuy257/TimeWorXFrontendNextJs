@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
+import LoadingPage from '@/components/UI/loading/LoadingPage'
+import LoadingBox from '@/components/UI/loading/LoadingBox'
 
 // Components (Lazy load for better performance)
 import dynamic from 'next/dynamic'
@@ -27,14 +29,10 @@ const ReportForm = dynamic(() => import('@/components/UI/Task/ReportForm'), {
     loading: () => <p>Loading ReportForm...</p>,
 })
 
-// Custom hooks
-import { useAuthContext } from '@/hooks/context/AuthContext'
-
 // UI Components
 import PrimaryButton from '@/components/Button'
 
 export default function Task() {
-    const user = useAuthContext()
     const [project_id, setProjectId] = useState()
     const [selectProjectId, setSelectedProjectId] = useState()
     const [isFormOpen, setIsFormOpen] = useState(false)
@@ -45,6 +43,7 @@ export default function Task() {
     const [showComments, setShowComments] = useState(false)
     const [showReportForm, setShowReportForm] = useState(false)
     const [isStaff, setIsStaff] = useState(false)
+    const [loadingDataTask, setLoadingDataTask] = useState(true)
 
     const handleReportClick = task => {
         setShowReportForm(!showReportForm)
@@ -87,7 +86,7 @@ export default function Task() {
     const handleDeleteTask = async task => {
         try {
             await axios.delete(`/api/personal-plans/${task.id}`)
-            await fetchProjectData(user.id)
+            await fetchProjectData(project_id)
             toast.success('Task has been completed !')
         } catch (error) {
             toast.error('Error updating task status: ' + error.message)
@@ -101,14 +100,14 @@ export default function Task() {
     const [tasks, setTasks] = useState({
         'to-do': [],
         'in-progress': [],
-        done: [],
+        'done': [],
     })
 
     const updateTaskStatus = async (id, newStatus, isPersonalPlan = false) => {
         try {
             const endpoint = isPersonalPlan
                 ? `/api/personal-plans/${id}/status`
-                : `/api/tasks/${id}`
+                : `/api/v1/tasks/${id}`
             const data = isPersonalPlan
                 ? { plan_status: newStatus }
                 : { status: newStatus }
@@ -153,9 +152,9 @@ export default function Task() {
         }
     }
 
-    const fetchProjectData = async (user_id, project_id) => {
+    const fetchProjectData = async (project_id) => {
         try {
-            const response = await axios.get(`/api/tasks/${user_id}`, {
+            const response = await axios.get(`api/v1/tasks`, {
                 params: { project_id },
             })
             const projectData = response.data
@@ -225,10 +224,13 @@ export default function Task() {
         } catch (error) {
             toast.error(`Error fetching project details or tasks ${error}`)
         }
+        finally{
+            setLoadingDataTask(false)
+        }
     }
 
     useEffect(() => {
-        fetchProjectData(user.id, project_id)
+        fetchProjectData( project_id)
     }, [project_id])
     return (
         <section id="project-view">
@@ -281,8 +283,12 @@ export default function Task() {
                     </PrimaryButton>
                 </div>
             </div>
-
+        
             {/* Main Project View */}
+            {loadingDataTask ? (
+                <LoadingBox/>
+            ) :
+            (
             <main className="task-board">
                 <DragDropContext onDragEnd={onDragEnd}>
                     {Object.keys(tasks).map(columnId => (
@@ -558,19 +564,18 @@ export default function Task() {
                     ))}
                 </DragDropContext>
             </main>
+            )}
 
             {/* Hiển thị History */}
             {showDeletedTasks && (
                 <DeletedTasks
                     resetPage={fetchProjectData}
-                    user_id={user.id}
-                    projectId={null}
+                    project_id = {project_id}
                 />
             )}
 
             {showComments && (
                 <TaskComments
-                    user={user}
                     taskId={selectedTask.id}
                     onClose={() => setShowComments(false)}
                     isManagerComment={false}

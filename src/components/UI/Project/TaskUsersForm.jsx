@@ -82,7 +82,7 @@ const TaskUsers = ({ projectId, onClose, setCountUserToProject }) => {
                 setUsers(
                     users.filter(existingUser => existingUser.id !== user.id),
                 )
-            } catch {
+            } catch (error){
                 setMessageError(
                     error.response.data.message ||
                         'Error adding user to project.',

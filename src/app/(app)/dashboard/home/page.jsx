@@ -8,12 +8,13 @@ import Image from 'next/image'
 import MenuMeeting from '@/components/UI/Home/MenuMeeting'
 import LoadingBox from '@/components/UI/loading/LoadingBox'
 import MeetingList from '@/components/UI/Home/MeetingList'
+import LoadingPage from '@/components/UI/loading/LoadingPage'
 
 const MeetingForm = dynamic(
     () => import('@/components/UI/Meeting/MeetingForm'),
     {
         ssr: true,
-        loading: () => <p className="m-auto w-100">Loading form...</p>,
+        loading: () => <LoadingPage/>,
     },
 )
 

@@ -4,21 +4,12 @@ import PrimaryButton from '@/components/Button'
 import { toast } from 'react-toastify'
 import './css/DeleteTask.css'
 
-const DeletedTasks = ({ resetPage, user_id, projectId }) => {
+const DeletedTasks = ({ resetPage,project_id }) => {
     const [deletedTasks, setDeletedTasks] = useState([])
 
     const fetchDeletedTasks = async () => {
-        let response = {}
         try {
-            if (projectId != null) {
-                response = await axios.get(
-                    `/api/project-view/${projectId}/deleted-tasks`,
-                )
-            } else if (user_id != null) {
-                response = await axios.get(
-                    `/api/personal-plans/trashed/${user_id}`,
-                )
-            }
+            const response = await axios.get(`/api/v1/personal-plans/trashed`) // Lấy các kế hoạch cá nhân đã xóa
             setDeletedTasks(response.data)
         } catch {
             toast.error('Lỗi khi lấy danh sách các task đã xóa mềm')
@@ -31,13 +22,9 @@ const DeletedTasks = ({ resetPage, user_id, projectId }) => {
 
     const handleRestore = async taskId => {
         try {
-            if (projectId != null) {
-                await axios.put(`/api/project-view/tasks/${taskId}/restore`)
-            } else if (user_id != null) {
-                await axios.post(`/api/personal-plans/${taskId}/restore`)
-            }
+            await axios.post(`/api/personal-plans/${taskId}/restore`) // Khôi phục kế hoạch cá nhân
             fetchDeletedTasks()
-            resetPage(user_id)
+            resetPage(project_id)
             toast.success('Restore task successfully')
         } catch {
             toast.error('Error restoring task')
@@ -46,13 +33,7 @@ const DeletedTasks = ({ resetPage, user_id, projectId }) => {
 
     const handlePermanentDelete = async taskId => {
         try {
-            if (projectId != null) {
-                await axios.delete(
-                    `/api/project-view/tasks/${taskId}/force-delete`,
-                )
-            } else if (user_id != null) {
-                await axios.delete(`/api/personal-plans/${taskId}/force-delete`)
-            }
+            await axios.delete(`/api/personal-plans/${taskId}/force-delete`) // Xóa vĩnh viễn kế hoạch cá nhân
             fetchDeletedTasks()
             toast.success('Task has been permanently deleted')
         } catch {
@@ -65,16 +46,12 @@ const DeletedTasks = ({ resetPage, user_id, projectId }) => {
             <h2 className="deleted-task-text">History</h2>
             <ul>
                 {deletedTasks.map(task => (
-                    <li key={projectId ? task.task_id : task.plan_id}>
-                        <p>{projectId ? task.task_name : task.plan_name}</p>
+                    <li key={task.plan_id}> {/* Dùng plan_id cho các kế hoạch cá nhân */}
+                        <p>{task.plan_name}</p> {/* Hiển thị tên kế hoạch cá nhân */}
                         <div className="deleted-task-btn">
                             <PrimaryButton
                                 className="btn-restore"
-                                onClick={() =>
-                                    handleRestore(
-                                        projectId ? task.task_id : task.plan_id,
-                                    )
-                                }
+                                onClick={() => handleRestore(task.plan_id)} // Khôi phục kế hoạch cá nhân
                             >
                                 <svg
                                     width="18"
@@ -95,11 +72,7 @@ const DeletedTasks = ({ resetPage, user_id, projectId }) => {
 
                             <PrimaryButton
                                 className="btn-delete"
-                                onClick={() =>
-                                    handlePermanentDelete(
-                                        projectId ? task.task_id : task.plan_id,
-                                    )
-                                }
+                                onClick={() => handlePermanentDelete(task.plan_id)} // Xóa vĩnh viễn kế hoạch cá nhân
                             >
                                 <svg
                                     width="16"

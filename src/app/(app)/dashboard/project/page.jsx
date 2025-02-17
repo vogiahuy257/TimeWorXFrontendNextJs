@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import Menu from './menu'
 import dynamic from 'next/dynamic'
 import LoadingBox from '@/components/UI/loading/LoadingBox'
+import LoadingPage from '@/components/UI/loading/LoadingPage'
 
 // Dynamic import for components
 const CardProject = dynamic(
@@ -19,7 +20,7 @@ const CreateProjectForm = dynamic(
     () => import('@/components/UI/Project/CreateProjectForm'),
     {
         ssr: true,
-        loading: () => <p>Loading Create Project Form...</p>,
+        loading: () => <LoadingPage/>,
     },
 )
 
@@ -27,7 +28,7 @@ const DeletedProjectsForm = dynamic(
     () => import('@/components/UI/Project/DeletedProjectsForm'),
     {
         ssr: true,
-        loading: () => <p>Loading Deleted Projects Form...</p>,
+        loading: () => <LoadingPage/>,
     },
 )
 
@@ -35,7 +36,7 @@ const ProjectAnalysis = dynamic(
     () => import('@/components/UI/Project/ProjectAnalysis'),
     {
         ssr: false,
-        loading: () => <p>Loading Project Analysis...</p>,
+        loading: () => <LoadingPage/>,
     },
 )
 

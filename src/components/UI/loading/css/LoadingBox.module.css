@@ -1,11 +1,11 @@
 
 .scene {
-    --loading-size: min(12vw, 60px); /* Kích thước khối lập phương, linh hoạt với màn hình */
+    --loading-size: min(10vw, 48px); /* Kích thước khối lập phương, linh hoạt với màn hình */
     --loading-border-wight: calc(var(--loading-size) * 0.05); /* Độ dày viền theo kích thước khối */
     --loading-border-radius: calc(var(--loading-size) * 0.10); /* Bo tròn góc theo kích thước khối */
-    --rotation-x: -25deg; /* Góc xoay trục X */
+    --rotation-x: -24deg; /* Góc xoay trục X */
     --rotation-y: 0deg; /* Góc xoay trục Y */
-    --rotation-speed: 2.5s; /* Thời gian xoay 1 vòng */
+    --rotation-speed: 2s; /* Thời gian xoay 1 vòng */
     
     perspective: 1000px; /* Phối cảnh để tạo hiệu ứng 3D */
     color: var(--color-black);
@@ -35,8 +35,14 @@
 .right  { transform: rotateY( 90deg) translateZ(calc(var(--loading-size) / 2)); }
 .left   { transform: rotateY(-90deg) translateZ(calc(var(--loading-size) / 2)); }
 .top    { transform: rotateX( 90deg) translateZ(calc(var(--loading-size) / 2)); }
-.bottom { transform: rotateX(-90deg) translateZ(calc(var(--loading-size) / 2)); }
+.bottom { 
+    transform: rotateX(-90deg) translateZ(calc(var(--loading-size) / 2)); 
+    box-shadow: 0 0 18px var(--color-black);
+}
 
+.textLoading{
+    color: var(--color-black);
+}
 /* Hiệu ứng xoay mượt mà của khối lập phương */
 @keyframes rotateCube {
     0%   { transform: rotateX(var(--rotation-x)) rotateY(0deg); }
