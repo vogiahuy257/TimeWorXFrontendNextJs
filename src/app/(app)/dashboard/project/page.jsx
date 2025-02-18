@@ -19,7 +19,7 @@ const CardProject = dynamic(
 const CreateProjectForm = dynamic(
     () => import('@/components/UI/Project/CreateProjectForm'),
     {
-        ssr: true,
+        ssr: false,
         loading: () => <LoadingPage/>,
     },
 )
@@ -27,14 +27,14 @@ const CreateProjectForm = dynamic(
 const HistoryBox = dynamic(
     () => import('@/components/UI/Project/HistoryBox'),
     {
-        ssr: true
+        ssr: false
     },
 )
 
 const ProjectAnalysis = dynamic(
     () => import('@/components/UI/Project/ProjectAnalysis'),
     {
-        ssr: true,
+        ssr: false,
         loading: () => <LoadingPage/>,
     },
 )
@@ -271,6 +271,7 @@ export default function Folder() {
                 <HistoryBox
                     resetPage={fetchProjectData}
                     project_id={true}
+                    isTaskProjectViews={false}
                 />
             )}
 

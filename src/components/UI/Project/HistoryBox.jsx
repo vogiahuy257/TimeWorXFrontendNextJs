@@ -5,14 +5,18 @@ import { toast } from 'react-toastify'
 import styles from './css/HistoryBox.module.css'
 import LoadingBox from '../loading/LoadingBox'
 
-const  HistoryBox = ({ resetPage,project_id }) => {
+const  HistoryBox = ({ resetPage,project_id,isTaskProjectViews }) => {
     const [deletedTasks, setDeletedTasks] = useState([])
     const [loadingHistory, setLoadingHistory] = useState(true)
 
     const fetchDeletedTasks = async () => {
         let response
         try {
-            if(project_id)
+            if(isTaskProjectViews && project_id)
+            {
+                response = await axios.get(`/v1/project-view/${project_id}/deleted-tasks`)
+            }
+            else if(project_id)
             {
                 response = await axios.get(`/api/v1/projects/history`)
             }
@@ -34,58 +38,55 @@ const  HistoryBox = ({ resetPage,project_id }) => {
         fetchDeletedTasks()
     }, [])
 
-    const handleRestore = async taskId => {
+    const handleRestore = async id => {
         try {
-            if(project_id)
+            if(isTaskProjectViews && project_id)
             {
-                await axios.get(`/api/projects/restore/${taskId}`)
-                .then(response => {
-                    setDeletedTasks(prev =>
-                        prev.filter(p => p.project_id !== taskId),
-                    )
-                    resetPage()
-                    toast.success(response.data.message)
-                })
-                .catch(error => {
-                    toast.error(
-                        `Error restoring project: ${error.response ? error.response.data : error.message}`,
-                    )
-                })
+                await axios.put(`/api/v1/project-view/tasks/${id}/restore`)
+                setDeletedTasks(prev => prev.filter(task => task.project_id !== id))
                 resetPage()
+                toast.success('Restore task successfully')
+            }
+            else if(project_id)
+            {
+                await axios.put(`/api/v1/projects/restore/${id}`)
+                setDeletedTasks(prev => prev.filter(task => task.project_id !== id))
+                resetPage()
+                toast.success('Restore task successfully')
             }
             else
             {
-                await axios.post(`/api/personal-plans/${taskId}/restore`) // Khôi phục kế hoạch cá nhân
-                resetPage(project_id)
-                toast.success('Restore task successfully')
+                await axios.post(`/api/v1/personal-plans/${id}/restore`) // Khôi phục kế hoạch cá nhân
+                setDeletedTasks(prev => prev.filter(task => task.plan_id !== id))
+                resetPage()
+                toast.success('Restore your plan successfully')
             }
-            fetchDeletedTasks()
         } catch {
             toast.error('Error restoring task')
         }
     }
 
-    const handlePermanentDelete = async taskId => {
+    const handlePermanentDelete = async id => {
         try {
-            if(project_id)
+            if(isTaskProjectViews && project_id)
             {
-                await axios.delete(`/api/projects/permanently-delete/${taskId}`)
-                .then(response => {
-                    setDeletedTasks(prev =>
-                        prev.filter(p => p.project_id !== taskId),
-                    )
-                    toast.success(response.data.message)
-                })
-                .catch(error => {
-                    toast.error(
-                        `Error permanently deleting project: ${error.response ? error.response.data : error.message}`,
-                    )
-                })
+                await axios.delete(`/api/v1/project-view/tasks/${id}/force-delete`)
+                setDeletedTasks(prev => prev.filter(task => task.project_id !== id))
+                resetPage()
+                toast.success('Task has been permanently deleted')
+            }
+            else if(project_id)
+            {
+                await axios.delete(`/api/v1/projects/permanently-delete/${id}`)
+                setDeletedTasks(prev => prev.filter(p => p.project_id !== id))
+                resetPage()
+                toast.success('Your Project has been permanently deleted')
             }
             else
             {   
-                await axios.delete(`/api/personal-plans/${taskId}/force-delete`) // Xóa vĩnh viễn kế hoạch cá nhân
-                fetchDeletedTasks()
+                await axios.delete(`/api/v1/personal-plans/${id}/force-delete`)
+                setDeletedTasks(prev => prev.filter(task => task.plan_id !== id))
+                resetPage()
                 toast.success('Task has been permanently deleted')
             }
         } catch {
@@ -102,7 +103,7 @@ const  HistoryBox = ({ resetPage,project_id }) => {
                 ):
                 (
                     deletedTasks.map(task => (
-                        <li key={project_id ? task.project_id : task.plan_id} className={`${styles.deleted_tasks_li} p-2 rounded-md`}> {/* Dùng plan_id cho các kế hoạch cá nhân */}
+                        <li key={project_id ? task.project_id : task.plan_id} className={`${styles.deleted_tasks_li} mb-2 p-2 rounded-md`}> {/* Dùng plan_id cho các kế hoạch cá nhân */}
                             <p>{project_id ? task.project_name : task.plan_name}</p> {/* Hiển thị tên kế hoạch cá nhân */}
                             <div className={`${styles.deleted_task_btn}`}>
                                 <PrimaryButton

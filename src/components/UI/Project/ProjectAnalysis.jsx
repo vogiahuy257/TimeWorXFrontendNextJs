@@ -6,6 +6,7 @@ import CardProjectAnalysis from './analysis/CardProjectAnalysis'
 import DashBoardProjectAnalysis from './analysis/DashBoardProjectAnalysis'
 import '@/app/css/dashboard-project-analysis.css'
 import axios from '@/libs/axios'
+import LoadingBox from '../loading/LoadingBox'
 
 export default function ProjectAnalysis({ onClose }) {
     const [projects, setProjects] = useState([])
@@ -69,7 +70,7 @@ export default function ProjectAnalysis({ onClose }) {
 
                 <section className="mt-8 space-y-4 max-h-[626px] overflow-y-auto overflow-x-hidden scrollbar-hide">
                     {loading ? (
-                        <p className="">Loading...</p>
+                        <LoadingBox/>
                     ) : isOpenProjectAnalysis ? (
                         <DashBoardProjectAnalysis
                             project_id={selectProject}

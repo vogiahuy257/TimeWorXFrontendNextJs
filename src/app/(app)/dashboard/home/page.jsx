@@ -58,7 +58,7 @@ const HomeClient = () => {
                 />
 
                 {meetingLoadingData ? (
-                    <div className='w-full h-full relative'>
+                    <div className='w-full h-full relative top-0 left-0'>
                         <LoadingBox />
                     </div>
                 ):

@@ -1,23 +1,30 @@
+
 import { useState, useEffect } from 'react'
 import axios from '@/libs/axios'
 import ReportComment from '../Project/ReportComment'
+import LoadingBox from '../loading/LoadingBox'
 
 const ReportTaskForm = ({ task, onClose }) => {
     const [reportData, setReportData] = useState(null)
+    const [loading, setLoading] = useState(true)
 
-    // Function to fetch report data
-    const fetchReportData = () => {
-        axios
-            .get(`/api/reports/${task.task_id}`, {
-                params: { project_id: task.project_id, task_id: task.task_id },
-            })
-            .then(response => {
-                setReportData(response.data)
-            })
-            .catch(() => {
-            })
-    }
+    
     useEffect(() => {
+        // Function to fetch report data
+        const fetchReportData = () => {
+            axios
+                .get(`/api/reports/${task.task_id}`, {
+                    params: { project_id: task.project_id, task_id: task.task_id },
+                })
+                .then(response => {
+                    setReportData(response.data)
+                })
+                .catch(() => {
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
+        }
         fetchReportData()
     }, [task])
 
@@ -40,8 +47,8 @@ const ReportTaskForm = ({ task, onClose }) => {
     }
 
     return (
-        <section id="report-to-task" className="flex">
-            <div className="report-data h-auto m-auto scrollbar-hide relative w-full max-w-[880px] max-h-full p-4 overflow-y-auto rounded-lg shadow-lg lg:max-w-[80%]">
+        <section id="report-to-task" className="flex justify-center items-center fixed top-0 left-0 z-[999] w-full h-full">
+            <div className="bg-black bg-opacity-40 h-full m-auto relative w-full max-w-[880px] p-4 rounded-lg lg:max-w-[80%]">
                 <button
                     className=" absolute flex justify-center items-center btn-close z-50 top-4 right-4 p-1.5 rounded-xl"
                     onClick={onClose}
@@ -69,11 +76,13 @@ const ReportTaskForm = ({ task, onClose }) => {
                         />
                     </svg>
                 </button>
-
-                <div className="flex flex-col-reverse items-center w-full gap-4 overflow-y-auto lg:flex-row">
-                    <div className="report-content-task-form report-task-form w-[88%] p-8 rounded-lg shadow lg:w-1/2">
+                {loading ? (
+                        <LoadingBox content={'loading data report ...'}/>
+                ) : (
+                    <div className="flex flex-col-reverse items-center w-full h-full gap-4 overflow-y-auto scrollbar-hide lg:flex-row">
+                    <div className="report-content-task-form report-task-form w-[88%] p-6 my-2 rounded-lg w lg:w-1/2">
                         {reportData && reportData.user ? (
-                            <>
+                            <div>
                                 <div className="text mb-4 border-b border-gray-300 pb-3">
                                     <h2 className="text-xl">
                                         <strong>Report for Task:</strong>{' '}
@@ -179,23 +188,25 @@ const ReportTaskForm = ({ task, onClose }) => {
                                         </p>
                                     </div>
                                 </div>
-                            </>
+                            </div>
                         ) : (
-                            <>
-                                <p className="text-center bg-gray-300 rounded-md p-8 text-gray-800">
+                            <div className='h-[300px] flex items-center justify-center'>
+                                <p className="text-center w-full bg-gray-300 rounded-md p-8 text-gray-800">
                                     This task has not been reported yet
                                 </p>
-                            </>
+                            </div>
                         )}
                     </div>
 
-                    <div className="w-[80%] mt-10 report-content-task-form h-auto bg-gray-100 py-4 px-2 rounded-lg shadow-md lg:w-1/2">
+                    <div className="w-[80%] mt-10 report-content-task-form h-auto bg-gray-100 py-4 px-2 rounded-lg lg:w-1/2 lg:mt-0">
                         <ReportComment
                             taskId={task.task_id}
                             is_project_manager={true}
                         />
                     </div>
                 </div>
+                )}
+                    
             </div>
         </section>
     )

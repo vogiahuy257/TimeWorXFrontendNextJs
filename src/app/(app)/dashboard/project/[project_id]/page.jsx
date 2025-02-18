@@ -17,11 +17,10 @@ const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), {
     loading: () => <LoadingPage content={'Loading task form ...'}/>,
 })
 
-const DeletedTasks = dynamic(
+const HistoryBox = dynamic(
     () => import('@/components/UI/Project/HistoryBox'),
     {
         ssr: false,
-        loading: () => <p>Loading Deleted Tasks...</p>,
     },
 )
 
@@ -29,7 +28,7 @@ const TaskUsers = dynamic(
     () => import('@/components/UI/Project/TaskUsersForm'),
     {
         ssr: false,
-        loading: () => <p>Loading Task Users Form...</p>,
+        loading: () => <LoadingPage/>,
     },
 )
 
@@ -37,15 +36,15 @@ const TaskComments = dynamic(
     () => import('@/components/UI/Project/TaskComments'),
     {
         ssr: false,
-        loading: () => <p>Loading Task Comments...</p>,
+        loading: () => <LoadingPage/>,
     },
 )
 
 const ShowReportToTask = dynamic(
     () => import('@/components/UI/Project/ShowReportToTask'),
     {
-        ssr: false,
-        loading: () => <p>Loading Report to Task...</p>,
+        ssr: true,
+        loading: () => <LoadingPage/>,
     },
 )
 
@@ -438,9 +437,10 @@ const DashboardProjectView = () => {
 
             {/* Hiển thị History */}
             {showDeletedTasks && (
-                <DeletedTasks
+                <HistoryBox
                     resetPage={fetchProjectData}
                     projectId={project.id}
+                    isTaskProjectViews={true}
                 />
             )}
 

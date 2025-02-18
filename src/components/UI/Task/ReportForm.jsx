@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import UploadMultipleFiler from './UploadMultipleFiler'
 import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ReportComment from '../Project/ReportComment'
 import { useAuthContext } from '@/hooks/context/AuthContext'
+import LoadingBox from '../loading/LoadingBox'
 
 const ReportForm = ({ onClose, task }) => {
     const user = useAuthContext()
@@ -20,6 +21,7 @@ const ReportForm = ({ onClose, task }) => {
     const [fileSizeError, setFileSizeError] = useState('')
     const [existingReport, setExistingReport] = useState(false)
     const [isExistingReport, setIsExistingReport] = useState(false)
+    const [loadingDataReport, setLoadingDataReport] = useState(true)
 
     useEffect(() => {
         axios
@@ -31,11 +33,12 @@ const ReportForm = ({ onClose, task }) => {
             })
             .then(response => {
                 const report = response.data
-                if (report.length == 0) {
+                if (Array.isArray(report) && report.length === 0) {
                     setIsExistingReport(false)
                 } else {
                     setIsExistingReport(true)
                 }
+    
                 if (report) {
                     setExistingReport(report)
                     setCompletionGoal(report.completion_goal || '')
@@ -43,13 +46,9 @@ const ReportForm = ({ onClose, task }) => {
                     setNextSteps(report.next_steps || '')
                     setIssues(report.issues || '')
                     setIsLink(report.isLink)
-
+    
                     if (report.isLink) {
-                        setDocumentLink(
-                            report.files && report.files.length > 0
-                                ? report.files[0].path
-                                : '',
-                        )
+                        setDocumentLink(report.files?.[0]?.path || '')
                     } else {
                         setDocuments(report.files || [])
                     }
@@ -62,7 +61,11 @@ const ReportForm = ({ onClose, task }) => {
                 toast.error(`Error: ${message}`)
                 onClose()
             })
+            .finally(() => {
+                setLoadingDataReport(false)
+            })
     }, [task])
+    
 
     const getCurrentDate = () => {
         const date = new Date()
@@ -127,11 +130,11 @@ const ReportForm = ({ onClose, task }) => {
     return (
         <section
             id="report-form"
-            className="fixed top-0 left-0 w-full h-full z-[999]"
+            className="fixed top-0 left-0 w-full h-full z-[999] flex justify-center items-center"
         >
-            <div className=" h-auto m-auto scrollbar-hide relative w-full max-h-full  max-w-[880px] p-4 overflow-y-auto rounded-lg shadow-lg lg:max-w-[80%]">
+            <div className=" bg-black bg-opacity-40 relative w-full h-full max-w-[880px] rounded-lg flex lg:max-w-[80%]">
                 <button
-                    className="btn-close p-[0.5px] rounded-md"
+                    className="btn-close p-1 rounded-md"
                     onClick={onClose}
                 >
                     <svg
@@ -157,16 +160,21 @@ const ReportForm = ({ onClose, task }) => {
                         />
                     </svg>
                 </button>
-                <div className="flex flex-col-reverse px-4 items-center w-full gap-4 overflow-y-auto lg:flex-row">
+                
+                <div className="flex flex-col-reverse p-4 items-center w-full  overflow-y-auto scrollbar-hide gap-4 h-full lg:flex-row">
                     <div className="main h-auto w-[90%]  m-auto relative flex flex-col lg:w-1/2">
                         <div className="text">
                             <h2>Task Report</h2>
                         </div>
-
-                        <form
-                            className="box-form flex flex-col"
-                            onSubmit={handleSubmit}
-                        >
+                        {loadingDataReport ? (
+                            <div className='h-[600px] w-full relative top-0 left-0'>
+                                <LoadingBox content={'loading data report ...'}/>
+                            </div>
+                        ) : (
+                            <form
+                                className="box-form w-full h-full px-4 flex flex-col"
+                                onSubmit={handleSubmit}
+                            >
                             <div className="custom-form custom-scrollbar">
                                 <div className="header-form flex mt-3 mb-2">
                                     <h1>Task name: {task.content}</h1>
@@ -291,7 +299,9 @@ const ReportForm = ({ onClose, task }) => {
                                         : 'Report'}
                                 </button>
                             </div>
-                        </form>
+                            </form>
+                        )}
+                        
                     </div>
 
                     <div className="w-[90%] report-content-task-form h-auto py-4 px-2 rounded-lg shadow-md lg:w-1/2">

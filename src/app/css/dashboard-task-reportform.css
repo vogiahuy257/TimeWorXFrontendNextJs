@@ -1,7 +1,4 @@
-#dashboard #report-form {
-    background-color: rgba(var(--color-black-rgb), 0.1);
-    border-radius: var(--border-radius-large);
-}
+
 
 #dashboard #report-form .main {
     background-color: var(--color-white);
@@ -14,12 +11,14 @@
     position: absolute;
     top: 14px;
     right: 14px;
-    color: var(--color-black);
-    background-color: var(--color-white);
+    color: var(--color-white);
+    background-color: var(--color-black);
 }
 
 #dashboard #report-form .btn-close:hover {
     color: var(--color-red);
+    background-color: var(--color-white);
+    box-shadow: 0 0 8px #ffffff;
 }
 
 #dashboard #report-form .text {
@@ -30,12 +29,6 @@
     color: var(--color-black);
     font-size: var(--font-size-large);
     font-weight: var(--font-weight-medium);
-}
-
-#dashboard #report-form .box-form {
-    width: 90%;
-    height: 90%;
-    margin: auto;
 }
 
 #dashboard #report-form .header-form h1,

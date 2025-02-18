@@ -17,17 +17,19 @@ import FullCalendar from '@fullcalendar/react'
 import { toast } from 'react-toastify'
 import axios from '@/libs/axios'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import LoadingPage from '../loading/LoadingPage'
 
 // Dynamically Imported Components
 import dynamic from 'next/dynamic'
 
 const MeetingForm = dynamic(
     () => import('@/components/UI/Meeting/MeetingForm'),
-    { loading: () => <p>Loading Meeting Form...</p> },
+    { ssr: false,loading: () => <LoadingPage/> },
 )
 
 // Custom Styles
 import './css/customCalendar.css'
+import LoadingBox from '../loading/LoadingBox'
 
 const SimpleCalendar = ({ selectedDate, onChange }) => {
     const [currentMonth, setCurrentMonth] = useState(new Date(selectedDate))
@@ -94,7 +96,7 @@ const SimpleCalendar = ({ selectedDate, onChange }) => {
     )
 }
 
-function FullCalendarComponent({ user }) {
+function FullCalendarComponent() {
     const [date, setDate] = useState(new Date())
     const [events, setEvents] = useState([])
     const [projects, setProjects] = useState([])
@@ -105,6 +107,9 @@ function FullCalendarComponent({ user }) {
     const [meetings, setMeetings] = useState([])
     const [currentMeeting, setCurrentMeeting] = useState(null)
     const [isFormOpen, setIsFormOpen] = useState(false)
+    const [loadingDataProjects, setLoadingDataProjects] = useState(true)
+    const [loadingDataMeeting, setLoadingDataMeeting] = useState(true)
+    const [loadingDataEvents, setLoadingDataEvents] = useState(true)
 
     const handleOpenFormCreateMeeting = () => {
         setCurrentMeeting(null)
@@ -120,7 +125,7 @@ function FullCalendarComponent({ user }) {
         try {
             const response = await axios.get(`/api/v1/projects/getall`)
             const projectData = response.data
-            const mappedEvents = projectData.projects.map(task => ({
+            const mappedEvents = projectData.map(task => ({
                 id: task.project_id,
                 title: task.project_name,
                 start: task.start_date,
@@ -134,9 +139,13 @@ function FullCalendarComponent({ user }) {
                 },
             }))
             setEvents(mappedEvents)
-            setProjects(projectData.projects)
+            setProjects(projectData)
         } catch (error) {
             console.warn('Error fetching projects:', error)
+        }
+        finally
+        {
+            setLoadingDataProjects(false)
         }
     }
 
@@ -162,11 +171,15 @@ function FullCalendarComponent({ user }) {
             .catch(error => {
                 console.warn('Error fetching meetings:', error)
             })
+            .finally
+            (
+                setLoadingDataMeeting(false)
+            )
     }
 
     useEffect(() => {
         getDataMeeting()
-    }, [user])
+    }, [])
 
     useEffect(() => {
         fetchEvents(selectedProjectId)
@@ -178,6 +191,7 @@ function FullCalendarComponent({ user }) {
         }
         if (projectId) {
             try {
+                setLoadingDataEvents(true)
                 const response = await axios.get(
                     `/api/project-view/${projectId}`,
                 )
@@ -211,6 +225,10 @@ function FullCalendarComponent({ user }) {
                 setEvents(mappedEvents)
             } catch (error) {
                 console.warn('Error fetching events:', error)
+            }
+            finally
+            {
+                setLoadingDataEvents(false)
             }
         }
     }
@@ -396,18 +414,17 @@ function FullCalendarComponent({ user }) {
                         onChange={e => setSelectedProjectId(e.target.value)}
                     >
                         <option value="allproject">All Project</option>
-                        {[
-                            ...new Map(
-                                projects.map(p => [p.project_id, p]),
-                            ).values(),
-                        ].map(project => (
-                            <option
-                                key={project.project_id}
-                                value={project.project_id}
-                            >
-                                Task to {project.project_name}
-                            </option>
-                        ))}
+                         {/* Kiểm tra nếu projects có dữ liệu mới render */}
+                        {projects?.length > 0 &&
+                            [
+                                ...new Map(
+                                    projects.map(p => [p.project_id, p]),
+                                ).values(),
+                            ].map(project => (
+                                <option key={project.project_id} value={project.project_id}>
+                                    Task to {project.project_name}
+                                </option>
+                            ))}
                     </select>
                 </div>
 
@@ -415,55 +432,69 @@ function FullCalendarComponent({ user }) {
                     selectedProjectId !== 'allproject' && (
                         <div className="p-4 space-y-2 flex-grow rounded-lg border shadow-lg">
                             <h2 className="font-base text-base">Today Task</h2>
-                            <ul className="space-y-3 max-h-[150px] overflow-auto scrollbar-hide">
-                                {todayEvents.map(event => (
-                                    <li
-                                        key={event.id}
-                                        className="flex items-center p-3 rounded-md text-sm shadow-md border border-gray-300"
-                                    >
-                                        {event.isAllDay ? (
-                                            <span className="font-medium">
-                                                All Day
-                                            </span>
-                                        ) : (
-                                            <>
+                            {loadingDataEvents ? (
+                                <div className=' relative w-full h-full top-0 left-0'>
+                                    <LoadingBox/>
+                                </div>
+                            ) : (
+                                <ul className="space-y-3 max-h-[150px] overflow-auto scrollbar-hide">
+                                    {todayEvents.map(event => (
+                                        <li
+                                            key={event.id}
+                                            className="flex items-center p-3 rounded-md text-sm shadow-md border border-gray-300"
+                                        >
+                                            {event.isAllDay ? (
                                                 <span className="font-medium">
-                                                    {format(
-                                                        new Date(event.start),
-                                                        'HH:mm',
-                                                    )}
-                                                </span>{' '}
-                                                -
-                                                <span className="font-medium">
-                                                    {format(
-                                                        new Date(event.end),
-                                                        'HH:mm',
-                                                    )}
+                                                    All Day
                                                 </span>
-                                            </>
-                                        )}
-                                        <span className="ml-auto">
-                                            {event.title}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
+                                            ) : (
+                                                <>
+                                                    <span className="font-medium">
+                                                        {format(
+                                                            new Date(event.start),
+                                                            'HH:mm',
+                                                        )}
+                                                    </span>{' '}
+                                                    -
+                                                    <span className="font-medium">
+                                                        {format(
+                                                            new Date(event.end),
+                                                            'HH:mm',
+                                                        )}
+                                                    </span>
+                                                </>
+                                            )}
+                                            <span className="ml-auto">
+                                                {event.title}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
                     )}
 
-                {meetings && (
-                    <div className="p-4 mt-4 space-y-2 flex-grow rounded-lg border shadow-lg">
+                
+                <div className="p-4 mt-4 space-y-2 flex-grow rounded-lg border shadow-lg">
                         <h2 className="font-base text-base">Your Meeting</h2>
-                        {meetings.length === 0 ? (
-                            <p className="mx-auto mt-[38%] px-4 py-2 rounded-md">
-                                Không có cuộc họp nào.
-                            </p>
+
+                        {loadingDataMeeting ? (
+                            <div className=' relative w-full h-[130px] top-0 left-0'>
+                                <LoadingBox/>
+                            </div>
                         ) : (
-                            <ul className="p-3 meeting-list w-full flex flex-col h-auto overflow-y-auto max-h-[230px] scrollbar-hide rounded-xl sm:max-h-[500px]">
+                        meetings.length === 0 ? (
+                            <div className='relative w-full h-[130px] top-0 left-0 flex justify-center items-center'>
+                                <p>
+                                    Không có cuộc họp nào.
+                                </p>
+                            </div>
+                        ) : (
+                            <ul className="meeting-list w-full flex flex-col h-auto overflow-y-auto max-h-[230px] scrollbar-hide rounded-xl sm:max-h-[500px]">
                                 {meetings.map(meeting => (
                                     <li
                                         key={meeting.meeting_id}
-                                        className="meeting-item w-full border rounded-xl pt-2 p-4 mb-2 shadow"
+                                        className="meeting-item w-full border rounded-xl pt-2 p-2 mb-2 shadow"
                                     >
                                         <button
                                             className="flex flex-col w-full relative"
@@ -475,7 +506,7 @@ function FullCalendarComponent({ user }) {
                                                 {meeting.meeting_name}
                                             </h3>
 
-                                            <div className=" flex items-center text-sm mb-3">
+                                            <div className=" flex items-center text-sm mb-2">
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     height="16px"
@@ -532,9 +563,9 @@ function FullCalendarComponent({ user }) {
                                     </li>
                                 ))}
                             </ul>
-                        )}
-                    </div>
-                )}
+                        ))}
+                </div>
+                
             </div>
 
             {/* Main Content */}
@@ -562,37 +593,43 @@ function FullCalendarComponent({ user }) {
                         </button>
                     </div>
                 </div>
-
-                <div className="h-[calc(100vh-180px)]">
-                    <FullCalendar
-                        ref={calendarRef}
-                        plugins={[
-                            dayGridPlugin,
-                            timeGridPlugin,
-                            interactionPlugin,
-                            listPlugin,
-                        ]}
-                        initialView={currentView} // State quản lý view
-                        headerToolbar={false}
-                        editable={true}
-                        droppable={true}
-                        selectable={true}
-                        selectMirror={true}
-                        dayMaxEvents={true}
-                        weekends={true}
-                        events={events}
-                        eventContent={renderEventContent}
-                        eventDrop={handleEventDrop}
-                        eventResize={handleEventResize}
-                        select={handleDateSelect}
-                        eventClassNames={() => {
-                            return [
-                                'bg-transparent rounded-md border-none text-sm',
-                            ]
-                        }}
-                        height="100%"
-                    />
-                </div>
+                {loadingDataProjects ? (
+                    <div className=' relative top-0 left-0 w-full h-[calc(100vh-180px)]'>
+                        <LoadingBox content={'loading calendar...'}/>
+                    </div>
+                ):
+                (
+                    <div className="h-[calc(100vh-180px)]">
+                        <FullCalendar
+                            ref={calendarRef}
+                            plugins={[
+                                dayGridPlugin,
+                                timeGridPlugin,
+                                interactionPlugin,
+                                listPlugin,
+                            ]}
+                            initialView={currentView} // State quản lý view
+                            headerToolbar={false}
+                            editable={true}
+                            droppable={true}
+                            selectable={true}
+                            selectMirror={true}
+                            dayMaxEvents={true}
+                            weekends={true}
+                            events={events}
+                            eventContent={renderEventContent}
+                            eventDrop={handleEventDrop}
+                            eventResize={handleEventResize}
+                            select={handleDateSelect}
+                            eventClassNames={() => {
+                                return [
+                                    'bg-transparent rounded-md border-none text-sm',
+                                ]
+                            }}
+                            height="100%"
+                        />
+                    </div>
+                )}
             </div>
             {isFormOpen && (
                 <MeetingForm
