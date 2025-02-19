@@ -6,13 +6,12 @@ import InputError from '@/components/InputError'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
+import { useRouter} from 'next/navigation'
 import Image from 'next/image'
 
 const Login = () => {
     const router = useRouter()
-    const { login } = useAuth({
+    const { login,loginWithGoogle } = useAuth({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard/home',
     })
@@ -27,6 +26,7 @@ const Login = () => {
     const [shouldRemember, setShouldRemember] = useState(false)
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
+    const [errorMessage, setErrorMessage] = useState(null)
 
     useEffect(() => {
         if (router.query?.reset?.length > 0 && errors.length === 0) {
@@ -34,7 +34,12 @@ const Login = () => {
         } else {
             setStatus(null)
         }
-    }, [router.query?.reset, errors])
+
+        // Xử lý thông báo lỗi khi user đã có tài khoản
+        if (router.query?.error === 'email-exists') {
+            setErrorMessage('This email is already registered. Please log in instead.')
+        }
+    }, [router.query?.reset, router.query?.error,errors])
 
     const submitForm = async event => {
         event.preventDefault()
@@ -48,13 +53,20 @@ const Login = () => {
         })
     }
 
-    const handleGoogleLogin = () => {
-        window.location.href = '/auth/google'
-    }
-
     return (
         <section id="login">
-            <AuthSessionStatus status={status} />
+            {errorMessage && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md text-sm font-semibold mb-4">
+                    {errorMessage}
+                </div>
+            )}
+
+            {status && (
+                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md text-sm font-semibold mb-4">
+                    {status}
+                </div>
+            )}
+
             <div className="block">
                 {/* text */}
                 <div className="block-text">
@@ -145,13 +157,14 @@ const Login = () => {
                     </div>
 
                     <div className="block-button">
-                        <Button className="button">Log in</Button>
+                        <Button className="button" type='submit'>Log in</Button>
 
                         <h1>or</h1>
 
                         <Button
+                            type='button'
                             className="button google-button"
-                            onClick={handleGoogleLogin}
+                            onClick={loginWithGoogle}
                         >
                             <Image
                                 src="/image/Googlelogo.png"

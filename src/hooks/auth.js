@@ -95,6 +95,12 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .then(response => setStatus(response.data.status))
     }
 
+    // hàm login với Google
+    const loginWithGoogle = async () => {
+        await csrf()
+        window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google/redirect`
+    }
+
     const logout = async () => {
         if (!error) {
             await axios.post('/logout').then(() => mutate())
@@ -122,6 +128,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         user,
         register,
         login,
+        loginWithGoogle, //login in với gg
         forgotPassword,
         resetPassword,
         resendEmailVerification,

@@ -43,7 +43,7 @@ const TaskComments = dynamic(
 const ShowReportToTask = dynamic(
     () => import('@/components/UI/Project/ShowReportToTask'),
     {
-        ssr: true,
+        ssr: false,
         loading: () => <LoadingPage/>,
     },
 )

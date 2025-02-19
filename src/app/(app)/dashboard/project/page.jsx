@@ -12,7 +12,7 @@ import LoadingPage from '@/components/UI/loading/LoadingPage'
 const CardProject = dynamic(
     () => import('@/components/UI/Project/CardProject'),
     {
-        ssr: true,
+        ssr: false,
     },
 )
 

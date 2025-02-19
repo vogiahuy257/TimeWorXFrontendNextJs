@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/auth'
 
 const AvatarDropdown = () => {
     const { logout } = useAuth()
-
+    const { user } = useAuth()
     const router = useRouter()
 
     const handleProfileRedirect = () => {
