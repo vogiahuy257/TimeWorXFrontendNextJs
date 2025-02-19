@@ -16,11 +16,9 @@ const Login = () => {
         redirectIfAuthenticated: '/dashboard/home',
     })
     const [showPassword, setShowPassword] = useState(false)
-
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword)
     }
-
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
