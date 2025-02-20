@@ -17,11 +17,13 @@ const MeetingList = ({ meetings, handleEditMeeting }) => {
                             <button
                                 className="flex flex-col w-full relative"
                                 onClick={() => handleEditMeeting(meeting)}
-                            >
-                                <h3 className="text-base font-semibold mb-1">
-                                    {meeting.meeting_name}
-                                </h3>
-                                <div className="flex items-center text-sm mb-3">
+                            >   
+                                <div className='flex items-center'>
+                                    <h3 className="text-base font-semibold mb-1">
+                                        {meeting.meeting_name}
+                                    </h3>
+                                </div>
+                                <div className="flex items-center text-sm mb-1">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         height="16px"
