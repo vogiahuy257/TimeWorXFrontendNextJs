@@ -1,0 +1,60 @@
+
+#dashboardSetting.dark-mode
+{
+    box-shadow: 0 0 4px #ffffff99;
+}
+#dashboardSetting{
+    background-color: var(--color-white);
+    color: var(--color-black);
+    transition: color 0.3s ease-in-out,background-color 0.3s ease-in-out;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90vw; /* Chiều rộng theo viewport */
+    max-width: 600px; /* Giới hạn chiều rộng tối đa */
+    aspect-ratio: 16 / 9; /* Giữ cố định tỷ lệ 16:9 */
+    transform: translate(-50%,-50%);
+}
+
+/* Khi màn hình nhỏ hơn 480px (Mobile nhỏ) */
+@media screen and (max-width: 480px) {
+    #dashboardSetting {
+        width: 90vw; /* Nhỏ hơn nữa */
+        max-width: 400px;
+        aspect-ratio: 16 / 7;
+    }
+}
+
+#dashboardSetting .menu-left
+{
+    background-color: var(--color-whiteGray);
+    transition: background-color 0.3s ease-in-out;
+}
+
+#dashboardSetting .menu-top
+{
+    background-color: var(--color-whiteGray);
+    transition: background-color 0.3s ease-in-out;
+}
+
+#dashboardSetting .menu-top .box-button
+{
+    background-color: var(--color-black);
+    color: var(--color-white);
+    cursor: pointer;
+}
+
+#dashboardSetting .menu-top .box-right
+{
+    background-color: var(--color-light-blue);
+}
+
+#dashboardSetting .text-X{
+    color: var(--color-light-blue);
+}
+
+#dashboardSetting .content .box-after
+{
+    box-shadow: -5px -5px 0 var(--color-whiteGray);
+    transition: box-shadow 0.3s ease-in-out
+}

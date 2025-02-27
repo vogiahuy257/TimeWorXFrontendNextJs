@@ -5,12 +5,12 @@ import { useAuth } from '@/hooks/auth'
 
 const AvatarDropdown = () => {
     const { logout } = useAuth()
-    const { user } = useAuth()
-    const router = useRouter()
+    // const { user } = useAuth()
+    // const router = useRouter()
 
-    const handleProfileRedirect = () => {
-        router.push('/profile')
-    }
+    // const handleProfileRedirect = () => {
+    //     router.push('/profile')
+    // }
 
     return (
         <div className="flex items-center z-50">
@@ -39,12 +39,6 @@ const AvatarDropdown = () => {
             >
                 {/* Authentication */}
                 <div className="p-2 box-avatar">
-                    <DropdownButton
-                        onClick={handleProfileRedirect}
-                        className="button"
-                    >
-                        <span>Profiler</span>
-                    </DropdownButton>
                     <DropdownButton onClick={logout} className="button">
                         <span>Logout</span>
                     </DropdownButton>

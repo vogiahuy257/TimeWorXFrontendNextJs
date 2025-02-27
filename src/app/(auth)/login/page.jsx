@@ -6,7 +6,7 @@ import InputError from '@/components/InputError'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
-import { useRouter} from 'next/navigation'
+import { useRouter, useSearchParams} from 'next/navigation'
 import Image from 'next/image'
 
 const Login = () => {
@@ -19,6 +19,8 @@ const Login = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword)
     }
+    const searchParams = useSearchParams();
+    const error = searchParams.get("error");
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
@@ -32,12 +34,11 @@ const Login = () => {
         } else {
             setStatus(null)
         }
-
         // Xử lý thông báo lỗi khi user đã có tài khoản
-        if (router.query?.error === 'email-exists') {
+        if (error === 'email-exists') {
             setErrorMessage('This email is already registered. Please log in instead.')
         }
-    }, [router.query?.reset, router.query?.error,errors])
+    }, [router.query?.reset,error])
 
     const submitForm = async event => {
         event.preventDefault()
@@ -53,19 +54,18 @@ const Login = () => {
 
     return (
         <section id="login">
-            {errorMessage && (
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md text-sm font-semibold mb-4">
-                    {errorMessage}
-                </div>
-            )}
-
-            {status && (
-                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md text-sm font-semibold mb-4">
-                    {status}
-                </div>
-            )}
-
             <div className="block">
+                {errorMessage && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md text-sm font-base mb-4">
+                        {errorMessage}
+                    </div>
+                )}
+
+                {status && (
+                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md text-sm font-base mb-4">
+                        {status}
+                    </div>
+                )}
                 {/* text */}
                 <div className="block-text">
                     <h1>Sign in</h1>

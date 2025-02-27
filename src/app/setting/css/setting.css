@@ -1,0 +1,65 @@
+
+#setting.dark-mode
+{
+    --color-black: #ffffff;
+    --color-gray: #292b2c;
+    --color-white: #151515;
+    --color-whiteGray: #232323;
+    --color-black-rgb: 255, 255, 255;
+    --color-white-rgb: 0, 0, 0;
+    --color-black-gray: #d2d2d2;
+    --background: #222222;
+    --color-shadow: #424242df;
+    --bg-color-blue-while: #222222;
+}
+
+#setting{
+    background: radial-gradient(
+        circle,
+        rgba(var(--color-black-rgb), 0.2) 12%,
+        transparent 12%
+    );
+    background-size: 14px 14px;
+    background-position: 0 0;
+    background-color: var(--color-white);
+}
+
+#setting .box-setting
+{
+    background-color: var(--color-white);
+    color: var(--color-black);
+    border-bottom: 4px solid var(--color-black);
+}
+
+#setting.dark-mode .box-setting
+{
+    box-shadow: 0 0 4px #ffffff99;
+}
+
+#setting .box-setting select
+{
+    background-color: var(--color-white);
+    border-color: var(--color-whiteGray);
+}
+
+#setting .box-setting .box-header{
+    position: absolute;
+    top: -32px;
+    left: 0px;
+    background-color: var(--color-black);
+    color: var(--color-white);
+    padding: 4px 18px;
+    /* 0.375rem */
+}
+
+#setting .box-setting .box-header::after
+{
+    width: 18px;
+    height: 18px;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: -18px;
+    border-bottom-left-radius: 0.375rem;
+    box-shadow: -4px 0px 0 var(--color-black);
+}

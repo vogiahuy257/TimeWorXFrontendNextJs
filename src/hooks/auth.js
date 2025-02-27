@@ -7,6 +7,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
     const params = useParams()
 
+    //lấy thông tin uuser
     const {
         data: user,
         error,
@@ -21,6 +22,39 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
                 router.push('/verify-email')
             }),
     )
+
+    // lấy setting khi user được gọi
+    const {
+        data: settings,
+        error: settingsError,
+        mutate: mutateSettings,
+    } = useSWR(user ? '/api/v1/settings' : null, () =>
+        axios.get('/api/v1/settings').then(res => res.data),
+    )
+
+    // Hàm update settings
+    const updateSettings = async (newSettings, optimistic = false) => {
+        // Giữ giá trị cũ để rollback nếu lỗi
+        const previousSettings = settings
+    
+        // Cập nhật UI ngay lập tức nếu là Optimistic UI
+        if (optimistic) {
+            mutateSettings({ ...settings, ...newSettings }, false)
+        }
+    
+        try {
+            const response = await axios.put('/api/v1/settings', newSettings)
+            mutateSettings(response.data.data, false) // Cập nhật lại từ backend nếu thành công
+        } catch (error) {
+            console.error("Failed to update settings:", error)
+    
+            // Rollback UI nếu thất bại
+            if (optimistic) {
+                mutateSettings(previousSettings, false)
+            }
+        }
+    }
+    
 
     const csrf = () => axios.get('/sanctum/csrf-cookie')
 
@@ -128,6 +162,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         user,
         register,
         login,
+        settings,
+        updateSettings,
         loginWithGoogle, //login in với gg
         forgotPassword,
         resetPassword,

@@ -1,12 +1,17 @@
-import { createContext, useContext } from 'react'
+'use client'
+import { createContext, useContext , useMemo} from 'react'
+import { useAuth } from '@/hooks/auth'
 
-// Tạo Context
 const AuthContext = createContext(null)
 
-// Provider để bao bọc toàn bộ app
-export const AuthProvider = ({ user, children }) => {
-    return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>
+export const AuthProvider = ({ children }) => {
+    const { user, settings, updateSettings } = useAuth()
+    const authValue = useMemo(() => ({
+        user,
+        settings,
+        updateSettings
+    }), [user, settings])
+    return <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>
 }
 
-// Hook tiện dụng để truy cập user
 export const useAuthContext = () => useContext(AuthContext)

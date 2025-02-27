@@ -1,21 +1,27 @@
 import Link from 'next/link'
 import AvatarDropdown from './AvatarDropdown'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import '@/app/css/dashboard.css'
 
-const AuthenticatedLayout = ({ children }) => {
-    const [darkMode, setDarkMode] = useState(false)
+const AuthenticatedLayout = ({ updateSettings,settings,children }) => {
+    const [theme, setTheme] = useState(settings?.color_system || 'light-mode')
     const [expanded, setExpanded] = useState(false)
 
+    useEffect(() => {
+        if (settings?.color_system && settings.color_system !== theme) {
+            setTheme(settings.color_system)
+        }
+    }, [settings])
+    
     const toggleDarkMode = () => {
-        setDarkMode(!darkMode)
+        const newMode = settings?.color_system === 'dark-mode' ? 'light-mode' : 'dark-mode'
+        updateSettings({ color_system: newMode }) // Gọi API cập nhật settings
     }
-
     const url = usePathname()
 
     return (
-        <section id="dashboard" className={darkMode ? 'dark-mode' : ''}>
+        <section id="dashboard" className={theme}>
             <div className="block">
                 <div className="block-menu-top">
                     <div className="block-notification">
@@ -262,11 +268,13 @@ const AuthenticatedLayout = ({ children }) => {
                                 >
                                     <a>
                                         <svg />
-                                        <p>{darkMode ? 'Dark' : 'Light'}</p>
+                                        <p>{theme}</p>
                                     </a>
                                 </li>
                                 <li>
-                                    <a>
+                                    <Link
+                                        href={"/setting/system"}
+                                    >
                                         <svg
                                             width="35"
                                             height="35"
@@ -280,7 +288,7 @@ const AuthenticatedLayout = ({ children }) => {
                                             />
                                         </svg>
                                         <p>Setting</p>
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </nav>

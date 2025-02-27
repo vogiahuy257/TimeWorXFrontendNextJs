@@ -13,12 +13,29 @@ const Page = () => {
 
     const [status, setStatus] = useState(null)
     const [isChecking, setIsChecking] = useState(true)
+    const [isDisabled, setIsDisabled] = useState(false) // Vô hiệu hóa button
+    const [countdown, setCountdown] = useState(0) // Bộ đếm thời gian
 
     useEffect(() => {
         if (user !== undefined) {
             setIsChecking(false) // Khi user đã được xác định, dừng loading
         }
     }, [user])
+
+    useEffect(() => {
+        if (countdown > 0) {
+            const timer = setTimeout(() => setCountdown(countdown - 1), 1000)
+            return () => clearTimeout(timer)
+        } else {
+            setIsDisabled(false) // Hết thời gian chờ thì bật lại nút
+        }
+    }, [countdown])
+
+    const handleResendEmail = () => {
+        resendEmailVerification({ setStatus })
+        setIsDisabled(true) // Vô hiệu hóa nút
+        setCountdown(60) // Bắt đầu đếm ngược
+    }
 
     if (isChecking || !user) {
         return <LoadingBox /> // Hiển thị loading trước khi xác định trạng thái user
@@ -38,17 +55,24 @@ const Page = () => {
                     gladly send you another.
                 </div>
 
-                {status === 'verification-link-sent' && (
+                {status === 'verification-link-sent' ? (
                     <div className="font-medium text-sm text-green-600">
                         A new verification link has been sent to the email
                         address you provided during registration.
                     </div>
+                ) : (
+                    isDisabled && (
+                        <div className="font-medium text-sm text-gray-700">
+                            {`We are sending the email... Please wait ${countdown}s...`}
+                        </div>
+                    )
                 )}
 
                 <div className="block-button mt-2">
                     <Button
                         className={'button mb-2'}
-                        onClick={() => resendEmailVerification({ setStatus })}
+                        onClick={handleResendEmail}
+                        disabled={isDisabled}
                     >
                         Resend Verification Email
                     </Button>
