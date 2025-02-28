@@ -1,13 +1,13 @@
 import useSWR from 'swr'
 import axios from '@/libs/axios'
-import { useEffect } from 'react'
+import { useEffect,useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const router = useRouter()
     const params = useParams()
 
-    //lấy thông tin uuser
+    //lấy thông tin user
     const {
         data: user,
         error,
@@ -144,17 +144,19 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     }
 
     useEffect(() => {
+
         if (middleware === 'guest' && redirectIfAuthenticated && user)
+        {
             router.push(redirectIfAuthenticated)
-
-        if (middleware === 'auth' && !user?.email_verified_at)
+        }
+        if (middleware === 'auth' && !user?.email_verified_at) 
+        {
             router.push('/verify-email')
-
-        if (
-            window.location.pathname === '/verify-email' &&
-            user?.email_verified_at
-        )
+        }
+        if ( window.location.pathname === '/verify-email' && user?.email_verified_at)
+        {
             router.push(redirectIfAuthenticated)
+        }
         if (middleware === 'auth' && error) logout()
     }, [user, error])
 

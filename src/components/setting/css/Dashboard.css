@@ -1,7 +1,7 @@
 
 #dashboardSetting.dark-mode
 {
-    box-shadow: 0 0 4px #ffffff99;
+    box-shadow: 0 0 4px var(--color-black);
 }
 #dashboardSetting{
     background-color: var(--color-white);

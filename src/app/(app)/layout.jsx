@@ -1,9 +1,9 @@
 'use client'
 
-import { useAuth } from '@/hooks/auth'
+import { useAuthContext, AuthProvider } from '@/hooks/context/AuthContext'
 import AuthenticatedLayout from '@/app/(app)/AuthenticatedLayout'
-import { AuthProvider } from '@/hooks/context/AuthContext'
 import { ToastContainer } from 'react-toastify'
+import LoadingBox from '@/components/UI/loading/LoadingBox'
 import 'react-toastify/dist/ReactToastify.css'
 
 import '@/app/css/dashboard-report.css'
@@ -15,22 +15,25 @@ import '@/app/css/dashboard-project-view.css'
 import '@/app/css/dashboard-project.css'
 
 const AppLayout = ({ children }) => {
-    const { user,updateSettings, settings } = useAuth({ middleware: 'auth' })
-    if (!settings) {
-        return (
-            <div className="loading-screen">
-                <p>Loading settings...</p>
-            </div>
-        )
-    }
     return (
-        <AuthProvider user={user}>
-            <AuthenticatedLayout settings={settings} updateSettings={updateSettings} >
-                <ToastContainer className="custom_toast" />
-                {/* Bao bọc toàn bộ ứng dụng bằng AuthProvider */}
-                {children}
-            </AuthenticatedLayout>
+        <AuthProvider>
+            <DashboardContent>{children}</DashboardContent>
         </AuthProvider>
+    )
+}
+
+const DashboardContent = ({ children }) => {
+    const { settings, logout } = useAuthContext()
+
+    if (!settings) {
+        return <LoadingBox />
+    }
+
+    return (
+        <AuthenticatedLayout settings={settings} logout={logout}>
+            <ToastContainer className="custom_toast" />
+            {children}
+        </AuthenticatedLayout>
     )
 }
 

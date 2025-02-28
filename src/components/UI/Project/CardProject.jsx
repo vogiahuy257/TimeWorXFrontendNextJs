@@ -9,6 +9,7 @@ export default function CardProject({
     formatDateRange,
     handleDelete,
     handleEdit,
+    onClickCardProject
 }) {
     return (
         <div
@@ -18,6 +19,7 @@ export default function CardProject({
             <Link
                 className="card-form-view"
                 href={`/dashboard/project/${project.project_id}`}
+                onClick={onClickCardProject}
             >
                 <div className="card-title">
                     <div className="card-title-text">

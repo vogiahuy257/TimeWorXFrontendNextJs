@@ -2,18 +2,19 @@
 import { useState,useEffect } from 'react'
 import { useAuthContext } from '@/hooks/context/AuthContext'
 import Dashboard from '@/components/setting/Dashboard'
+import Loading from '../loading'
 
 const pageSystemSetting = () => {
     const { updateSettings, settings } = useAuthContext()
+    const [isLoading, setIsLoading] = useState(true)
     const [theme, setTheme] = useState(settings?.color_system || 'light-mode')
     const [language, setLanguage] = useState(settings?.language || 'vi')
 
     useEffect(() => {
-        if (settings?.color_system && settings.color_system !== theme) {
-            setTheme(settings.color_system)
-        }
-        if (settings?.language && settings.language !== language) {
-            setLanguage(settings.language)
+        if (settings) {
+            setTheme(settings.color_system || 'light-mode')
+            setLanguage(settings.language || 'vi')
+            setIsLoading(false)
         }
     }, [settings])
 
@@ -28,6 +29,12 @@ const pageSystemSetting = () => {
         setLanguage(newLanguage)
         // Gọi API với optimistic UI (rollback nếu thất bại)
         updateSettings({ language: newLanguage }, true)
+    }
+
+    if (isLoading) {
+        return (
+            <Loading content={"loading setting system..."}/>
+        )
     }
 
     return (

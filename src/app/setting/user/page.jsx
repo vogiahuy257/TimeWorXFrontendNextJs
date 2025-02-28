@@ -3,8 +3,12 @@ import { useAuthContext } from '@/hooks/context/AuthContext'
 import { useState, useEffect } from 'react'
 import Avatar from '@/components/Avatar'
 import ConfirmationForm from '@/components/ConfirmationForm'
+import EditableEmail from './EditableEmail'
 import Loading from '../loading'
+import UpdatePasswordForm from './UpdatePasswordForm'
 import Image from 'next/image'
+import axios from '@/libs/axios'
+import EditableName from './EditableName'
 
 const PageUserSetting = () => {
     const { user } = useAuthContext()
@@ -29,6 +33,33 @@ const PageUserSetting = () => {
         // TODO: Gọi API để liên kết tài khoản Google
         console.log("Gọi API liên kết tài khoản Google")
         setGoogleId(true) // Giả lập liên kết thành công
+    }
+
+    const savePassword = async (currentPassword, newPassword) => {
+        console.log(currentPassword)
+        console.log(newPassword)
+        // try {
+        //     const response = await axios.post("/api/change-password", {
+        //       currentPassword,
+        //       newPassword,
+        //     });
+        
+        //     return response.data; 
+        //   } catch (error) {
+        //     // Lấy thông báo lỗi từ backend
+        //     throw new Error(error.response?.data?.message || "Failed to update password");
+        //   }
+      };
+
+    const onNameChange = async (newName) => {
+        // TODO: Gọi API để cập nhật tên
+        console.log("Gọi API cập nhật tên")
+        console.log(newName)
+    }
+    const onSaveEmail = async (newEmail) => {
+        // TODO: Gọi API để lưu email
+        console.log('update new email')
+        console.log(newEmail)
     }
 
     const handleDeleteAccount = async () => {
@@ -74,29 +105,40 @@ const PageUserSetting = () => {
 
     if (isLoading) {
         return (
-            <Loading/>
+            <Loading content={'loading setting system...'}/>
         )
     }
 
     return (
-        <div className="animate-fade-in scrollbar-hide w-full max-w-[540px] m-auto h-full flex flex-col justify-center items-center">
-            <div className="box-setting shadow-xl rounded-md w-full h-60 relative sm:h-44">
+        <div className="animate-fade-in py-32 scrollbar-hide w-full max-w-[540px] m-auto flex flex-col justify-center items-center">
+            
+            <div className="box-setting shadow-xl rounded-md w-full h-72 relative sm:h-44">
                 <Avatar
                     name={name}
                     src={profilePicture}
                     size={120}
-                    className="box-avatar relative -top-[60px] rounded-full flex justify-center"
+                    className="box-avatar relative -top-[80px] rounded-full flex justify-center"
                     onImageUpload={handleImageUpload}
+                >
+                    <EditableName name={name} onNameChange={onNameChange}/>
+                </Avatar>
+                <EditableEmail
+                    email={email}
+                    onSaveEmail={onSaveEmail}
                 />
-                <div className="flex flex-col m-auto w-[90%] items-center gap-2 relative bottom-10 sm:flex-row">
-                    <h1 className="text-base font-semibold">Email:</h1>
-                    <p className="text-sm px-2 py-1 border-2 border-gray-300 rounded-md">{email}</p>
-                    <span className="text-sm ml-2 text-gray-500">Cannot be changed</span>
-                </div>
             </div>
-            <div className='box-setting shadow-xl p-4 rounded-md w-full h-28 mt-12 relative flex flex-col justify-center items-start'>
-                <h1 className='box-header rounded-t-md'>Linked Account</h1>
-                <p className="text-sm font-medium">Linked Google:</p>
+
+            <div className='box-setting shadow-xl p-4 rounded-md w-full h-auto mt-12 relative flex flex-col justify-center items-start'>
+                <h1 className='box-header rounded-t-md'>Update password</h1>
+                <p className='text-xs'>Ensure your password is strong and secure to protect your account.</p>
+                <UpdatePasswordForm
+                    savePassword={savePassword}
+                />
+            </div>
+
+            <div className='box-setting shadow-xl p-4 rounded-md w-full h-auto mt-12 relative flex flex-col justify-center items-start'>
+                <h1 className='box-header rounded-t-md'>Linked account</h1>
+                <p className="text-sm font-medium mb-2">Linked Google:</p>
                 <div className="flex items-center h-full gap-3">
                     <button
                         className={`flex items-center gap-3 px-5 py-2 border rounded-lg shadow-md transition
@@ -119,8 +161,9 @@ const PageUserSetting = () => {
                     )}
                 </div>
             </div>
-            <div className='box-setting shadow-xl p-4 rounded-md w-full h-28 mt-12 relative flex flex-col justify-center items-start'>
-                <h1 className='box-header rounded-t-md'>Delete Account</h1>
+
+            <div className='box-setting shadow-xl p-4 rounded-md w-full h-auto mt-12 relative flex flex-col justify-center items-start'>
+                <h1 className='box-header rounded-t-md'>Delete account</h1>
                 <p className="text-sm text-gray-600 mb-3">This action is permanent and cannot be undone.</p>
                 <button 
                     className="px-5 py-2 text-white bg-red-600 border gap-2 border-red-700 flex justify-center items-center rounded-lg shadow-md 

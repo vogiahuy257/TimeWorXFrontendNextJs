@@ -18,7 +18,7 @@ const LayoutComponent = ({ children }) => {
     }, [user])
 
     return (
-        <section id="setting" className={`${settings?.color_system} scrollbar-hide w-full h-screen`}>
+        <section id="setting" className={`${settings?.color_system} scrollbar-hide overflow-auto w-full h-screen`}>
                 <Menu pathname={pathname}/>
                 {children}
         </section>

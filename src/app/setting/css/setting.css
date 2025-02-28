@@ -24,6 +24,30 @@
     background-color: var(--color-white);
 }
 
+#setting.dark-mode .btn-menu-home
+{
+    box-shadow: 0 0 4px var(--color-black);
+}
+
+#setting.dark-mode .btn-setting.active
+{
+    background-color: var(--color-light-blue);
+    color: #ffffff;
+}
+#setting .btn-setting.active
+{
+    color: var(--color-light-blue);
+}
+#setting .btn-setting
+{
+    background-color: var(--color-white);
+    color: var(--color-black);
+}
+
+#setting .btn-setting:hover{
+    color: var(--color-light-blue);
+}
+
 #setting .box-setting
 {
     background-color: var(--color-white);
@@ -33,7 +57,17 @@
 
 #setting.dark-mode .box-setting
 {
-    box-shadow: 0 0 4px #ffffff99;
+    box-shadow: 0 0 4px var(--color-black);
+}
+
+#setting.dark-mode .box-setting button
+{
+    box-shadow: 0 0 4px var(--color-black);
+}
+
+#setting.dark-mode .box-setting input
+{
+    background-color: var(--color-white);
 }
 
 #setting .box-setting select

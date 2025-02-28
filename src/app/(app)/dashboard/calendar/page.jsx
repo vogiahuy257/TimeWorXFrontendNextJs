@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic'
 // Dynamically load FullCalendarComponent for better performance
 const FullCalendarComponent = dynamic(
     () => import('@/components/UI/Calendar/FullCalendarComponent'),
-    { ssr: true },
+    { ssr: false },
 )
 
 export default function Calendar() {

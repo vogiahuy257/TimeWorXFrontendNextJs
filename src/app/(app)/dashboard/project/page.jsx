@@ -56,7 +56,11 @@ export default function Folder() {
     const [searchQuery, setSearchQuery] = useState('')
     const [onChangeDeteleProject, setOnChangeDeteleProject] = useState(null)
     const [loadingData, setLoadingData] = useState(true)
+    const [loadingCardProject, setLoadingCardProject] = useState(false)
 
+    const onClickCardProject = () => {
+        setLoadingCardProject(!loadingCardProject)
+    }
     const statusOrder = {
         verify: 1,
         'in-progress': 2,
@@ -260,6 +264,7 @@ export default function Folder() {
                                     formatDateRange={formatDateRange}
                                     handleDelete={isDeteleProject}
                                     handleEdit={handleEdit}
+                                    onClickCardProject={onClickCardProject}
                                 />
                             ))
                         )}
@@ -267,6 +272,9 @@ export default function Folder() {
                 </div>
             </section>
 
+            {loadingCardProject && (
+                <LoadingPage/>
+            )}
             {isDeletedFormOpen && (
                 <HistoryBox
                     resetPage={fetchProjectData}

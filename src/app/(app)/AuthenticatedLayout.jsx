@@ -1,27 +1,15 @@
 import Link from 'next/link'
 import AvatarDropdown from './AvatarDropdown'
 import { usePathname } from 'next/navigation'
-import { useState,useEffect } from 'react'
+import { useState } from 'react'
 import '@/app/css/dashboard.css'
 
-const AuthenticatedLayout = ({ updateSettings,settings,children }) => {
-    const [theme, setTheme] = useState(settings?.color_system || 'light-mode')
+const AuthenticatedLayout = ({ settings,children,logout }) => {
     const [expanded, setExpanded] = useState(false)
-
-    useEffect(() => {
-        if (settings?.color_system && settings.color_system !== theme) {
-            setTheme(settings.color_system)
-        }
-    }, [settings])
-    
-    const toggleDarkMode = () => {
-        const newMode = settings?.color_system === 'dark-mode' ? 'light-mode' : 'dark-mode'
-        updateSettings({ color_system: newMode }) // Gọi API cập nhật settings
-    }
     const url = usePathname()
 
     return (
-        <section id="dashboard" className={theme}>
+        <section id="dashboard" className={settings.color_system || 'light-mode'}>
             <div className="block">
                 <div className="block-menu-top">
                     <div className="block-notification">
@@ -262,7 +250,7 @@ const AuthenticatedLayout = ({ updateSettings,settings,children }) => {
                     <div className="menu menu-bot">
                         <nav>
                             <ul>
-                                <li
+                                {/* <li
                                     id="toggle-dark-mode"
                                     onClick={toggleDarkMode}
                                 >
@@ -270,7 +258,7 @@ const AuthenticatedLayout = ({ updateSettings,settings,children }) => {
                                         <svg />
                                         <p>{theme}</p>
                                     </a>
-                                </li>
+                                </li> */}
                                 <li>
                                     <Link
                                         href={"/setting/system"}
@@ -289,6 +277,31 @@ const AuthenticatedLayout = ({ updateSettings,settings,children }) => {
                                         </svg>
                                         <p>Setting</p>
                                     </Link>
+                                </li>
+                                <li className='mt-2'>
+                                    <button className={`relative ${expanded&&('flex justify-center items-center')} m-auto bg-black p-2 shadow-lg shadow-white rounded-md hover:bg-blue-700 group`}
+                                    onClick={logout}>
+                                        {/* SVG Icon */}
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            height="30px"
+                                            viewBox="0 -960 960 960"
+                                            width="30px"
+                                            fill="#ffffff"  
+                                        >
+                                            <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h240q17 0 28.5 11.5T480-800q0 17-11.5 28.5T440-760H200v560h240q17 0 28.5 11.5T480-160q0 17-11.5 28.5T440-120H200Zm487-320H400q-17 0-28.5-11.5T360-480q0-17 11.5-28.5T400-520h287l-75-75q-11-11-11-27t11-28q11-12 28-12.5t29 11.5l143 143q12 12 12 28t-12 28L669-309q-12 12-28.5 11.5T612-310q-11-12-10.5-28.5T613-366l74-74Z"/>
+                                        </svg>
+
+                                        {/* Hover Text */}
+                                        {expanded ? (
+                                         <span className='ml-1 text-xs text-white'>Logout</span>   
+                                        ):(
+                                            <span className="absolute left-1/2 -translate-x-1/2 bottom-0  mb-2 px-3 py-1 text-xs text-white bg-black rounded-md shadow-lg opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:bottom-full">
+                                                Logout
+                                            </span>
+                                        )}
+                                        
+                                    </button>
                                 </li>
                             </ul>
                         </nav>
