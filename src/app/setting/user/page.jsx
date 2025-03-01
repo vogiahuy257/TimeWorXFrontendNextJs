@@ -19,6 +19,8 @@ const PageUserSetting = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [showConfirm, setShowConfirm] = useState(null)
 
+    // sửa form delete accout cần phải tạo form cho người dùng nhập pass gửi request tới frontend
+
     useEffect(() => {
         if (user) {
             setName(user.name || "")
