@@ -18,7 +18,7 @@ const AvatarDropdown = () => {
                     <Avatar
                         name={name}
                         src={profilePicture}
-                        size={80}
+                        size={30}
                         className=""
                     />
                 </div>
