@@ -2,24 +2,36 @@
 import { useAuthContext } from '@/hooks/context/AuthContext'
 import { useState, useEffect } from 'react'
 import Avatar from '@/components/Avatar'
-import ConfirmationForm from '@/components/ConfirmationForm'
 import EditableEmail from './EditableEmail'
 import Loading from '../loading'
 import UpdatePasswordForm from './UpdatePasswordForm'
+import LoadingPage from '@/components/UI/loading/LoadingPage'
 import Image from 'next/image'
 import axios from '@/libs/axios'
+import dynamic from 'next/dynamic'
 import EditableName from './EditableName'
+import ToastNotification from '@/components/ToastNotification'
+
+const DeleteAccountForm = dynamic(
+    () => import('./DeleteAccountForm'),
+    {
+        ssr: false,
+        loading: () => <LoadingPage/>,
+    },
+)
 
 const PageUserSetting = () => {
-    const { user } = useAuthContext()
+    const { user, handleLinkGoogleAccount } = useAuthContext()
     const [name, setName] = useState("")
     const [profilePicture, setProfilePicture] = useState("")
     const [email, setEmail] = useState("")
     const [googleId, setGoogleId] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
-    const [showConfirm, setShowConfirm] = useState(null)
-
-    // sửa form delete accout cần phải tạo form cho người dùng nhập pass gửi request tới frontend
+    const [showDelete, setShowDelete] = useState(null)
+    const [showToast, setShowToast] = useState(false)
+    const [typeToast, setTypeToast] = useState("")
+    const [messageToast, setMessageToast] = useState("")
+    const [isLoadingPage, setIsLoadingPage] = useState(false)
 
     useEffect(() => {
         if (user) {
@@ -31,77 +43,103 @@ const PageUserSetting = () => {
         }
     }, [user])
 
-    const handleLinkAccount = () => {
-        // TODO: Gọi API để liên kết tài khoản Google
-        console.log("Gọi API liên kết tài khoản Google")
-        setGoogleId(true) // Giả lập liên kết thành công
+    const runToast = (type,message) => {
+        if(type && message) {
+            setTypeToast(type)
+            setMessageToast(message)
+            setShowToast(true)
+        }
     }
 
-    const savePassword = async (currentPassword, newPassword) => {
-        console.log(currentPassword)
-        console.log(newPassword)
-        // try {
-        //     const response = await axios.post("/api/change-password", {
-        //       currentPassword,
-        //       newPassword,
-        //     });
-        
-        //     return response.data; 
-        //   } catch (error) {
-        //     // Lấy thông báo lỗi từ backend
-        //     throw new Error(error.response?.data?.message || "Failed to update password");
-        //   }
-      };
+    const savePassword = async (currentPassword, newPassword,newConfirmationPassword) => {
+        try {
+            const response = await axios.put("/api/v1/settings/update-password", {
+                current_password:currentPassword,
+                password:newPassword,
+                password_confirmation:newConfirmationPassword,
+            })
+            if(response.status === 200) {
+                runToast('success','Password updated successfully')
+            }
+          } catch (error) {
+            const errorMessages = error.response?.data?.errors
+            if (errorMessages) {
+                const errorList = Object.values(errorMessages).flat().join("\n")
+                runToast("error", errorList)
+            } else {
+                runToast("error", error.response?.data?.message || "An error occurred")
+            }
+          }
+      }
 
-    const onNameChange = async (newName) => {
-        // TODO: Gọi API để cập nhật tên
-        console.log("Gọi API cập nhật tên")
-        console.log(newName)
+      const onNameChange = async (newName) => {
+        try {
+            const response = await axios.put("/api/v1/settings/update-name", { name: newName })
+    
+            if (response.status === 200) {
+                setName(newName)
+                runToast('success','Name updated successfully')
+            } 
+        } catch (error) {
+            runToast('error',error.response?.data?.message || error.message)
+        }
     }
+    
     const onSaveEmail = async (newEmail) => {
-        // TODO: Gọi API để lưu email
-        console.log('update new email')
-        console.log(newEmail)
+        try {
+            const response = await axios.put("/api/v1/settings/update-email", { email: newEmail })
+    
+            if (response.status === 200) {
+                setEmail(newEmail)
+                runToast('success','Email updated successfully')
+            } 
+        } catch (error) {
+            runToast('error',error.response?.data?.message || error.message)
+        }
     }
 
-    const handleDeleteAccount = async () => {
+    const handleDeleteAccount = async (password) => {
         console.log('delete submit!!!')
+        console.log(password)
         // try {
         //     const response = await axios.delete('/api/delete-account', {
         //         data: { userId: user.id }
-        //     });
+        //     })
 
         //     if (response.status === 200) {
-        //         alert('Your account has been deleted successfully.');
+        //         alert('Your account has been deleted successfully.')
         //         // TODO: Xử lý đăng xuất hoặc chuyển hướng trang sau khi xóa tài khoản
         //     } else {
-        //         alert('Failed to delete account.');
+        //         alert('Failed to delete account.')
         //     }
         // } catch (error) {
-        //     console.error('Error deleting account:', error);
-        //     alert('An error occurred while deleting the account.');
+        //     console.error('Error deleting account:', error)
+        //     alert('An error occurred while deleting the account.')
         // }
     }
 
-    const handleClose = async (isConfirmed) => {
-        setShowConfirm(false); // Đóng modal trước
-    
-        if (isConfirmed) {
-            await handleDeleteAccount(); // Chỉ xóa tài khoản nếu người dùng chọn Yes
+    const onImageUpload = async (file) => {
+        if (!file.type.startsWith("image/")) {
+            runToast("error", "Please upload a valid image file.");
+            return;
+          }
+          
+        const formData = new FormData()
+        formData.append("profile_picture", file)
+        try{
+            setIsLoadingPage(true)
+            const response = await axios.post("/api/v1/settings/update-profile-picture", formData)
+            setIsLoadingPage(false)
+            if(response.data.profile_picture)
+            {
+                setProfilePicture(response.data.profile_picture)
+                runToast('success',response?.data?.message)
+            }
         }
-    };
-
-    // chưa truyền đúng biến có confirm
-    const handleDeleteClick = async () => {
-        setShowConfirm(true)
-    }    
-
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0]
-        if (file) {
-            const imageUrl = URL.createObjectURL(file)
-            setProfilePicture(imageUrl)
-            // TODO: Upload file lên server nếu cần
+        catch(error)
+        {
+            setIsLoadingPage(false)
+            runToast('error',error.response?.data?.message || error.message)
         }
     }
 
@@ -117,10 +155,10 @@ const PageUserSetting = () => {
             <div className="box-setting shadow-xl rounded-md w-full h-72 relative sm:h-44">
                 <Avatar
                     name={name}
-                    src={profilePicture}
+                    src={`${profilePicture}`}
                     size={120}
                     className="box-avatar relative -top-[80px] rounded-full flex justify-center"
-                    onImageUpload={handleImageUpload}
+                    onImageUpload={onImageUpload}
                 >
                     <EditableName name={name} onNameChange={onNameChange}/>
                 </Avatar>
@@ -146,7 +184,7 @@ const PageUserSetting = () => {
                         className={`flex items-center gap-3 px-5 py-2 border rounded-lg shadow-md transition
                                     ${googleId ? 'bg-gray-800 text-white cursor-not-allowed' 
                                             : 'bg-black text-white hover:bg-gray-800 active:scale-95'}`}
-                        onClick={handleLinkAccount}
+                        onClick={handleLinkGoogleAccount}
                         disabled={googleId} // Disable button when already linked
                     >
                         <Image src="/image/Googlelogo.png" width={20} height={20} alt="Google Logo" />
@@ -166,26 +204,32 @@ const PageUserSetting = () => {
 
             <div className='box-setting shadow-xl p-4 rounded-md w-full h-auto mt-12 relative flex flex-col justify-center items-start'>
                 <h1 className='box-header rounded-t-md'>Delete account</h1>
-                <p className="text-sm text-gray-600 mb-3">This action is permanent and cannot be undone.</p>
+                <p className="text-sm mb-3">This action is permanent and cannot be undone.</p>
                 <button 
                     className="px-5 py-2 text-white bg-red-600 border gap-2 border-red-700 flex justify-center items-center rounded-lg shadow-md 
                             hover:bg-red-700 transition active:scale-95 focus:ring-2 focus:ring-red-400"
-                    onClick={handleDeleteClick} // Gọi hàm xác nhận xóa tài khoản
+                    onClick={() => setShowDelete(true)} // Gọi hàm xác nhận xóa tài khoản
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#FFFFFF"><path d="M277.37-111.87q-37.78 0-64.39-26.61t-26.61-64.39v-514.5q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H354.5q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17h159.52q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33h168.61q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17v514.5q0 37.78-26.61 64.39t-64.39 26.61H277.37Zm405.26-605.5H277.37v514.5h405.26v-514.5ZM398.57-280.24q17.95 0 30.29-12.34 12.34-12.33 12.34-30.29v-274.74q0-17.96-12.34-30.29-12.34-12.34-30.29-12.34-17.96 0-30.42 12.34-12.45 12.33-12.45 30.29v274.74q0 17.96 12.45 30.29 12.46 12.34 30.42 12.34Zm163.1 0q17.96 0 30.3-12.34 12.33-12.33 12.33-30.29v-274.74q0-17.96-12.33-30.29-12.34-12.34-30.3-12.34-17.95 0-30.41 12.34-12.46 12.33-12.46 30.29v274.74q0 17.96 12.46 30.29 12.46 12.34 30.41 12.34Zm-284.3-437.13v514.5-514.5Z"/></svg>
                     <span className="font-medium text-xs">Delete Account</span>
                 </button>
             </div>
-            {showConfirm && (
-                <ConfirmationForm
-                        type="help"
-                        styleToBox="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2"
-                        styleToChildren="text-md"
-                        handleConfirm={handleClose}
-                    >
-                        Are you sure you want to delete your account? <p className='text-sm'>This action is permanent and cannot be undone.</p>
-                </ConfirmationForm>
+            {showDelete && (
+                <DeleteAccountForm
+                    handleDelete={handleDeleteAccount}
+                    handleClose={() => setShowDelete(false)}
+                />
             )}
+            {showToast && (
+                <ToastNotification 
+                    message={messageToast || "error"} 
+                    type={typeToast || "error"}
+                    duration={2000}
+                    onClose={() => setShowToast(false)}
+                />
+            )}
+
+            {isLoadingPage && <LoadingPage />}
         </div>
     )
 }

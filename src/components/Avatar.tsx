@@ -1,4 +1,6 @@
 import { useState,ReactNode } from "react";
+import Image from "next/image";
+
 
 interface AvatarProps {
   name?: string;
@@ -29,15 +31,9 @@ const Avatar: React.FC<AvatarProps> = ({
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setAvatarSrc(imageUrl);
-      setImageError(false);
-
-      if (onImageUpload) {
+      if (onImageUpload && file) {
         onImageUpload(file);
       }
-    }
   };
 
   return (
@@ -45,17 +41,19 @@ const Avatar: React.FC<AvatarProps> = ({
       {/* Avatar */}
       <label htmlFor="avatar-upload" className="cursor-pointer">
         <div
-          className="flex items-center justify-center rounded-full bg-blue-500 text-white font-bold overflow-hidden border-4 border-gray-300 cursor-pointer"
+          className={`flex items-center justify-center rounded-full ${avatarSrc && !imageError ? null : ('bg-blue-500 text-white font-bold')} overflow-hidden ${size > 80 ? ('border-4 border-gray-300 cursor-pointer') : null} `}
           style={{ width: size, height: size, fontSize: size / 2 }}
         >
           {avatarSrc && !imageError ? (
-            <img
+            <Image
               src={avatarSrc}
               alt={name}
-              className="rounded-full object-cover"
-              style={{ width: size, height: size }}
+              className=" rounded-full object-cover"
+              width={size}
+              height={size}
               onError={() => setImageError(true)}
-            />
+              unoptimized
+            />          
           ) : (
             <span>{initials}</span>
           )}

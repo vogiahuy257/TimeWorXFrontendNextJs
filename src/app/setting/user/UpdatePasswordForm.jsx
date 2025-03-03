@@ -20,7 +20,7 @@ const UpdatePasswordForm = ({savePassword}) => {
     }
 
     setIsLoading(true)
-    savePassword(currentPassword, newPassword)
+    savePassword(currentPassword, newPassword,confirmPassword)
     .then((response) => {
       setSuccess(response?.message || "Password updated successfully!")
       setCurrentPassword("")

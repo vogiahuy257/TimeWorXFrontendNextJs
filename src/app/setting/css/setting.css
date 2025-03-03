@@ -60,12 +60,12 @@
     box-shadow: 0 0 4px var(--color-black);
 }
 
-#setting.dark-mode .box-setting button
+#setting.dark-mode button:not(.button-icon)
 {
     box-shadow: 0 0 4px var(--color-black);
 }
 
-#setting.dark-mode .box-setting input
+#setting.dark-mode input
 {
     background-color: var(--color-white);
 }
@@ -96,4 +96,17 @@
     right: -18px;
     border-bottom-left-radius: 0.375rem;
     box-shadow: -4px 0px 0 var(--color-black);
+}
+
+#setting .deleteAccountForm
+{
+    background-color: var(--color-white);
+    color: var(--color-black);
+    border-bottom: 4px solid var(--color-black);
+    box-shadow: 0 0 4px var(--color-black);
+}
+
+#setting.dark-mode .button-icon
+{
+    color: var(--color-black);
 }

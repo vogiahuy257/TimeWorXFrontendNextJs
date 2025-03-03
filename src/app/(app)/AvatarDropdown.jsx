@@ -4,13 +4,13 @@ import { useAuthContext } from '@/hooks/context/AuthContext'
 import Avatar from "@/components/Avatar"
 const AvatarDropdown = () => {
     const { user } = useAuthContext()
-    const [name, setName] = useState("")
-    const [profilePicture, setProfilePicture] = useState("")
+    const [name, setName] = useState(user.name || "")
+    const [profilePicture, setProfilePicture] = useState(user.profile_picture || "")
     useEffect(() => {
-            if (user) {
-                setName(user.name || "")
-                setProfilePicture(user.profile_picture || "")
-            }
+        if (user) {
+            setName(user.name)
+            setProfilePicture(user.profile_picture)
+        }
     }, [user])
     return (
         <div className="flex items-center z-50">
@@ -18,7 +18,7 @@ const AvatarDropdown = () => {
                     <Avatar
                         name={name}
                         src={profilePicture}
-                        size={44}
+                        size={80}
                         className=""
                     />
                 </div>

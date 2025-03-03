@@ -388,20 +388,6 @@
     color: var(--color-black);
 }
 
-#dashboard.dark-mode
-    .block
-    .block-menu-left
-    .menu-bot
-    li#toggle-dark-mode
-    a
-    svg {
-    background-image: url('/image/icon-darkmode.svg');
-}
-
-#dashboard .block .block-menu-left .menu-bot li#toggle-dark-mode a svg {
-    background-image: url('/image/icon-lightmode.svg');
-}
-
 #dashboard .block .block-menu-left:not(.expanded) .menu-bot li:hover a p {
     opacity: 1;
 }

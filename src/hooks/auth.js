@@ -129,11 +129,18 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .then(response => setStatus(response.data.status))
     }
 
-    // hàm login với Google
+    // hàm link account
+    const handleLinkGoogleAccount = async () => {
+        await csrf()
+        window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google/redirect?mode=link`
+    }
+    
+    // Hàm login với Google
     const loginWithGoogle = async () => {
         await csrf()
-        window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google/redirect`
+        window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google/redirect?mode=login`
     }
+    
 
     const logout = async () => {
         if (!error) {
@@ -144,21 +151,25 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     }
 
     useEffect(() => {
-
-        if (middleware === 'guest' && redirectIfAuthenticated && user)
-        {
-            router.push(redirectIfAuthenticated)
+        if (!user) return; // Nếu user chưa được load, không làm gì cả
+    
+        if (middleware === 'guest' && redirectIfAuthenticated && user) {
+            router.replace(redirectIfAuthenticated); // Dùng replace để không làm kẹt trang trước đó
+            return;
         }
-        if (middleware === 'auth' && !user?.email_verified_at) 
-        {
-            router.push('/verify-email')
+    
+        if (middleware === 'auth') {
+            if (!user.email_verified_at) {
+                if (router.pathname !== '/verify-email') {
+                    router.replace('/verify-email');
+                }
+            } else if (router.pathname === '/verify-email') {
+                router.replace(redirectIfAuthenticated);
+            }
         }
-        if ( window.location.pathname === '/verify-email' && user?.email_verified_at)
-        {
-            router.push(redirectIfAuthenticated)
-        }
-        if (middleware === 'auth' && error) logout()
-    }, [user, error])
+    
+        if (middleware === 'auth' && error) logout();
+    }, [user, error]);    
 
     return {
         user,
@@ -167,6 +178,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         settings,
         updateSettings,
         loginWithGoogle, //login in với gg
+        handleLinkGoogleAccount, //link account với gg
         forgotPassword,
         resetPassword,
         resendEmailVerification,
