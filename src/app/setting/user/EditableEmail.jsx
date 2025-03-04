@@ -1,35 +1,35 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const EditableEmail = ({ email, onSaveEmail }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedEmail, setEditedEmail] = useState(email);
-  const [emailError, setEmailError] = useState("");
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedEmail, setEditedEmail] = useState(email)
+  const [emailError, setEmailError] = useState("")
 
   // Hàm kiểm tra email hợp lệ
   const validateEmail = (email) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  }
 
   const handleSave = () => {
     if (!validateEmail(editedEmail)) {
-      setEmailError("Invalid email!");
-      return;
+      setEmailError("Invalid email!")
+      return
     }
 
-    setEmailError("");
+    setEmailError("")
     if (onSaveEmail) {
-      onSaveEmail(editedEmail);
+      onSaveEmail(editedEmail)
     }
-    setIsEditing(false);
-  };
+    setIsEditing(false)
+  }
 
   const handleBlur = (e) => {
-    if (e.relatedTarget && e.relatedTarget.id === "save-button") return;
+    if (e.relatedTarget && e.relatedTarget.id === "save-button") return
     
-    setIsEditing(false);
-    setEditedEmail(email);
-    setEmailError("");
-  };
+    setIsEditing(false)
+    setEditedEmail(email)
+    setEmailError("")
+  }
 
   return (
     <div className="flex flex-col m-auto w-[90%] gap-2 relative bottom-14 sm:flex-row">
@@ -41,8 +41,8 @@ const EditableEmail = ({ email, onSaveEmail }) => {
               type="email"
               value={editedEmail}
               onChange={(e) => {
-                setEditedEmail(e.target.value);
-                setEmailError(""); // Xóa lỗi khi người dùng nhập lại
+                setEditedEmail(e.target.value)
+                setEmailError("") // Xóa lỗi khi người dùng nhập lại
               }}
               onBlur={handleBlur}
               onKeyDown={(e) => e.key === "Enter" && handleSave()}
@@ -79,7 +79,7 @@ const EditableEmail = ({ email, onSaveEmail }) => {
         </p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default EditableEmail;
+export default EditableEmail

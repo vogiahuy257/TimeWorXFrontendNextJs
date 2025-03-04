@@ -99,29 +99,25 @@ const PageUserSetting = () => {
     }
 
     const handleDeleteAccount = async (password) => {
-        console.log('delete submit!!!')
-        console.log(password)
-        // try {
-        //     const response = await axios.delete('/api/delete-account', {
-        //         data: { userId: user.id }
-        //     })
-
-        //     if (response.status === 200) {
-        //         alert('Your account has been deleted successfully.')
-        //         // TODO: Xử lý đăng xuất hoặc chuyển hướng trang sau khi xóa tài khoản
-        //     } else {
-        //         alert('Failed to delete account.')
-        //     }
-        // } catch (error) {
-        //     console.error('Error deleting account:', error)
-        //     alert('An error occurred while deleting the account.')
-        // }
-    }
+        try {
+            const response = await axios.post('/api/v1/settings/delete-account', { password })
+    
+            if (response.status === 200) {
+                runToast('success',response?.data?.message)
+                window.location.pathname = '/login'
+            } else {
+                runToast('error','Failed to delete account.')
+            }
+        } catch (error) {
+            runToast('error',error.response?.data?.message || error.message)
+        }
+    }    
+    
 
     const onImageUpload = async (file) => {
         if (!file.type.startsWith("image/")) {
-            runToast("error", "Please upload a valid image file.");
-            return;
+            runToast("error", "Please upload a valid image file.")
+            return
           }
           
         const formData = new FormData()

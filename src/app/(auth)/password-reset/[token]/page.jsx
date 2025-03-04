@@ -6,12 +6,14 @@ import InputError from '@/components/InputError'
 import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import LoadingPage from '@/components/UI/loading/LoadingPage'
 import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
 
 const PasswordReset = () => {
     const searchParams = useSearchParams()
 
     const { resetPassword } = useAuth({ middleware: 'guest' })
+    const [loading, setLoading] = useState(false)
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -19,16 +21,21 @@ const PasswordReset = () => {
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
 
-    const submitForm = event => {
+    const submitForm = async event => {
         event.preventDefault()
+        setLoading(true)
 
-        resetPassword({
-            email,
-            password,
-            password_confirmation: passwordConfirmation,
-            setErrors,
-            setStatus,
-        })
+        try {
+            await resetPassword({
+                email,
+                password,
+                password_confirmation: passwordConfirmation,
+                setErrors,
+                setStatus,
+            })
+        } finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
@@ -48,6 +55,7 @@ const PasswordReset = () => {
 
     return (
         <section id="login" className="reset-password">
+            {loading && <LoadingPage />}
             <div className="block">
                 {/* Session Status */}
                 <AuthSessionStatus className="my-2" status={status} />

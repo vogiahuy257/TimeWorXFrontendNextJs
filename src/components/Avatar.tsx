@@ -1,14 +1,14 @@
-import { useState,ReactNode } from "react";
-import Image from "next/image";
+import { useState,ReactNode } from "react"
+import Image from "next/image"
 
 
 interface AvatarProps {
-  name?: string;
-  src?: string;
-  size?: number;
-  className?: string;
-  onImageUpload?: (file: File) => void;
-  children?: ReactNode;
+  name?: string
+  src?: string
+  size?: number
+  className?: string
+  onImageUpload?: (file: File) => void
+  children?: ReactNode
 }
 
 const Avatar: React.FC<AvatarProps> = ({
@@ -19,22 +19,22 @@ const Avatar: React.FC<AvatarProps> = ({
   onImageUpload,
   children,
 }) => {
-  const [imageError, setImageError] = useState(false);
-  const [avatarSrc, setAvatarSrc] = useState<string | null>(src || null);
+  const [imageError, setImageError] = useState(false)
+  const [avatarSrc] = useState<string | null>(src || null)
 
   const getLastNameInitial = (fullName: string) => {
-    const words = fullName.trim().split(" ");
-    return words.length > 0 ? words[words.length - 1].charAt(0).toUpperCase() : "?";
-  };
+    const words = fullName.trim().split(" ")
+    return words.length > 0 ? words[words.length - 1].charAt(0).toUpperCase() : "?"
+  }
 
-  const initials = name.trim() ? getLastNameInitial(name) : "?";
+  const initials = name.trim() ? getLastNameInitial(name) : "?"
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files?.[0]
       if (onImageUpload && file) {
-        onImageUpload(file);
+        onImageUpload(file)
       }
-  };
+  }
 
   return (
     <div className={`flex flex-col items-center ${className}`}>
@@ -73,7 +73,7 @@ const Avatar: React.FC<AvatarProps> = ({
       {/* Component EditableName */}
       {children}
     </div>
-  );
-};
+  )
+}
 
-export default Avatar;
+export default Avatar

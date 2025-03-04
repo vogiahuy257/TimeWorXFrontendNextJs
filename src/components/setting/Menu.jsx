@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next/link"
 
 const Menu = ({pathname}) => {
   return (
@@ -70,7 +70,7 @@ const Menu = ({pathname}) => {
         </p>
       </Link>
     </nav>
-  );
-};
+  )
+}
 
-export default Menu;
+export default Menu

@@ -6,6 +6,7 @@ import InputError from '@/components/InputError'
 import { useAuth } from '@/hooks/auth'
 import Link from 'next/link'
 import { useState } from 'react'
+import LoadingPage from '@/components/UI/loading/LoadingPage'
 import AuthSessionStatus from '@/app/(auth)/AuthSessionStatus'
 import '@/app/(auth)/css/forgotpassword.css'
 
@@ -18,15 +19,24 @@ const Page = () => {
     const [email, setEmail] = useState('')
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
+    const [loading, setLoading] = useState(false)
 
-    const submitForm = event => {
+    const submitForm = async event => {
         event.preventDefault()
-
-        forgotPassword({ email, setErrors, setStatus })
+        setLoading(true)
+        try
+        {
+            await forgotPassword({ email, setErrors, setStatus })
+        }
+        finally
+        {
+            setLoading(false)
+        }
     }
 
     return (
         <section id="login" className="forgot-password">
+            {loading && <LoadingPage />}
             <div className="block relative">
                 <Link
                     className="btn-back absolute -top-[46px] left-0 shadow"

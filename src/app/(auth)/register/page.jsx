@@ -5,6 +5,7 @@ import Input from '@/components/Input'
 import InputError from '@/components/InputError'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
+import LoadingPage from '@/components/UI/loading/LoadingPage'
 import { useState } from 'react'
 
 const Page = () => {
@@ -18,17 +19,23 @@ const Page = () => {
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [errors, setErrors] = useState([])
+    const [loading,setLoading] = useState(false)
 
-    const submitForm = event => {
+    const submitForm = async event => {
         event.preventDefault()
-
-        register({
-            name,
-            email,
-            password,
-            password_confirmation: passwordConfirmation,
-            setErrors,
-        })
+        setLoading(true)
+        try {
+            await register({
+                name,
+                email,
+                password,
+                password_confirmation: passwordConfirmation,
+                setErrors,
+            })
+        }
+        finally {
+            setLoading(false)
+        }
     }
 
     const [showPassword, setShowPassword] = useState(false)
@@ -44,6 +51,7 @@ const Page = () => {
 
     return (
         <section id="login" className="register">
+            {loading && <LoadingPage />}
             <div className="block">
                 <div className="block-text">
                     <h1>Register</h1>

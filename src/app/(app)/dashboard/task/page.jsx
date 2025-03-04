@@ -233,6 +233,10 @@ export default function Task() {
     useEffect(() => {
         fetchProjectData( project_id)
     }, [project_id])
+
+    if(loadingDataTask){
+        return <LoadingBox content={'Loading task...'}/>
+    }
     return (
         <section id="project-view">
             {/* Menu */}
@@ -243,10 +247,6 @@ export default function Task() {
             />
         
             {/* Main Project View */}
-            {loadingDataTask ? (
-                <LoadingBox/>
-            ) :
-            (
             <main className="task-board">
                 <DragDropContext onDragEnd={onDragEnd}>
                     {Object.keys(tasks).map(columnId => (
@@ -522,7 +522,6 @@ export default function Task() {
                     ))}
                 </DragDropContext>
             </main>
-            )}
 
             {/* Hiển thị History */}
             {showDeletedTasks && (

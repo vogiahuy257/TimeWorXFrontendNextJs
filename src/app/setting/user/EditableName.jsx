@@ -1,21 +1,21 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const EditableName = ({ name, onNameChange }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedName, setEditedName] = useState(name);
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedName, setEditedName] = useState(name)
 
   const handleSave = () => {
     if (onNameChange) {
-      onNameChange(editedName);
+      onNameChange(editedName)
     }
-    setIsEditing(false);
-  };
+    setIsEditing(false)
+  }
 
   const handleBlur = (e) => {
-    if (e.relatedTarget && e.relatedTarget.id === "save-button") return;
-    setIsEditing(false);
-    setEditedName(name);
-  };
+    if (e.relatedTarget && e.relatedTarget.id === "save-button") return
+    setIsEditing(false)
+    setEditedName(name)
+  }
 
   return (
     <div className="mt-2 text-lg">
@@ -56,7 +56,7 @@ const EditableName = ({ name, onNameChange }) => {
         </p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default EditableName;
+export default EditableName

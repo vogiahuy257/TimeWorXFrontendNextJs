@@ -5,16 +5,14 @@ import '@/app/(auth)/css/login.css'
 const Layout = ({ children }) => {
     
     return (
-        <div>
-            <div>
-                <Link
-                    href="/"
-                    className="logo shadow-md flex justify-center items-center"
-                >
-                    <ApplicationLogo className="" />
-                </Link>
-                {children}
-            </div>
+        <div className='relative'>
+            <Link
+                href="/"
+                className="logo shadow-md flex justify-center items-center"
+            >
+                <ApplicationLogo className="" />
+            </Link>
+            {children}
         </div>
     )
 }

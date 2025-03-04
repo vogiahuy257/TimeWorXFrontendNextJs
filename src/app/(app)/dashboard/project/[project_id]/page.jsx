@@ -28,7 +28,7 @@ const TaskUsers = dynamic(
     () => import('@/components/UI/Project/TaskUsersForm'),
     {
         ssr: false,
-        loading: () => <LoadingPage/>,
+        loading: () => <LoadingPage />,
     },
 )
 
@@ -62,6 +62,31 @@ const DashboardProjectView = () => {
     const [projectDeadLine, setProjectDeadLine] = useState()
     const [countUserToProject, setCountUserToProject] = useState(null)
     const [loadingDaTaTask, setLoadingDaTaTask] = useState(true)
+    
+    const fetchProjectData = async () => {
+        try {
+            const response = await axios.get(`/api/project-view/${project_id}`)
+            const projectData = response.data
+            setProject(projectData.project)
+            setCountUserToProject(projectData.project.user_count)
+            setProjectDeadLine(projectData.project.deadline)
+            setTasks({
+                'to-do': projectData.tasks['to-do'] || [],
+                'in-progress': projectData.tasks['in-progress'] || [],
+                verify: projectData.tasks['verify'] || [],
+                done: projectData.tasks['done'] || [],
+            })
+        } catch (error) {
+            toast.error(`Error fetching project details or tasks ${error}`)
+        }
+        finally {
+            setLoadingDaTaTask(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchProjectData()
+    }, [])
 
     const toggleComment = () => {
         setShowComments(!showComments)
@@ -172,31 +197,10 @@ const DashboardProjectView = () => {
             updateTaskStatus(movedTask.id, destinationColumn)
         }
     }
-
-    const fetchProjectData = async () => {
-        try {
-            const response = await axios.get(`/api/project-view/${project_id}`)
-            const projectData = response.data
-            setProject(projectData.project)
-            setCountUserToProject(projectData.project.user_count)
-            setProjectDeadLine(projectData.project.deadline)
-            setTasks({
-                'to-do': projectData.tasks['to-do'] || [],
-                'in-progress': projectData.tasks['in-progress'] || [],
-                verify: projectData.tasks['verify'] || [],
-                done: projectData.tasks['done'] || [],
-            })
-        } catch (error) {
-            toast.error(`Error fetching project details or tasks ${error}`)
-        }
-        finally {
-            setLoadingDaTaTask(false)
-        }
+    
+    if(loadingDaTaTask){
+        return <LoadingBox />
     }
-
-    useEffect(() => {
-        fetchProjectData()
-    }, [])
 
     return (
         <section id="project-view">
@@ -210,10 +214,6 @@ const DashboardProjectView = () => {
             />
 
             {/* Main Project View */}
-            {loadingDaTaTask ? (
-                <LoadingBox/>
-            ) :
-            (
                 <main className="task-board">
                     <DragDropContext onDragEnd={onDragEnd}>
                         {Object.keys(tasks).map(columnId => (
@@ -432,7 +432,6 @@ const DashboardProjectView = () => {
                         ))}
                     </DragDropContext>
                 </main>
-            )}
             
 
             {/* Hiển thị History */}

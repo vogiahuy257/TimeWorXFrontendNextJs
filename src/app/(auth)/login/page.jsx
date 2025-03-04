@@ -7,9 +7,20 @@ import Link from 'next/link'
 import { useAuth } from '@/hooks/auth'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams} from 'next/navigation'
+import LoadingPage from '@/components/UI/loading/LoadingPage'
 import Image from 'next/image'
+import LoadingBox from '@/components/UI/loading/LoadingBox'
+import { Suspense } from "react"
 
-const Login = () => {
+export default function LoginPage() {
+    return (
+        <Suspense fallback={<LoadingBox />}>
+            <LoginComponent />
+        </Suspense>
+    )
+}
+
+const LoginComponent = () => {
     const router = useRouter()
     const { login,loginWithGoogle } = useAuth({
         middleware: 'guest',
@@ -19,14 +30,15 @@ const Login = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword)
     }
-    const searchParams = useSearchParams();
-    const error = searchParams.get("error");
+    const searchParams = useSearchParams()
+    const error = searchParams.get("error")
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [shouldRemember, setShouldRemember] = useState(false)
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
     const [errorMessage, setErrorMessage] = useState(null)
+    const [isloading, setIsLoading] = useState(false)
 
     useEffect(() => {
         if (router.query?.reset?.length > 0 && errors.length === 0) {
@@ -40,17 +52,23 @@ const Login = () => {
         }
     }, [router.query?.reset,error])
 
-    const submitForm = async event => {
+    const submitForm = async (event) => {
         event.preventDefault()
-
-        login({
-            email,
-            password,
-            remember: shouldRemember,
-            setErrors,
-            setStatus,
-        })
+        setIsLoading(true)
+    
+        try {
+            await login({
+                email,
+                password,
+                remember: shouldRemember,
+                setErrors,
+                setStatus,
+            })
+        }finally {
+            setIsLoading(false) // Tắt trạng thái loading dù thành công hay thất bại
+        }
     }
+    
 
     return (
         <section id="login">
@@ -191,8 +209,7 @@ const Login = () => {
                     </div>
                 </form>
             </div>
+            {isloading && <LoadingPage />}
         </section>
     )
 }
-
-export default Login

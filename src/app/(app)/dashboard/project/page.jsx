@@ -169,13 +169,8 @@ export default function Folder() {
         axios
             .delete(`/api/projects/${projectId}`)
             .then(() => {
-                setProjects(
-                    projects.filter(
-                        project => project.project_id !== projectId,
-                    ),
-                )
+                setProjects(projects.filter(project => project.project_id !== projectId))
                 toast.dismiss()
-                fetchProjectData()
                 handleDeletedFormToggle()
                 toast.success('Project deleted successfully!')
             })
@@ -209,15 +204,14 @@ export default function Folder() {
             axios
                 .put(`/api/projects/${editProject.project_id}`, projectData)
                 .then(response => {
-                    setProjects(
-                        projects.map(p =>
-                            p.project_id === response.data.project_id
-                                ? response.data
-                                : p,
-                        ),
-                    )
+                    const updatedProject = response.data.project // Lấy dữ liệu đã cập nhật từ API
+
+                    setProjects(projects.map(p =>
+                        p.project_id === updatedProject.project_id
+                            ? { ...p, ...updatedProject } // Chỉ cập nhật phần thay đổi
+                            : p
+                    ))
                     setIsFormOpen(false)
-                    fetchProjectData()
                     toast.success('Project update successfully!')
                 })
                 .catch(error => {
@@ -228,15 +222,19 @@ export default function Folder() {
             axios
                 .post('/api/projects', projectData)
                 .then(response => {
-                    setProjects([...projects, response.data])
+                    const newProject = response.data.project
+                    setProjects([...projects, newProject])
                     setIsFormOpen(false)
-                    fetchProjectData()
                     toast.success('Project create successfully!')
                 })
                 .catch(error => {
                     toast.error(`Error creating project: ${error.message}`)
                 })
         }
+    }
+
+    if(loadingData) {
+        return <LoadingBox content={"Loading project ..."}/>
     }
 
     return (
@@ -254,9 +252,7 @@ export default function Folder() {
                 <div className="mainContainer w-full">
                     <div className="block-project">
                         {/* title is class name done, to-do, in-progress, verify */}
-                        {loadingData ? (
-                            <LoadingBox/>
-                        ) : (
+                        {
                             filteredProjects.map(project => (
                                 <CardProject
                                     key={project.project_id}
@@ -267,7 +263,7 @@ export default function Folder() {
                                     onClickCardProject={onClickCardProject}
                                 />
                             ))
-                        )}
+                        }
                     </div>
                 </div>
             </section>

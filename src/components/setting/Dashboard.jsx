@@ -30,9 +30,7 @@ const Dashboard = ({theme ,className}) => {
                 </div>
 
                 {/* Menu trái */}
-                <div className="menu-left row-start-2 col-start-1 w-16 rounded-bl-xl flex items-center justify-center">
-                    
-                </div>
+                <div className="menu-left row-start-2 col-start-1 w-16 rounded-bl-xl flex items-center justify-center"/>
 
                 {/* Content */}
                 <div className="content relative row-start-2 col-start-2 flex items-center justify-center">

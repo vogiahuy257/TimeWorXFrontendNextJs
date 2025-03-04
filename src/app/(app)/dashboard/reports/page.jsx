@@ -6,6 +6,7 @@ import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import dynamic from 'next/dynamic'
 import LoadingPage from '@/components/UI/loading/LoadingPage'
+import LoadingBox from '@/components/UI/loading/LoadingBox'
 import ReportProjectDetail from '@/components/UI/Report/ReportProjectDetail'
 import ReportTaskDone from '@/components/UI/Report/ReportTaskDone'
 import SummaryReport from '@/components/UI/Report/SummaryReport'
@@ -24,6 +25,7 @@ export default function Report() {
     const [selectProject, setSelectProject] = useState([])
     const [isOpenShowReportToTask, setIsOpenShowReportToTask] = useState(false)
     const [selectTask, setSelectTask] = useState()
+    const [loading, setLoading] = useState(true)
 
     const openFormReportToTask = task => {
         setIsOpenShowReportToTask(!isOpenShowReportToTask)
@@ -41,11 +43,15 @@ export default function Report() {
                 'An error occurred while fetching projects.'
             toast.error(errorMsg)
         }
+        finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
         fetchProjectData()
     }, [])
+
 
     const handleProjectClick = project => {
         setSelectProject(project)
@@ -59,6 +65,8 @@ export default function Report() {
         setIsOpenFormSummary(!isOpenFormSummary)
     }
 
+    if(loading) return <LoadingBox content={"Loading report..."}/>
+    
     return (
         <section
             id="report"

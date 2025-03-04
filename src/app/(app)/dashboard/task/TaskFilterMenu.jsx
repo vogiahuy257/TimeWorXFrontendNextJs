@@ -49,8 +49,8 @@ const TaskFilterMenu = ({ projects, setProjectId, toggleDeletedTasks }) => {
             </button>
         </div>
     </div>
-    );
-  };
+    )
+  }
   
-  export default TaskFilterMenu;
+  export default TaskFilterMenu
   

@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import axios from '@/libs/axios'
-import { useEffect,useState } from 'react'
+import { useEffect} from 'react'
 import { useParams, useRouter } from 'next/navigation'
 
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
@@ -8,11 +8,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const params = useParams()
 
     //lấy thông tin user
-    const {
-        data: user,
-        error,
-        mutate,
-    } = useSWR('/api/user', () =>
+    const {data: user, error, mutate,} = useSWR('/api/user', () =>
         axios
             .get('/api/user')
             .then(res => res.data)
@@ -24,13 +20,10 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     )
 
     // lấy setting khi user được gọi
-    const {
-        data: settings,
-        error: settingsError,
-        mutate: mutateSettings,
-    } = useSWR(user ? '/api/v1/settings' : null, () =>
-        axios.get('/api/v1/settings').then(res => res.data),
-    )
+    const { data: settings, mutate: mutateSettings } = useSWR(
+        user ? '/api/v1/settings' : null,
+        () => axios.get('/api/v1/settings').then(res => res.data),
+    )    
 
     // Hàm update settings
     const updateSettings = async (newSettings, optimistic = false) => {
@@ -151,25 +144,25 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     }
 
     useEffect(() => {
-        if (!user) return; // Nếu user chưa được load, không làm gì cả
+        if (!user) return // Nếu user chưa được load, không làm gì cả
     
         if (middleware === 'guest' && redirectIfAuthenticated && user) {
-            router.replace(redirectIfAuthenticated); // Dùng replace để không làm kẹt trang trước đó
-            return;
+            router.replace(redirectIfAuthenticated) // Dùng replace để không làm kẹt trang trước đó
+            return
         }
     
         if (middleware === 'auth') {
             if (!user.email_verified_at) {
                 if (router.pathname !== '/verify-email') {
-                    router.replace('/verify-email');
+                    router.replace('/verify-email')
                 }
             } else if (router.pathname === '/verify-email') {
-                router.replace(redirectIfAuthenticated);
+                router.replace(redirectIfAuthenticated)
             }
         }
     
-        if (middleware === 'auth' && error) logout();
-    }, [user, error]);    
+        if (middleware === 'auth' && error) logout()
+    }, [user, error])    
 
     return {
         user,

@@ -1,26 +1,26 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useCallback } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 const ToastNotification = ({ message, type = "success", duration = 3000, onClose }) => {
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState(true)
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setVisible(false);
-        }, duration);
+            setVisible(false)
+        }, duration)
 
-        return () => clearTimeout(timer);
-    }, [duration]);
+        return () => clearTimeout(timer)
+    }, [duration])
 
     const handleClose = useCallback(() => {
-        setVisible(false);
-        if (onClose) onClose();
-    }, [onClose]);
+        setVisible(false)
+        if (onClose) onClose()
+    }, [onClose])
 
     const bgColor =
         type === "success" ? "bg-green-500" :
         type === "error" ? "bg-red-500" :
-        "bg-blue-500";
+        "bg-blue-500"
 
     return (
         <AnimatePresence>
@@ -43,7 +43,7 @@ const ToastNotification = ({ message, type = "success", duration = 3000, onClose
                 </motion.div>
             )}
         </AnimatePresence>
-    );
-};
+    )
+}
 
-export default ToastNotification;
+export default ToastNotification

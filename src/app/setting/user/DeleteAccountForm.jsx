@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const DeleteAccountForm = ({ handleDelete, handleClose }) => {
     const [password, setPassword] = useState("")
@@ -11,11 +11,11 @@ const DeleteAccountForm = ({ handleDelete, handleClose }) => {
 
     const handleSubmit = () => {
         if (!password) {
-            setError("Please enter your password.");
-            return;
+            setError("Please enter your password.")
+            return
         }
-        handleDelete(password);
-    };
+        handleDelete(password)
+    }
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -54,7 +54,7 @@ const DeleteAccountForm = ({ handleDelete, handleClose }) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default DeleteAccountForm;
+export default DeleteAccountForm
