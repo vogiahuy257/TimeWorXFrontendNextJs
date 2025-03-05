@@ -1,6 +1,46 @@
+import { useEffect, useState } from 'react'
 import './css/SummaryReport.css'
+import LoadingSmall from '../loading/LoadingSmall'
+import SummaryReportItem from './SummaryReportItem'
+import { toast } from 'react-toastify'
+import { summaryReportService } from '@/services/summaryReportService'
 
 export default function SummaryReport({ handleOpenForm }) {
+    const [reports, setReports] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchReports = async () => {
+            try {
+                const data = await summaryReportService.getSummaryReports()
+                setReports(data)
+                console.log(data)
+            } catch (err) {
+                toast.error('loading report error')
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchReports()
+    }, [])
+
+    return (
+        <SummaryLayoutReport handleOpenForm={handleOpenForm}>
+            {loading ? (
+                <LoadingSmall />
+            ) :(
+                Array.isArray(reports) && reports.length > 0 ? (
+                    reports.map((report, index) => <SummaryReportItem key={`${report.summary_report_id}${index}`} report={report} />)
+                ) : (
+                    <p className="text-center text-gray-500">No reports.</p>
+                )
+            )}
+        </SummaryLayoutReport>
+    )
+}
+
+const SummaryLayoutReport = ({handleOpenForm,children}) => {
     return (
         <section className="custom-sumary-report h-[506px]">
             {/* nút bấm mở formSummaryReport */}
@@ -26,7 +66,7 @@ export default function SummaryReport({ handleOpenForm }) {
             </button>
 
             <div className="w-full h-full bg-while overflow-y-auto max-h-[504px] scrollbar-hide rounded-md mt-8">
-                <h1 className="text-center p-5">is developing</h1>
+                {children}
             </div>
         </section>
     )

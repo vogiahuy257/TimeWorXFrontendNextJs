@@ -65,6 +65,8 @@ export default function Report() {
         setIsOpenFormSummary(!isOpenFormSummary)
     }
 
+    
+
     if(loading) return <LoadingBox content={"Loading report..."}/>
     
     return (
@@ -73,7 +75,6 @@ export default function Report() {
             className="rounded-lg overflow-auto scrollbar-hide lg:overflow-clip"
         >
             <div className="main w-full flex justify-center items-center relative">
-                {projects.length > 0 ? (
                     <div className="m-4 w-full h-full flex flex-col lg:flex-row gap-4">
                         {/* Danh sách Project */}
                         <div className="gap-4 w-full h-full flex flex-col-reverse lg:w-1/2">
@@ -83,7 +84,8 @@ export default function Report() {
                                 >
                                     <h2 className="text-header">Project</h2>
                                         <div className="project-box flex flex-wrap gap-4 p-2 mx-auto mt-4 w-auto rounded max-h-[290px] overflow-y-auto scrollbar-hide">
-                                            {projects.map(project => (
+                                            {projects.length > 0 ? (
+                                            projects.map(project => (
                                                 <button
                                                     key={project.project_id}
                                                     onClick={() =>
@@ -170,7 +172,11 @@ export default function Report() {
                                                         {project.project_name}
                                                     </h3>
                                                 </button>
-                                            ))}
+                                            ))) : (
+                                                <div className='flex justify-center items-center w-full h-[506px]'>
+                                                    <p className='font-semibold text-xl'>No projects available.</p>
+                                                </div>
+                                            )}
                                         </div>
                                 </div>
 
@@ -205,11 +211,6 @@ export default function Report() {
                             </div>
                         </div>
                     </div>
-                ) : (
-                    <div className='flex justify-center items-center w-full h-[506px]'>
-                        <p className='font-semibold text-xl'>No projects available.</p>
-                    </div>
-                )}
             </div>
             {isOpenShowReportToTask && (
                 <ReportTaskForm
@@ -219,6 +220,7 @@ export default function Report() {
             )}
             {isOpenFormSummary && (
                 <SummaryReportForm
+                    projects={projects}
                     projectIdChange={selectProject.project_id}
                     handleOpenForm={handleOpenForm}
                 />

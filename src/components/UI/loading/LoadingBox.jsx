@@ -11,9 +11,9 @@ const LoadingBox = ({ className, content }) => {
                 <div className={`${styles.face} ${styles.top}`}/>
                 <div className={`${styles.face} ${styles.bottom}`}/>
             </div>
-            <p className={`${styles.textLoading} mt-4 text-[min(5vw,14px)] font-normal tracking-wide text-center animate-pulse`}>
+            <span className={`${styles.textLoading} mt-4 text-[min(5vw,14px)] font-normal tracking-wide text-center animate-pulse`}>
                 {content || 'Please wait...'}
-            </p>
+            </span>
         </div>
     )
 }

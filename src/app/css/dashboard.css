@@ -475,3 +475,13 @@
 #dashboard #customToastInfo .box-btn button:hover {
     box-shadow: 0 0 2px var(--color-black);
 }
+
+
+#dashboard .bg-white-css {
+    background-color: var(--color-white);
+  }
+
+.bg-black-css
+{
+    background-color: var(--color-black);
+}

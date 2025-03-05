@@ -1,0 +1,15 @@
+
+.loader {
+    width: 40px;
+    height: 40px;
+    border: 5px solid var(--color-black);
+    animation: bounce 1.5s ease infinite;
+}
+
+@keyframes bounce {
+    0% { transform: translateY(0); width: 40px; height: 40px;}
+    25% { transform: translateY(0); width: 55px; height: 25px;}
+    50% { transform: translateY(-20px); width: 40px; height: 40px;}
+    75% { transform: translateY(0); width: 55px; height: 25px;}
+    100% { transform: translateY(0); width: 40px; height: 40px;}
+}

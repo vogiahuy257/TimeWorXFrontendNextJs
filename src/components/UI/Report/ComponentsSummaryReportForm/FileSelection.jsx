@@ -33,7 +33,7 @@ const FileSelection = ({ files, selectedFiles, onChange }) => {
                             name="selectedFiles"
                             value={file.id}
                             checked={selectedFiles.includes(file.id)}
-                            className="h-4 w-4 mr-2 custom-checkbox cursor-pointer focus:ring-blue-500 border-gray-300 rounded"
+                            className={`h-4 w-4 mr-2 custom-checkbox cursor-pointer focus:ring-blue-500 border-gray-300 rounded ${!selectedFiles.includes(file.id)&&'bg-white-css'}`}
                             onChange={onChange}
                         />
                         <IconFileSelection filetype={file.type} />

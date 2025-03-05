@@ -1,14 +1,18 @@
 import React from 'react'
 
 type IconFileSelectionProps = {
-    filename: string
+    filename: string,
+    filetype: string,
 }
 
 export const IconFileSelection: React.FC<IconFileSelectionProps> = ({
     filename,
+    filetype,
 }) => {
-    const filetype = filename ? filename.split('.').pop() || '' : ''
-
+    if(!filetype){
+        const filetype = filename ? filename.split('.').pop() || '' : ''
+    }
+    
     const getIcon = () => {
         switch (filetype) {
             case 'docx':

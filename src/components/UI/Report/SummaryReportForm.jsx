@@ -5,12 +5,11 @@ import axios from '@/libs/axios'
 import './css/SummaryReportForm.css'
 import { useAuthContext } from '@/hooks/context/AuthContext'
 
-export default function SummaryReportForm({ handleOpenForm, projectIdChange }) {
+export default function SummaryReportForm({ handleOpenForm, projectIdChange,projects }) {
     const user = useAuthContext()
     // Khai báo các state cho các trường trong form
     const [reportName, setReportName] = useState('')
-    const [project, setProject] = useState('')
-    const [projects, setProjects] = useState([])
+    const [project_id, setProjectId] = useState('')
     const [reportDate, setReportDate] = useState('')
     const [summary, setSummary] = useState('')
     const [completedTasks, setCompletedTasks] = useState('')
@@ -23,7 +22,7 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange }) {
 
     // Handle input changes
     const handleReportNameChange = e => setReportName(e.target.value)
-    const handleProjectChange = projectId => setProject(projectId)
+    const handleProjectChange = projectId => setProjectId(projectId)
     const handleReportDateChange = e => setReportDate(e.target.value)
     const handleSummaryChange = e => setSummary(e.target.value)
     const handleCompletedTasksChange = e => setCompletedTasks(e.target.value)
@@ -99,21 +98,9 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange }) {
             }
         }
     }, [])
-
-    // Hàm gọi API lấy danh sách project
-    const fetchProjects = async () => {
-        try {
-            const response = await axios.get(`/api/projects/${user.id}`)
-            setProjects(response.data)
-        } catch (error) {
-            console.warn('Error fetching projects:', error)
-        }
-    }
-
     // Gọi API khi component được render
     useEffect(() => {
-        fetchProjects()
-        setProject(projectIdChange)
+        setProjectId(projectIdChange)
     }, [])
 
     return (
@@ -171,7 +158,7 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange }) {
                         <Dropdown
                             label="Select a Project"
                             options={projects}
-                            value={project}
+                            value={project_id}
                             onChange={handleProjectChange}
                         />
 
@@ -183,14 +170,22 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange }) {
                             >
                                 Report Date
                             </label>
-                            <input
-                                type="date"
-                                id="reportDate"
-                                name="reportDate"
-                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={reportDate}
-                                onChange={handleReportDateChange}
-                            />
+                            <div className="relative w-full">
+                                <input
+                                    type="date"
+                                    id="reportDate"
+                                    name="reportDate"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white-css"
+                                    value={reportDate}
+                                    onChange={handleReportDateChange}
+                                />
+
+                                {/* Icon lịch tùy chỉnh */}
+                                <svg className="absolute bg-white-css right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+                                    <path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-40q0-17 11.5-28.5T280-880q17 0 28.5 11.5T320-840v40h320v-40q0-17 11.5-28.5T680-880q17 0 28.5 11.5T720-840v40h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/>
+                                </svg>
+                            </div>
+
                         </div>
 
                         {/* Summary */}
