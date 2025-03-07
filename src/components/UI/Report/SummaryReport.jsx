@@ -3,27 +3,53 @@ import './css/SummaryReport.css'
 import LoadingSmall from '../loading/LoadingSmall'
 import SummaryReportItem from './SummaryReportItem'
 import { toast } from 'react-toastify'
-import { summaryReportService } from '@/services/summaryReportService'
+import { summaryReportService, SummaryReport, PaginatedResponse } from '@/services/summaryReportService'
 
 export default function SummaryReport({ handleOpenForm }) {
-    const [reports, setReports] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [reports, setReports] = useState([]) // Danh sách báo cáo
+    const [page, setPage] = useState(1) // Trang hiện tại
+    const [hasMore, setHasMore] = useState(true) // Còn dữ liệu để tải không?
+    const [loading, setLoading] = useState(false) // Trạng thái loading
+
+    // 📝 Gọi API lấy danh sách báo cáo
+    const loadReports = async (pageNumber) => {
+        if (loading) return 
+        setLoading(true)
+
+        try {
+            const res = await summaryReportService.getSummaryReports({ page: pageNumber, per_page: 10 })
+            
+            if (!res.meta || res.data.length <= 10) {
+                setReports(res.data)
+                setHasMore(false) // Không cần load thêm
+            } else {
+                setReports((prev) => [...prev, ...res.data])
+                setPage(res.meta.current_page)
+                setHasMore(res.meta.current_page * res.meta.per_page < res.meta.total)
+            }
+        } catch (error) {
+            toast.error('Error not loading reported')
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    // 📜 Gọi API khi trang vừa load
+    useEffect(() => {
+        loadReports(1)
+    }, [])
+
+    // 📦 Load thêm khi cuộn đến cuối trang
+    const handleScroll = () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && hasMore) {
+            loadReports(page + 1)
+        }
+    }
 
     useEffect(() => {
-        const fetchReports = async () => {
-            try {
-                const data = await summaryReportService.getSummaryReports()
-                setReports(data)
-                console.log(data)
-            } catch (err) {
-                toast.error('loading report error')
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        fetchReports()
-    }, [])
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [page, hasMore])
 
     return (
         <SummaryLayoutReport handleOpenForm={handleOpenForm}>
