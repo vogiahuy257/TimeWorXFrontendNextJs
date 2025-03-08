@@ -108,17 +108,28 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 48%;
+    width: 49%;
     background-color: #000000;
     color: #f9f9f9;
     font-size: var(--font-size-small);
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
 }
+#dashboard #report .project-detail .project-name::before {
+    position: absolute;
+    bottom: -12px;
+    left: 2px;
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    border-top-left-radius: 0.5rem;
+    box-shadow: -2px -2px 0 #000000;
+    z-index: 50;
+}
 
 #dashboard #report .project-detail .project-name::after {
     position: absolute;
-    bottom: 0;
+    bottom: 5px;
     right: -20px;
     content: '';
     width: 20px;
@@ -203,12 +214,6 @@
 #dashboard #report .select-task-done select:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
-}
-
-#dashboard #report .report-task-done .text-report-done {
-    top: 0px;
-    left: 30%;
-    width: 50%;
 }
 
 #dashboard #report .report-task-done .btn-report {

@@ -1,99 +1,142 @@
-import { useEffect, useState } from 'react'
-import './css/SummaryReport.css'
+'use client'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import LoadingSmall from '../loading/LoadingSmall'
 import SummaryReportItem from './SummaryReportItem'
+import SummaryLayoutReport from './SummaryLayoutReport'
 import { toast } from 'react-toastify'
-import { summaryReportService, SummaryReport, PaginatedResponse } from '@/services/summaryReportService'
+import { summaryReportService } from '@/services/summaryReportService'
 
-export default function SummaryReport({ handleOpenForm }) {
+export default function SummaryPageReport({ handleOpenForm }) {
     const [reports, setReports] = useState([]) // Danh sách báo cáo
-    const [page, setPage] = useState(1) // Trang hiện tại
-    const [hasMore, setHasMore] = useState(true) // Còn dữ liệu để tải không?
+    const [pagination, setPagination] = useState({
+        total: 0,
+        per_page: 10,
+        current_page: 1
+    }) // Thông tin phân trang
     const [loading, setLoading] = useState(false) // Trạng thái loading
+    const observerRef = useRef(null) // Ref để theo dõi cuộn
+    const [searchTerm, setSearchTerm] = useState('')
+    const searchTimeout = useRef(null) // Lưu trữ timeout
 
-    // 📝 Gọi API lấy danh sách báo cáo
-    const loadReports = async (pageNumber) => {
-        if (loading) return 
+    useEffect(() => {
+        if (searchTimeout.current) clearTimeout(searchTimeout.current)
+    
+        if (searchTerm.trim() === '') {
+            if (reports.length > 0) return
+            loadReports(1)
+            return
+        }
+    
+        searchTimeout.current = setTimeout(() => {
+            searchReports()
+        }, 500)
+    
+        return () => clearTimeout(searchTimeout.current)
+    }, [searchTerm])
+    
+    
+
+    const searchReports = useCallback(async () => {
+        if (loading || (pagination.total > 0 && reports.length >= pagination.total)) return
+    
         setLoading(true)
-
+    
         try {
-            const res = await summaryReportService.getSummaryReports({ page: pageNumber, per_page: 10 })
-            
-            if (!res.meta || res.data.length <= 10) {
-                setReports(res.data)
-                setHasMore(false) // Không cần load thêm
-            } else {
-                setReports((prev) => [...prev, ...res.data])
-                setPage(res.meta.current_page)
-                setHasMore(res.meta.current_page * res.meta.per_page < res.meta.total)
-            }
+            const res = await summaryReportService.getSummaryReports({
+                page: 1,
+                per_page: 10,
+                search: searchTerm.trim()
+            })
+    
+            setReports(res.data || []) 
+            setPagination({
+                total: res.total,
+                per_page: res.per_page,
+                current_page: 1
+            })
         } catch (error) {
-            toast.error('Error not loading reported')
+            toast.error('Error searching reports')
         } finally {
             setLoading(false)
         }
-    }
+    }, [searchTerm, loading])
+    
 
-    // 📜 Gọi API khi trang vừa load
-    useEffect(() => {
-        loadReports(1)
-    }, [])
+    const loadReports = useCallback(async (pageNumber) => {
+        if (loading || searchTerm) return // Tránh gọi API liên tục
+        
+        // Chỉ chặn nếu `pagination.total > 0`, tránh chặn lần gọi API đầu tiên
+        if (pagination.total > 0 && (pagination.current_page * pagination.per_page) >= pagination.total) return
+    
+        setLoading(true)
+    
+        try {
+            const res = await summaryReportService.getSummaryReports({ page: pageNumber, per_page: 10 })
 
-    // 📦 Load thêm khi cuộn đến cuối trang
-    const handleScroll = () => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && hasMore) {
-            loadReports(page + 1)
+            if (!res.data || res.data.length === 0) {
+                setLoading(false)  // ✅ Đặt lại `loading`
+                return
+            }
+
+            setReports((prev) => {
+                const newReports = [...prev, ...res.data]
+                const uniqueReports = Array.from(new Map(newReports.map(r => [r.summary_report_id, r])).values()) 
+                return uniqueReports.slice(-30) 
+            })       
+
+            setPagination({
+                total: res.total, 
+                per_page: res.per_page, 
+                current_page: res.current_page 
+            })
+        } catch (error) {
+
+            toast.error('Error loading reports')
+
+        } finally {
+            setLoading(false)
         }
-    }
-
+    }, [loading, pagination, reports,searchTerm])
+    
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [page, hasMore])
+        if (searchTerm === '') {
+            loadReports(1) 
+        }
+    }, [searchTerm])
+    
+    useEffect(() => {
+        
+        if (loading || reports.length === 0 || searchTerm) return // Chặn gọi API liên tục khi loading
+        if (pagination.total > 0 && (pagination.current_page * pagination.per_page) >= pagination.total) return // Chặn gọi API khi đã tải hết dữ liệu
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    loadReports(pagination.current_page + 1) // Tải trang tiếp theo
+                }
+            },
+            { threshold: 1 }
+        )
+
+        if (observerRef.current) observer.observe(observerRef.current)
+
+        return () => observer.disconnect()
+    }, [reports.length, loading, pagination.current_page, loadReports])
 
     return (
-        <SummaryLayoutReport handleOpenForm={handleOpenForm}>
-            {loading ? (
-                <LoadingSmall />
-            ) :(
-                Array.isArray(reports) && reports.length > 0 ? (
-                    reports.map((report, index) => <SummaryReportItem key={`${report.summary_report_id}${index}`} report={report} />)
-                ) : (
-                    <p className="text-center text-gray-500">No reports.</p>
-                )
+        <SummaryLayoutReport handleOpenForm={handleOpenForm} searchTerm={searchTerm} setSearchTerm={setSearchTerm}>
+            {reports.length > 0 ? (
+                reports.map((report) => (
+                    <SummaryReportItem key={report.summary_report_id} report={report} />
+                ))
+            ) : !loading &&(
+                <p className="text-center text-gray-500">No reports.</p>
             )}
+
+            {/* Vùng theo dõi cuộn */}
+            <div ref={observerRef} style={{ height: '10px' }} />
+
+            {/* Hiển thị loader khi đang tải thêm dữ liệu */}
+            {loading && <LoadingSmall />}
         </SummaryLayoutReport>
-    )
-}
-
-const SummaryLayoutReport = ({handleOpenForm,children}) => {
-    return (
-        <section className="custom-sumary-report h-[506px]">
-            {/* nút bấm mở formSummaryReport */}
-            <button
-                onClick={handleOpenForm}
-                className="btn btn-create flex justify-center items-center gap-1 rounded-md absolute top-3 left-3"
-            >
-                <p>Create</p>
-                <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 30 30"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        d="M19.2192 14.9993H15.0005M15.0005 14.9993H10.7817M15.0005 14.9993V19.218M15.0005 14.9993L15.0005 10.7806M26.25 7.96873L26.25 22.0313C26.25 24.3612 24.3612 26.25 22.0312 26.25H7.96875C5.6388 26.25 3.75 24.3612 3.75 22.0313V7.96873C3.75 5.63879 5.6388 3.75 7.96875 3.75H22.0313C24.3612 3.75 26.25 5.63879 26.25 7.96873Z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                    />
-                </svg>
-            </button>
-
-            <div className="w-full h-full bg-while overflow-y-auto max-h-[504px] scrollbar-hide rounded-md mt-8">
-                {children}
-            </div>
-        </section>
     )
 }

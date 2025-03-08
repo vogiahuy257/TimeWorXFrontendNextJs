@@ -200,7 +200,6 @@ export default function Folder() {
     // submit cho cả 2 form chỉnh sửa và tạo dự án
     const handleSubmitForm = projectData => {
         if (editProject) {
-            // Update project
             axios
                 .put(`/api/projects/${editProject.project_id}`, projectData)
                 .then(response => {
@@ -216,6 +215,7 @@ export default function Folder() {
                 })
                 .catch(error => {
                     toast.error(`Error updating project: ${error.message}`)
+                    console.log( error)
                 })
         } else {
             // Create new project
