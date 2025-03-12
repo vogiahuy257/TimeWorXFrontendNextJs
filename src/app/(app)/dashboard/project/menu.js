@@ -10,7 +10,7 @@ const menu = ({
     return (
         <section id="menu">
             <div className="block-button-left flex gap-2">
-                <PrimaryButton onClick={handleCreate} className="btn-create">
+                <PrimaryButton onClick={handleCreate}>
                     <p>Create Project</p>
                     <svg
                         width="25"
@@ -30,7 +30,6 @@ const menu = ({
 
                 <PrimaryButton
                     onClick={handleProjectAnalysis}
-                    className="btn-create btn-report"
                 >
                     <p>Project Progress</p>
                     <svg
@@ -84,7 +83,7 @@ const menu = ({
                 </div>
                 <PrimaryButton
                     onClick={handleDeletedFormToggle}
-                    className="btn-delete"
+                    className={'btn-history'}
                 >
                     <svg
                         width="25"

@@ -10,7 +10,7 @@ const AuthenticatedLayout = ({ settings,children,logout }) => {
 
     return (
         <section id="dashboard" className={settings.color_system || 'light-mode'}>
-            <div className="block">
+            <div className={`block ${settings.screen_mode}`}>
                 <div className="block-menu-top">
                     <div className="block-notification">
                         <a href="#">

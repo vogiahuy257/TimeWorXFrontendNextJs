@@ -1,6 +1,7 @@
 import { IconFileSelection } from '@/components/IconFileSelection'
+import LoadingSmall from '@/components/UI/loading/LoadingSmall'
 
-const FileSelection = ({ files, selectedFiles, onChange }) => {
+const FileSelection = ({ loadingFile,files, selectedFiles, onChange }) => {
     const handleDivClick = fileId => {
         // Find the checkbox input for the file
         const checkbox = document.getElementById(fileId)
@@ -16,33 +17,39 @@ const FileSelection = ({ files, selectedFiles, onChange }) => {
             <h1 className="text-sm font-medium mb-2">
                 Select Files to Include in ZIP
             </h1>
-            <div className="space-y-2">
-                {files.map(file => (
-                    <div
-                        key={file.id}
-                        className={`flex custom-selected-checkbox items-center rounded-lg p-4 cursor-pointer  duration-200 ease-in-out ${
-                            selectedFiles.includes(file.id)
-                                ? ' border border-blue-500'
-                                : ' border border-gray-200 hover:border-blue-300'
-                        }`}
-                        onClick={() => handleDivClick(file.id)}
-                    >
-                        <input
-                            type="checkbox"
-                            id={file.id}
-                            name="selectedFiles"
-                            value={file.id}
-                            checked={selectedFiles.includes(file.id)}
-                            className={`h-4 w-4 mr-2 custom-checkbox cursor-pointer focus:ring-blue-500 border-gray-300 rounded ${!selectedFiles.includes(file.id)&&'bg-white-css'}`}
-                            onChange={onChange}
-                        />
-                        <IconFileSelection filetype={file.type} />
-                        <label className=" ml-1 text-sm font-light cursor-pointer">
-                            {file.label}
-                        </label>
-                    </div>
-                ))}
-            </div>
+            {loadingFile ? (
+                <div className='space-y-2 p-4 relative z-50'>
+                    <LoadingSmall content={"Loading data files..."}/>
+                </div>
+            ) : (
+                <div className="space-y-2">
+                    {files.map(file => (
+                        <div
+                            key={file.id}
+                            className={`flex custom-selected-checkbox items-center rounded-lg p-4 cursor-pointer  duration-200 ease-in-out ${
+                                selectedFiles.includes(file.id)
+                                    ? ' border border-blue-500'
+                                    : ' border border-gray-200 hover:border-blue-300'
+                            }`}
+                            onClick={() => handleDivClick(file.id)}
+                        >
+                            <input
+                                type="checkbox"
+                                id={file.id}
+                                name="selectedFiles"
+                                value={file.id}
+                                checked={selectedFiles.includes(file.id)}
+                                className={`h-4 w-4 mr-2 custom-checkbox cursor-pointer focus:ring-blue-500 border-gray-300 rounded ${!selectedFiles.includes(file.id)&&'bg-white-css'}`}
+                                onChange={onChange}
+                            />
+                            <IconFileSelection filetype={file.type} />
+                            <label className=" ml-1 text-sm font-light cursor-pointer">
+                                {file.label}
+                            </label>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }

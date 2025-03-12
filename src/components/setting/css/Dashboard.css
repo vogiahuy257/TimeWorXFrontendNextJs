@@ -14,8 +14,20 @@
     max-width: 600px; /* Giới hạn chiều rộng tối đa */
     aspect-ratio: 16 / 9; /* Giữ cố định tỷ lệ 16:9 */
     transform: translate(-50%,-50%);
+    transition: all .2s ease-in-out;
 }
 
+#dashboardSetting.full
+{
+    border-radius: 0;
+    width: 92vw;
+    max-width: 680px;
+}
+
+#dashboardSetting.full .menu-left ,#dashboardSetting.full .menu-top
+{
+    border-radius: 0;
+}
 /* Khi màn hình nhỏ hơn 480px (Mobile nhỏ) */
 @media screen and (max-width: 480px) {
     #dashboardSetting {

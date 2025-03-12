@@ -9,11 +9,13 @@ const pageSystemSetting = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [theme, setTheme] = useState(settings?.color_system || 'light-mode')
     const [language, setLanguage] = useState(settings?.language || 'vi')
+    const [screen_mode, setScreenMode] = useState(settings?.screen_mode || 'full')
 
     useEffect(() => {
         if (settings) {
             setTheme(settings.color_system || 'light-mode')
             setLanguage(settings.language || 'vi')
+            setScreenMode(settings.screen_mode || 'full')
             setIsLoading(false)
         }
     }, [settings])
@@ -31,6 +33,15 @@ const pageSystemSetting = () => {
         updateSettings({ language: newLanguage }, true)
     }
 
+    const handleScreenMode = (e) => {
+        const mode = e.target.value
+        setScreenMode(mode)
+    
+        // Gửi yêu cầu cập nhật lên server nếu cần
+        updateSettings({ screen_mode: mode },true)
+    }
+    
+
     if (isLoading) {
         return (
             <Loading content={"loading setting system..."}/>
@@ -41,6 +52,7 @@ const pageSystemSetting = () => {
         <div className='animate-fade-in scrollbar-hide w-full max-w-[700px] m-auto h-full flex flex-col justify-center items-center'>
             <Dashboard
                 theme={theme}
+                screen_mode={screen_mode}
             />
             <div className='mt-2 w-[90%] h-1/2 md:w-full'>
                 {/* Toggle Dark Mode */}
@@ -54,6 +66,17 @@ const pageSystemSetting = () => {
                     >
                         <option value="light-mode">Light Mode</option>
                         <option value="dark-mode">Dark Mode</option>
+                    </select>
+
+                    {/* Chọn Screen Mode */}
+                    <span className="text-base">Screen Mode:</span>
+                    <select
+                        value={screen_mode}
+                        onChange={handleScreenMode}
+                        className="text-sm w-auto rounded-md h-auto cursor-pointer"
+                    >
+                        <option value="default">Default</option>
+                        <option value="full">Full Screen</option>
                     </select>
                 </div>
 

@@ -16,6 +16,8 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
     const [upcomingTasks, setUpcomingTasks] = useState('')
     const [projectIssues, setProjectIssues] = useState('')
     const [selectedFiles, setSelectedFiles] = useState([]) // Dùng mảng để lưu tệp được chọn
+    const [files, setFiles] = useState([])
+    const [loadingFile, setLoadingFile] = useState(false)
 
     const [isAtBottom, setIsAtBottom] = useState(true) // Trạng thái nút cuộn
     const formRef = useRef(null)
@@ -32,13 +34,37 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
     // Handle file selection change
     const handleFileSelectionChange = e => {
         const { value, checked } = e.target
-        setSelectedFiles(
-            prevState =>
-                checked
-                    ? [...prevState, value] // Add the file if checked
-                    : prevState.filter(file => file !== value), // Remove the file if unchecked
-        )
+    
+        setSelectedFiles(prevState => {
+            const newSelectedFiles = new Set(prevState) // Dùng Set để tối ưu hiệu suất
+    
+            if (checked) newSelectedFiles.add(value)
+            else newSelectedFiles.delete(value)
+    
+            return Array.from(newSelectedFiles)
+        })
     }
+    
+
+    const fetchFiles = async () => {
+        setLoadingFile(true)
+        try {
+            const response = await axios.get(`/api/v1/projects/${project_id}/files`)
+            console.log("📂 API Response:", response.data) // Kiểm tra dữ liệu từ API
+            setFiles(response.data) // Lưu dữ liệu vào state
+        } catch (err) {
+            console.error(err.response?.data?.message || "Có lỗi xảy ra!")
+        } finally {
+            setLoadingFile(false)
+        }
+    }
+
+    useEffect(() => {
+        if (project_id) { // ✅ Chỉ gọi API khi project_id có giá trị hợp lệ
+            fetchFiles();
+        }
+    }, [project_id]);
+    
 
     // Hàm gửi form
     const handleSubmit = async e => {
@@ -47,7 +73,7 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
         // Dữ liệu form sẽ được gửi dưới dạng JSON
         const formData = {
             reportName,
-            project,
+            project_id,
             reportDate,
             summary,
             completedTasks,
@@ -62,11 +88,11 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
     // Hàm kiểm tra xem đã cuộn đến cuối chưa
     const handleScroll = () => {
         if (formRef.current) {
-            const { scrollTop, scrollHeight, clientHeight } = formRef.current
-            const atBottom = scrollTop + clientHeight >= scrollHeight - 5 // Kiểm tra vị trí
+            const { scrollTop, scrollHeight, clientHeight } = formRef.current;
+            const atBottom = Math.abs(scrollTop + clientHeight - scrollHeight) < 5;
             setIsAtBottom(atBottom)
         }
-    }
+    }    
 
     // Hàm cuộn đến cuối form khi bấm nút
     const scrollToBottom = () => {
@@ -265,43 +291,8 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                         </div>
                         {/* File Selection */}
                         <FileSelection
-                            files={[
-                                {
-                                    id: 'overview',
-                                    label: 'Project_Overview.docx',
-                                    taskName: 'task1',
-                                    type: 'docx',
-                                },
-                                {
-                                    id: 'budget',
-                                    label: 'Budget_Report.xlsx',
-                                    taskName: 'task1',
-                                    type: 'xlsx',
-                                },
-                                {
-                                    id: 'team',
-                                    label: 'Team_Photo.jpg',
-                                    taskName: 'task1',
-                                    type: 'jpg',
-                                },
-                                {
-                                    id: 'feedback',
-                                    label: 'Client_Feedback.pdf',
-                                    taskName: 'task1',
-                                    type: 'pdf',
-                                },
-                                {
-                                    id: 'timeline',
-                                    label: 'Timeline.xlsx',
-                                    type: 'xlsx',
-                                },
-                                {
-                                    id: 'design',
-                                    label: 'Design_Mockup.png',
-                                    taskName: 'task1',
-                                    type: 'png',
-                                },
-                            ]}
+                            loadingFile={loadingFile}
+                            files={files}
                             selectedFiles={selectedFiles}
                             onChange={handleFileSelectionChange}
                         />

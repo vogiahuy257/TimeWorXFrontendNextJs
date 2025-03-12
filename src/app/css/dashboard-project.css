@@ -27,25 +27,25 @@
 
 /* menu */
 
-#dashboard .block #main .content main #project #menu .btn-create {
+#dashboard .block #main .content main #project #menu .btn{
     background-color: var(--color-black);
-    padding: 8px 12px;
+    padding: 10px 12px;
     color: var(--color-white);
-    border-radius: var(--border-radius-small);
+    border-radius: var(--border-radius-sSmall);
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid var(--color-black);
     font-weight: var(--font-weight-regular);
     font-size: var(--font-size-small);
-    transition:
-        background-color 0.2s ease-in-out,
-        color 0.2s ease-in-out;
+    opacity: 1;
+    transition: opacity .2s ease-in-out;
 }
-
-#dashboard .block #main .content main #project #menu .btn-create:hover {
-    color: var(--color-black);
-    background-color: var(--color-white);
+#dashboard .block #main .content main #project #menu .btn-history
+{
+    padding: 10px;
+}
+#dashboard .block #main .content main #project #menu .btn:hover {
+    opacity: 0.8;
 }
 
 #dashboard .block #main .content main #project #menu .block-button-left svg {
