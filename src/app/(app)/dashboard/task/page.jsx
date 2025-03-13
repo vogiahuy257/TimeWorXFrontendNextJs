@@ -2,12 +2,12 @@
 
 // External Libraries
 import LoadingPage from '@/components/UI/loading/LoadingPage'
-import LoadingBox from '@/components/UI/loading/LoadingBox'
 import { useEffect, useState } from 'react'
 import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
-import TaskFilterMenu from './TaskFilterMenu.jsx'
+
+import TaskLayout from './TaskLayout.jsx'
 
 // Components (Lazy load for better performance)
 import dynamic from 'next/dynamic'
@@ -234,17 +234,13 @@ export default function Task() {
         fetchProjectData( project_id)
     }, [project_id])
 
-    if(loadingDataTask){
-        return <LoadingBox content={'Loading task...'}/>
-    }
     return (
-        <section id="project-view">
-            {/* Menu */}
-            <TaskFilterMenu
-                projects={projects}
-                setProjectId={setProjectId}
-                toggleDeletedTasks={toggleDeletedTasks}
-            />
+        <TaskLayout 
+            loadingDataTask = {loadingDataTask}
+            projects={projects}
+            setProjectId={setProjectId}
+            toggleDeletedTasks={toggleDeletedTasks}
+        >
         
             {/* Main Project View */}
             <main className="task-board">
@@ -558,6 +554,6 @@ export default function Task() {
                     is_staff={isStaff}
                 />
             )}
-        </section>
+        </TaskLayout>
     )
 }

@@ -3,7 +3,7 @@ import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import ReportComment from './ReportComment'
 import ReportDetails from './ReportDetails'
-import LoadingBox from '../loading/LoadingBox'
+import LoadingSmall from '../loading/LoadingSmall'
 
 const ShowReportToTask = ({ task, onClose, updateTaskStatus }) => {
     const [reportData, setReportData] = useState(null)
@@ -104,7 +104,7 @@ const ShowReportToTask = ({ task, onClose, updateTaskStatus }) => {
                      <div className="report-content-task-form h-full w-[80%] p-8 pb-4 rounded-lg shadow lg:w-1/2">
                             {loadingReportData ? (
                                 <div className='relative w-full h-[500px] top-0 left-0'>
-                                    <LoadingBox/>   
+                                    <LoadingSmall/>   
                                 </div>
                             ) : (reportData && reportData.user ? (
                                 <ReportDetails task={task} reportData={reportData} handDoneReport={handDoneReport}/>

@@ -6,10 +6,9 @@ import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import PrimaryButton from '@/components/Button'
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
-import NavBar from './navbar'
 import dynamic from 'next/dynamic'
-import LoadingBox from '@/components/UI/loading/LoadingBox'
 import LoadingPage from '@/components/UI/loading/LoadingPage'
+import ProjectIdLayout from './ProjectIdLayout'
 
 // Dynamic import for components
 const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), {
@@ -197,21 +196,16 @@ const DashboardProjectView = () => {
             updateTaskStatus(movedTask.id, destinationColumn)
         }
     }
-    
-    if(loadingDaTaTask){
-        return <LoadingBox />
-    }
 
     return (
-        <section id="project-view">
-            {/* Menu */}
-            <NavBar
-                projectName={project?.name}
-                countUserToProject={countUserToProject}
-                handleBackClick={handleBackClick}
-                toggleUserList={toggleUserList}
-                toggleDeletedTasks={toggleDeletedTasks}
-            />
+        <ProjectIdLayout
+            loading={loadingDaTaTask}
+            projectName={project?.name}
+            countUserToProject={countUserToProject}
+            handleBackClick={handleBackClick}
+            toggleUserList={toggleUserList}
+            toggleDeletedTasks={toggleDeletedTasks}
+        >
 
             {/* Main Project View */}
                 <main className="task-board">
@@ -481,7 +475,7 @@ const DashboardProjectView = () => {
                     project_deadline={projectDeadLine}
                 />
             )}
-        </section>
+        </ProjectIdLayout>
     )
 }
 

@@ -8,7 +8,7 @@ import { useAuthContext } from '@/hooks/context/AuthContext'
 import LoadingBox from '../loading/LoadingBox'
 
 const ReportForm = ({ onClose, task }) => {
-    const user = useAuthContext()
+    const {user} = useAuthContext()
     //form input
     const [completionGoal, setCompletionGoal] = useState('')
     const [todayWork, setTodayWork] = useState('')

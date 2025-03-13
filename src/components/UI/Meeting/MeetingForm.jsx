@@ -3,9 +3,10 @@ import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import './css/meeting.css'
 import { useAuthContext } from '@/hooks/context/AuthContext'
+import LoadingSmall from '../loading/LoadingSmall'
 
 const MeetingForm = ({ styles, onClose, meeting, getData }) => {
-    const user = useAuthContext()
+    const {user} = useAuthContext()
     const [formData, setFormData] = useState({
         meeting_name: '',
         meeting_description: '',
@@ -18,6 +19,7 @@ const MeetingForm = ({ styles, onClose, meeting, getData }) => {
 
     const [users, setUsers] = useState([]) // To store the user list
     const [searchTerm, setSearchTerm] = useState('') // To filter user list
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         axios
@@ -67,6 +69,7 @@ const MeetingForm = ({ styles, onClose, meeting, getData }) => {
             ? axios.put(`/api/meetings/${meeting.meeting_id}`, formData) // Cập nhật cuộc họp hiện tại
             : axios.post('/api/meetings', formData) // Tạo cuộc họp mới
 
+        setLoading(true)
         apiCall
             .then(() => {
                 toast.success(
@@ -79,6 +82,9 @@ const MeetingForm = ({ styles, onClose, meeting, getData }) => {
             })
             .catch(error => {
                 console.warn('Error creating meeting:', error)
+            })
+            .finally(() => {
+                setLoading(false)
             })
     }
 
@@ -335,6 +341,11 @@ const MeetingForm = ({ styles, onClose, meeting, getData }) => {
                         </button>
                     </form>
                 </div>
+                {loading &&  (
+                    <div className=' fixed top-0 left-0 w-full h-full'>
+                        <LoadingSmall/>
+                    </div>
+                )}
             </div>
         </div>
     )

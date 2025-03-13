@@ -63,6 +63,7 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
     useEffect(() => {
         if (formData.project_id) {
             // fetchFiles()
+            // sửa lỗi ở phía backend không truy vấn được các filer
             console.log(formData.project_id)
         }
     }, [formData.project_id, fetchFiles])

@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from 'react'
 import axios from '@/libs/axios'
 import { useAuthContext } from '@/hooks/context/AuthContext'
 import Image from 'next/image'
+import LoadingSmall from '../loading/LoadingSmall'
 
 const ReportComment = ({ taskId, is_project_manager }) => {
-    const user = useAuthContext()
+    const {user} = useAuthContext()
+    const [loading, setLoading] = useState(false)
     const [comments, setComments] = useState([])
     const [pinnedComments, setPinnedComments] = useState([])
     const [newComment, setNewComment] = useState('')
@@ -14,6 +16,7 @@ const ReportComment = ({ taskId, is_project_manager }) => {
     const commentsContainerRef = useRef(null) // ref cho container của danh sách bình luận
 
     const fetchComments = () => {
+        setLoading(true)
         axios
             .get(`/api/reports/${taskId}/comments/${user.id}`)
             .then(response => {
@@ -22,6 +25,9 @@ const ReportComment = ({ taskId, is_project_manager }) => {
             })
             .catch(() => {
                 console.warn('Failed to load comments')
+            })
+            .finally(() =>{
+                setLoading(false)
             })
     }
 
@@ -217,7 +223,12 @@ const ReportComment = ({ taskId, is_project_manager }) => {
                     ref={commentsContainerRef}
                     className={`custom-comment ${isPinnedCollapsed ? null : 'h-[220px]'} w-full rounded-md p-4 overflow-y-auto max-h-[320px] scrollbar-thin scrollbar-thumb-gray-300 scrollbar-hide`}
                 >
-                    {comments && comments.length > 0 ? (
+                    {loading ? (
+                        <div className='w-full h-20 relative'>
+                            <LoadingSmall/>
+                        </div>
+                    ):
+                     comments && comments.length > 0 ? (
                         comments.map((comment, index) => (
                             <div
                                 key={index}

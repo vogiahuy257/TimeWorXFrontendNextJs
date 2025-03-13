@@ -16,7 +16,7 @@ const TaskForm = ({
     project_deadline,
     is_staff,
 }) => {
-    const user = useAuthContext()
+    const {user} = useAuthContext()
     const user_id = user.id
     const [taskName, setTaskName] = useState('')
     const [deadline, setDeadLine] = useState('')

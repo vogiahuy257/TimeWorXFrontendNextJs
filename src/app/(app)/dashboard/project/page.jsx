@@ -1,12 +1,11 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
-import Menu from './menu'
 import dynamic from 'next/dynamic'
-import LoadingBox from '@/components/UI/loading/LoadingBox'
 import LoadingPage from '@/components/UI/loading/LoadingPage'
+import ProjectLayout from './ProjectLayout'
 
 // Dynamic import for components
 const CardProject = dynamic(
@@ -233,20 +232,15 @@ export default function Folder() {
         }
     }
 
-    if(loadingData) {
-        return <LoadingBox content={"Loading project ..."}/>
-    }
-
     return (
-        <section id="project">
-            {/* menu top */}
-            <Menu
-                searchQuery={searchQuery}
-                handleCreate={handleCreate}
-                handleDeletedFormToggle={handleDeletedFormToggle}
-                handleProjectAnalysis={handleProjectAnalysis}
-                handleSearch={handleSearch}
-            />
+        <ProjectLayout 
+            loading={loadingData}
+            searchQuery={searchQuery}
+            handleCreate={handleCreate}
+            handleDeletedFormToggle={handleDeletedFormToggle}
+            handleProjectAnalysis={handleProjectAnalysis}
+            handleSearch={handleSearch}
+        >
             {/* main */}
             <section id="container">
                 <div className="mainContainer w-full">
@@ -314,6 +308,6 @@ export default function Folder() {
                     </span>
                 </ConfirmationForm>
             )}
-        </section>
+        </ProjectLayout>
     )
 }

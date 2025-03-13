@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { useAuthContext } from '@/hooks/context/AuthContext'
 
 const TaskComments = ({ taskId, onClose, isManagerComment }) => {
-    const user = useAuthContext()
+    const {user} = useAuthContext()
     const [commentsData, setCommentsData] = useState([])
     const [selectedUser, setSelectedUser] = useState(null)
     const [commentContent, setCommentContent] = useState('')
