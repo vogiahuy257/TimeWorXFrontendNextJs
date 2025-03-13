@@ -1,5 +1,6 @@
 import { IconFileSelection } from '@/components/IconFileSelection'
 import LoadingSmall from '@/components/UI/loading/LoadingSmall'
+import NoData from '@/components/NoData'
 
 const FileSelection = ({ loadingFile,files, selectedFiles, onChange }) => {
     const handleDivClick = fileId => {
@@ -23,7 +24,7 @@ const FileSelection = ({ loadingFile,files, selectedFiles, onChange }) => {
                 </div>
             ) : (
                 <div className="space-y-2">
-                    {files.map(file => (
+                    {files.length > 0 ? files.map(file => (
                         <div
                             key={file.id}
                             className={`flex custom-selected-checkbox items-center rounded-lg p-4 cursor-pointer  duration-200 ease-in-out ${
@@ -47,7 +48,10 @@ const FileSelection = ({ loadingFile,files, selectedFiles, onChange }) => {
                                 {file.label}
                             </label>
                         </div>
-                    ))}
+                    )) : 
+                    (
+                        <NoData message="No available files."/>
+                    )}
                 </div>
             )}
         </div>

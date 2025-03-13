@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react'
+
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import FileSelection from './ComponentsSummaryReportForm/FileSelection'
 import Dropdown from './ComponentsSummaryReportForm/Dropdown'
 import axios from '@/libs/axios'
@@ -7,127 +8,96 @@ import { useAuthContext } from '@/hooks/context/AuthContext'
 
 export default function SummaryReportForm({ handleOpenForm, projectIdChange,projects }) {
     const user = useAuthContext()
-    // Khai báo các state cho các trường trong form
-    const [reportName, setReportName] = useState('')
-    const [project_id, setProjectId] = useState('')
-    const [reportDate, setReportDate] = useState('')
-    const [summary, setSummary] = useState('')
-    const [completedTasks, setCompletedTasks] = useState('')
-    const [upcomingTasks, setUpcomingTasks] = useState('')
-    const [projectIssues, setProjectIssues] = useState('')
-    const [selectedFiles, setSelectedFiles] = useState([]) // Dùng mảng để lưu tệp được chọn
+
+    // State cho form
+    const [formData, setFormData] = useState({
+        reportName: '',
+        project_id: '',
+        reportDate: '',
+        summary: '',
+        completedTasks: '',
+        upcomingTasks: '',
+        projectIssues: '',
+        selectedFiles: [],
+    })
+    
     const [files, setFiles] = useState([])
     const [loadingFile, setLoadingFile] = useState(false)
+    const [isAtBottom, setIsAtBottom] = useState(true)
+    const selectedFileCount = useMemo(() => formData.selectedFiles.length, [formData.selectedFiles])
 
-    const [isAtBottom, setIsAtBottom] = useState(true) // Trạng thái nút cuộn
     const formRef = useRef(null)
 
-    // Handle input changes
-    const handleReportNameChange = e => setReportName(e.target.value)
-    const handleProjectChange = projectId => setProjectId(projectId)
-    const handleReportDateChange = e => setReportDate(e.target.value)
-    const handleSummaryChange = e => setSummary(e.target.value)
-    const handleCompletedTasksChange = e => setCompletedTasks(e.target.value)
-    const handleUpcomingTasksChange = e => setUpcomingTasks(e.target.value)
-    const handleProjectIssuesChange = e => setProjectIssues(e.target.value)
+    // Tạo một object để lưu function cập nhật state nhằm tránh render lại không cần thiết
+    const handleInputChange = useCallback(e => {
+        const { name, value } = e.target
+        setFormData(prev => ({ ...prev, [name]: value }))
+    }, [])
 
-    // Handle file selection change
-    const handleFileSelectionChange = e => {
+    // Xử lý chọn file
+    const handleFileSelectionChange = useCallback(e => {
         const { value, checked } = e.target
-    
-        setSelectedFiles(prevState => {
-            const newSelectedFiles = new Set(prevState) // Dùng Set để tối ưu hiệu suất
-    
-            if (checked) newSelectedFiles.add(value)
-            else newSelectedFiles.delete(value)
-    
-            return Array.from(newSelectedFiles)
-        })
-    }
-    
+        setFormData(prev => ({
+            ...prev,
+            selectedFiles: checked
+                ? [...prev.selectedFiles, value]
+                : prev.selectedFiles.filter(file => file !== value),
+        }))
+    }, [])
 
-    const fetchFiles = async () => {
+    // Fetch danh sách file của project
+    const fetchFiles = useCallback(async () => {
+        if (!formData.project_id) return
         setLoadingFile(true)
         try {
-            const response = await axios.get(`/api/v1/projects/${project_id}/files`)
-            console.log("📂 API Response:", response.data) // Kiểm tra dữ liệu từ API
-            setFiles(response.data) // Lưu dữ liệu vào state
+            const response = await axios.get(`/api/v1/projects/${formData.project_id}/files`)
+            setFiles(response.data)
         } catch (err) {
             console.error(err.response?.data?.message || "Có lỗi xảy ra!")
         } finally {
             setLoadingFile(false)
         }
-    }
+    }, [formData.project_id])
 
+    // Gọi API khi `project_id` thay đổi
     useEffect(() => {
-        if (project_id) { // ✅ Chỉ gọi API khi project_id có giá trị hợp lệ
-            fetchFiles();
+        if (formData.project_id) {
+            // fetchFiles()
+            console.log(formData.project_id)
         }
-    }, [project_id]);
-    
+    }, [formData.project_id, fetchFiles])
 
-    // Hàm gửi form
-    const handleSubmit = async e => {
-        e.preventDefault()
+    // Cập nhật `project_id` khi `projectIdChange` thay đổi
+    useEffect(() => {
+        setFormData(prev => ({ ...prev, project_id: projectIdChange }))
+    }, [projectIdChange])
 
-        // Dữ liệu form sẽ được gửi dưới dạng JSON
-        const formData = {
-            reportName,
-            project_id,
-            reportDate,
-            summary,
-            completedTasks,
-            upcomingTasks,
-            projectIssues,
-            selectedFiles,
-        }
-        // test gửi form
-        console.warn('Form Data:', JSON.stringify(formData, null, 2))
-    }
+    // Xử lý scroll
+    const handleScroll = useCallback(() => {
+        if (!formRef.current) return
+        const { scrollTop, scrollHeight, clientHeight } = formRef.current
+        setIsAtBottom(Math.abs(scrollTop + clientHeight - scrollHeight) < 5)
+    }, [])
 
-    // Hàm kiểm tra xem đã cuộn đến cuối chưa
-    const handleScroll = () => {
-        if (formRef.current) {
-            const { scrollTop, scrollHeight, clientHeight } = formRef.current;
-            const atBottom = Math.abs(scrollTop + clientHeight - scrollHeight) < 5;
-            setIsAtBottom(atBottom)
-        }
-    }    
-
-    // Hàm cuộn đến cuối form khi bấm nút
-    const scrollToBottom = () => {
-        if (formRef.current) {
-            formRef.current.scrollTo({
-                top: formRef.current.scrollHeight,
-                behavior: 'smooth',
-            })
-        }
-    }
-
-    // Lắng nghe sự kiện cuộn
     useEffect(() => {
         const currentForm = formRef.current
-
-        // Kiểm tra vị trí cuộn ngay khi form render
         if (currentForm) {
-            const { scrollTop, scrollHeight, clientHeight } = currentForm
-            const atBottom = scrollTop + clientHeight >= scrollHeight - 5 // Kiểm tra vị trí
-            setIsAtBottom(atBottom)
-
-            // Lắng nghe sự kiện cuộn
             currentForm.addEventListener('scroll', handleScroll)
         }
+        return () => currentForm?.removeEventListener('scroll', handleScroll)
+    }, [handleScroll])
 
-        return () => {
-            if (currentForm) {
-                currentForm.removeEventListener('scroll', handleScroll)
-            }
+    // Scroll xuống cuối form
+    const scrollToBottom = useCallback(() => {
+        formRef.current?.scrollTo({ top: formRef.current.scrollHeight, behavior: 'smooth' })
+    }, [])
+
+    // Xử lý submit form
+    const handleSubmit = useCallback(() => {
+        if (formRef.current) {
+            console.log("Submitting form with data:", formData); // Log dữ liệu trước khi submit
         }
-    }, [])
-    // Gọi API khi component được render
-    useEffect(() => {
-        setProjectId(projectIdChange)
-    }, [])
+    }, [formData]);        
 
     return (
         <section
@@ -174,8 +144,8 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                                 id="reportName"
                                 name="reportName"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={reportName}
-                                onChange={handleReportNameChange}
+                                value={formData.reportName}
+                                onChange={handleInputChange}
                                 placeholder="Enter report name"
                             />
                         </div>
@@ -184,8 +154,8 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                         <Dropdown
                             label="Select a Project"
                             options={projects}
-                            value={project_id}
-                            onChange={handleProjectChange}
+                            value={formData.project_id}
+                            onChange={handleInputChange}
                         />
 
                         {/* Report Date */}
@@ -202,8 +172,8 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                                     id="reportDate"
                                     name="reportDate"
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white-css"
-                                    value={reportDate}
-                                    onChange={handleReportDateChange}
+                                    value={formData.reportDate}
+                                    onChange={handleInputChange}
                                 />
 
                                 {/* Icon lịch tùy chỉnh */}
@@ -227,8 +197,8 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                                 name="summary"
                                 rows={4}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={summary}
-                                onChange={handleSummaryChange}
+                                value={formData.summary}
+                                onChange={handleInputChange}
                                 placeholder="Provide a brief summary of the report"
                             />
                         </div>
@@ -246,8 +216,8 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                                 name="completedTasks"
                                 rows={4}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={completedTasks}
-                                onChange={handleCompletedTasksChange}
+                                value={formData.completedTasks}
+                                onChange={handleInputChange}
                                 placeholder="List completed tasks"
                             />
                         </div>
@@ -265,8 +235,8 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                                 name="upcomingTasks"
                                 rows={4}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={upcomingTasks}
-                                onChange={handleUpcomingTasksChange}
+                                value={formData.upcomingTasks}
+                                onChange={handleInputChange}
                                 placeholder="List upcoming tasks"
                             />
                         </div>
@@ -284,8 +254,8 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                                 name="projectIssues"
                                 rows={4}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={projectIssues}
-                                onChange={handleProjectIssuesChange}
+                                value={formData.projectIssues}
+                                onChange={handleInputChange}
                                 placeholder="Describe any project issues"
                             />
                         </div>
@@ -293,7 +263,7 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                         <FileSelection
                             loadingFile={loadingFile}
                             files={files}
-                            selectedFiles={selectedFiles}
+                            selectedFiles={formData.selectedFiles}
                             onChange={handleFileSelectionChange}
                         />
 
@@ -326,12 +296,12 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                     <div className="relative pt-3">
                         <span className="custom-selectedFiles text-center flex justify-end items-end text-sm absolute right-0 -top-[35px]">
                             <p className="text-center flex justify-center items-center rounded-md">
-                                {selectedFiles.length} files selected
+                                {selectedFileCount} files selected
                             </p>
                         </span>
                         <button
                             onClick={handleSubmit}
-                            type="submit"
+                            type="button"
                             className="w-full text-sm btn-submit py-2 px-4 rounded-md"
                         >
                             Create Report Summary

@@ -32,7 +32,6 @@ const ReportProjectDetail = ({ project }) => {
 
     useEffect(() => {
         fetchChartData()
-        console.log('project', project)
     }, [project.project_id])
 
     const formatDateRange = (startDate, endDate) => {
@@ -140,7 +139,7 @@ const ReportProjectDetail = ({ project }) => {
                         <div className="flex-1 text-center bg-green-50 px-4 py-3 rounded-lg shadow-sm">
                             <svg className='mx-auto mb-1' xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#22c55e"><path d="m424-408-86-86q-11-11-28-11t-28 11q-11 11-11 28t11 28l114 114q12 12 28 12t28-12l226-226q11-11 11-28t-11-28q-11-11-28-11t-28 11L424-408Zm56 328q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
                             <h3 className="text-xs font-semibold text-green-500 uppercase tracking-wide">Completed</h3>
-                            <p className="text-lg font-bold text-green-600">{project.completed_tasks_ratio}%</p>
+                            <p className="text-lg font-bold text-green-600">{project.completed_tasks_ratio}</p>
                         </div>
                     </div>
                 </div>

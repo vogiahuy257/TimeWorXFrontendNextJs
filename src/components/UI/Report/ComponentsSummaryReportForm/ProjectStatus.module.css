@@ -1,0 +1,18 @@
+
+  
+  .in-progress {
+    background-color: var(--color-yellow); /* Yellow */
+  }
+  
+  .to-do {
+    background-color: var(--color-light-blue); /* Blue */
+  }
+  
+  .done {
+    background-color: var(--color-green); /* Green */
+  }
+  
+  .verify {
+    background-color: var(--color-red); /* Gray */
+  }
+  

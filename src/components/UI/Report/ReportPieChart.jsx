@@ -1,6 +1,7 @@
 
 import { Pie } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import NoData from '@/components/NoData'
 
 // Register the required components
 ChartJS.register(ArcElement, Tooltip, Legend)
@@ -51,9 +52,9 @@ const ReportPieChart = ({ labels, dataValues, colors }) => {
         <div className="flex flex-col w-full">
             <div className="w-full h-48 flex justify-center items-center">
                 {allZero ? (
-                    <p className="w-full h-full flex items-center justify-center text-xs">
-                        No task has been created yet
-                    </p>
+                    <NoData
+                        message='No task has been created yet'
+                    />
                 ) : (
                     <Pie data={data} options={options} />
                 )}
