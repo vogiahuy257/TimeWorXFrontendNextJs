@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic'
 import LoadingPage from '@/components/UI/loading/LoadingPage'
 const SummaryReportForm = dynamic(
     () => import('@/components/UI/Report/SummaryReportForm'),
-    { ssr: false, loading: () => <LoadingPage /> },
+    { ssr: true, loading: () => <LoadingPage /> },
 )
 export default function SummaryLayoutReport({
     addNewReport,

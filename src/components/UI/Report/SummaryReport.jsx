@@ -1,4 +1,4 @@
-'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import LoadingSmall from '../loading/LoadingSmall'
 import SummaryReportItem from './SummaryReportItem'
