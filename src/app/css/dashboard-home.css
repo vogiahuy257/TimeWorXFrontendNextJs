@@ -33,11 +33,13 @@
 /* Responsive cho màn hình nhỏ hơn (ví dụ: dưới 768px) */
 @media (max-width: 768px) {
     #dashboard #home {
-        grid-template-columns: 1fr; /* Chuyển sang 1 cột */
+        height: auto;
+        grid-template-columns: auto; /* Chuyển sang 1 cột */
+        grid-template-rows: 200px 300px 400px;
         grid-template-areas:
             'header'
             'meeting'
-            'content'; /* Thay đổi bố cục để các phần nằm trên nhau */
+            'content';/* Thay đổi bố cục để các phần nằm trên nhau */
     }
 
     #dashboard #home .box-meeting {

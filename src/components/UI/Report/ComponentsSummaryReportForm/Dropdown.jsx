@@ -7,7 +7,7 @@ const Dropdown = ({ label, options, value, onChange }) => {
     const selectedProject = options.find(opt => opt.project_id === value)
 
     const handleSelect = projectId => {
-        onChange(projectId)
+        onChange((prev) => ({ ...prev, project_id: projectId }))
         setIsOpen(false)
     }
 

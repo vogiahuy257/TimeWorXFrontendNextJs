@@ -16,17 +16,11 @@ const ReportTaskForm = dynamic(
     () => import('@/components/UI/Report/ReportTaskForm'),
     { ssr: false, loading: () => <LoadingPage/>},
 )
-const SummaryReportForm = dynamic(
-    () => import('@/components/UI/Report/SummaryReportForm'),
-    { ssr: false, loading: () => <LoadingPage/>},
-)
-
 export default function Report() {
     const [projects, setProjects] = useState([])
     const [selectProject, setSelectProject] = useState(null)
     const [taskData, setTaskData] = useState([])
     const [isOpenShowReportToTask, setIsOpenShowReportToTask] = useState(false)
-    const [isOpenFormSummary, setIsOpenFormSummary] = useState(false)
     const [selectTask, setSelectTask] = useState(null)
     const [loading, setLoading] = useState(true)
     const [loadingTasks, setLoadingTasks] = useState(false)
@@ -34,8 +28,6 @@ export default function Report() {
     const selectedProjectId = useMemo(() => selectProject?.project_id ?? null, [selectProject])
     const memoizedProjects = useMemo(() => projects, [projects])
     const memoizedTask = useMemo(() => taskData, [taskData])
-
-    const handleOpenForm = () => setIsOpenFormSummary(prev => !prev)
 
     const handleOpenReportTaskForm = (task = null) => {
         setSelectTask(task)
@@ -115,7 +107,8 @@ export default function Report() {
                         {/* Task Done của Project */}
                     <div className="w-full h-full flex flex-row">
                         <SummaryReport
-                            handleOpenForm={handleOpenForm}
+                            selectedProjectId={selectedProjectId}
+                            memoizedProjects={memoizedProjects}
                         />
                     </div>
                 </div>
@@ -124,13 +117,6 @@ export default function Report() {
                 <ReportTaskForm
                     onClose={handleOpenReportTaskForm}
                     task={selectTask}
-                />
-            )}
-            {isOpenFormSummary && (
-                <SummaryReportForm
-                    projects={memoizedProjects}
-                    projectIdChange={selectedProjectId}
-                    handleOpenForm={handleOpenForm}
                 />
             )}
         </ReportLayout>

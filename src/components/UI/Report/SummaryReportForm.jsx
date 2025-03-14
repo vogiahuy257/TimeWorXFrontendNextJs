@@ -4,22 +4,19 @@ import FileSelection from './ComponentsSummaryReportForm/FileSelection'
 import Dropdown from './ComponentsSummaryReportForm/Dropdown'
 import axios from '@/libs/axios'
 import './css/SummaryReportForm.css'
-import { useAuthContext } from '@/hooks/context/AuthContext'
-
-export default function SummaryReportForm({ handleOpenForm, projectIdChange,projects }) {
-    const user = useAuthContext()
-
+import { summaryReportService } from '@/services/summaryReportService'
+export default function SummaryReportForm({ addNewReport,handleOpenForm, projectIdChange,projects }) {
     // State cho form
     const [formData, setFormData] = useState({
-        reportName: '',
-        project_id: '',
-        reportDate: '',
+        name: '', 
+        project_id: '', 
+        report_date: '',
         summary: '',
-        completedTasks: '',
-        upcomingTasks: '',
-        projectIssues: '',
-        selectedFiles: [],
-    })
+        completed_tasks: '', 
+        upcoming_tasks: '', 
+        project_issues: '', 
+        selectedFiles: [], 
+    })    
     
     const [files, setFiles] = useState([])
     const [loadingFile, setLoadingFile] = useState(false)
@@ -34,22 +31,17 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
         setFormData(prev => ({ ...prev, [name]: value }))
     }, [])
 
-    // Xử lý chọn file
-    const handleFileSelectionChange = useCallback(e => {
-        const { value, checked } = e.target
-        setFormData(prev => ({
-            ...prev,
-            selectedFiles: checked
-                ? [...prev.selectedFiles, value]
-                : prev.selectedFiles.filter(file => file !== value),
-        }))
-    }, [])
-
     // Fetch danh sách file của project
     const fetchFiles = useCallback(async () => {
         if (!formData.project_id) return
         setLoadingFile(true)
+        // Giữ lại dữ liệu cũ, chỉ reset selectedFiles
+        setFormData((prev) => ({
+            ...prev,
+            selectedFiles: [] // Xóa danh sách file đã chọn
+        }))
         try {
+            // sửa lỗi truy vấn backend
             const response = await axios.get(`/api/v1/projects/${formData.project_id}/files`)
             setFiles(response.data)
         } catch (err) {
@@ -62,9 +54,7 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
     // Gọi API khi `project_id` thay đổi
     useEffect(() => {
         if (formData.project_id) {
-            // fetchFiles()
-            // sửa lỗi ở phía backend không truy vấn được các filer
-            console.log(formData.project_id)
+            fetchFiles()
         }
     }, [formData.project_id, fetchFiles])
 
@@ -94,11 +84,31 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
     }, [])
 
     // Xử lý submit form
-    const handleSubmit = useCallback(() => {
-        if (formRef.current) {
-            console.log("Submitting form with data:", formData); // Log dữ liệu trước khi submit
+    const handleSubmit = useCallback(async () => {
+        if (!formRef.current) return
+        try {
+            const newReport = await summaryReportService.createSummaryReport({
+                project_id: formData.project_id || null, // Nếu không có thì gửi null
+                name: formData.name,
+                report_date: formData.report_date,
+                summary: formData.summary,
+                completed_tasks: formData.completed_tasks,
+                upcoming_tasks: formData.upcoming_tasks,
+                project_issues: formData.project_issues,
+                report_files: formData.selectedFiles.map(file => ({
+                    file_id: file.file_id,
+                    path: file.path,
+                    file_name: file.name
+                })) // Gửi đúng format yêu cầu của backend
+            })
+            addNewReport(newReport)
+            handleOpenForm()
+    
+        } catch (err) {
+            console.error("Error creating summary report:", err.response?.data?.message || err.message)
         }
-    }, [formData]);        
+    }, [formData])    
+          
 
     return (
         <section
@@ -135,17 +145,17 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                         {/* Report Name */}
                         <div>
                             <label
-                                htmlFor="reportName"
+                                htmlFor="name"
                                 className="text-sm font-medium mb-1"
                             >
                                 Report Name
                             </label>
                             <input
                                 type="text"
-                                id="reportName"
-                                name="reportName"
+                                id="name"
+                                name="name"
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={formData.reportName}
+                                value={formData.name}
                                 onChange={handleInputChange}
                                 placeholder="Enter report name"
                             />
@@ -156,13 +166,13 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                             label="Select a Project"
                             options={projects}
                             value={formData.project_id}
-                            onChange={handleInputChange}
+                            onChange={setFormData}
                         />
 
                         {/* Report Date */}
                         <div>
                             <label
-                                htmlFor="reportDate"
+                                htmlFor="report_date"
                                 className="text-sm font-medium mb-1"
                             >
                                 Report Date
@@ -170,10 +180,10 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                             <div className="relative w-full">
                                 <input
                                     type="date"
-                                    id="reportDate"
-                                    name="reportDate"
+                                    id="report_date"
+                                    name="report_date"
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white-css"
-                                    value={formData.reportDate}
+                                    value={formData.report_date}
                                     onChange={handleInputChange}
                                 />
 
@@ -207,17 +217,17 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                         {/* Completed Tasks */}
                         <div>
                             <label
-                                htmlFor="completedTasks"
+                                htmlFor="completed_tasks"
                                 className="text-sm font-medium  mb-1"
                             >
                                 Completed Tasks
                             </label>
                             <textarea
-                                id="completedTasks"
-                                name="completedTasks"
+                                id="completed_tasks"
+                                name="completed_tasks"
                                 rows={4}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={formData.completedTasks}
+                                value={formData.completed_tasks}
                                 onChange={handleInputChange}
                                 placeholder="List completed tasks"
                             />
@@ -226,17 +236,17 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                         {/* Upcoming Tasks */}
                         <div>
                             <label
-                                htmlFor="upcomingTasks"
+                                htmlFor="upcoming_tasks"
                                 className="text-sm font-medium mb-1"
                             >
                                 Upcoming Tasks
                             </label>
                             <textarea
-                                id="upcomingTasks"
-                                name="upcomingTasks"
+                                id="upcoming_tasks"
+                                name="upcoming_tasks"
                                 rows={4}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={formData.upcomingTasks}
+                                value={formData.upcoming_tasks}
                                 onChange={handleInputChange}
                                 placeholder="List upcoming tasks"
                             />
@@ -245,17 +255,17 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                         {/* Project Issues */}
                         <div>
                             <label
-                                htmlFor="projectIssues"
+                                htmlFor="project_issues"
                                 className="text-sm font-medium mb-1"
                             >
                                 Project Issues
                             </label>
                             <textarea
-                                id="projectIssues"
-                                name="projectIssues"
+                                id="project_issues"
+                                name="project_issues"
                                 rows={4}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={formData.projectIssues}
+                                value={formData.project_issues}
                                 onChange={handleInputChange}
                                 placeholder="Describe any project issues"
                             />
@@ -265,7 +275,7 @@ export default function SummaryReportForm({ handleOpenForm, projectIdChange,proj
                             loadingFile={loadingFile}
                             files={files}
                             selectedFiles={formData.selectedFiles}
-                            onChange={handleFileSelectionChange}
+                            onChange={setFormData}
                         />
 
                         {/* Nút cuộn xuống */}

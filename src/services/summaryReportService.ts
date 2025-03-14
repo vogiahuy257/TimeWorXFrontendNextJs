@@ -18,17 +18,21 @@ export interface SummaryReport {
     updated_at?: string
     deleted_at?: string | null 
 }
-
+export interface ReportFile {
+    file_id: number;
+    path: string;
+    file_name: string;
+  }
 export interface CreateSummaryReportRequest {
-    project_id?: string | null
-    name: string
-    report_date: string
-    summary: string
-    completed_tasks?: string
-    upcoming_tasks?: string
-    project_issues?: string
-    report_files?: string[]
-}
+    project_id?: number | null; // ✅ Đổi từ string | null -> number | null
+    name: string;
+    report_date: string;
+    summary?: string;
+    completed_tasks?: string;
+    upcoming_tasks?: string;
+    project_issues?: string;
+    report_files: ReportFile[]; // ✅ Đổi từ string[] -> ReportFile[]
+  }
 
 export interface PaginatedResponse<T> {
     data: T[]

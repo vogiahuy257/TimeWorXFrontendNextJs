@@ -3,18 +3,23 @@ import LoadingSmall from '@/components/UI/loading/LoadingSmall'
 import NoData from '@/components/NoData'
 
 const FileSelection = ({ loadingFile,files, selectedFiles, onChange }) => {
-    const handleDivClick = fileId => {
-        // Find the checkbox input for the file
-        const checkbox = document.getElementById(fileId)
-        if (checkbox) {
-            // Simulate a click on the checkbox
-            checkbox.checked = !checkbox.checked
-            onChange({ target: checkbox })
-        }
-    }
+    const handleDivClick = (file) => {
+        onChange((prev) => {
+            const isSelected = prev.selectedFiles.some((f) => f.file_id === file.file_id) // Kiểm tra đúng
+    
+            return {
+                ...prev,
+                selectedFiles: isSelected
+                    ? prev.selectedFiles.filter((f) => f.file_id !== file.file_id) // Bỏ chọn
+                    : [...prev.selectedFiles, file ] // Thêm vào danh sách (đối tượng file)
+            }
+        })
+    }    
+
+    
 
     return (
-        <div className="w-full max-w-3xl mx-auto">
+        <div className="w-full max-w-3xl mx-auto mb-8">
             <h1 className="text-sm font-medium mb-2">
                 Select Files to Include in ZIP
             </h1>
@@ -23,36 +28,36 @@ const FileSelection = ({ loadingFile,files, selectedFiles, onChange }) => {
                     <LoadingSmall content={"Loading data files..."}/>
                 </div>
             ) : (
-                <div className="space-y-2">
+                <ul className="space-y-2">
                     {files.length > 0 ? files.map(file => (
-                        <div
-                            key={file.id}
+                        <li
+                            key={file.file_id}
                             className={`flex custom-selected-checkbox items-center rounded-lg p-4 cursor-pointer  duration-200 ease-in-out ${
-                                selectedFiles.includes(file.id)
+                                selectedFiles.some((f) => f.file_id === file.file_id)
                                     ? ' border border-blue-500'
                                     : ' border border-gray-200 hover:border-blue-300'
                             }`}
-                            onClick={() => handleDivClick(file.id)}
+                            onClick={() => handleDivClick(file)}
                         >
                             <input
                                 type="checkbox"
-                                id={file.id}
+                                id={file.file_id}
                                 name="selectedFiles"
-                                value={file.id}
-                                checked={selectedFiles.includes(file.id)}
-                                className={`h-4 w-4 mr-2 custom-checkbox cursor-pointer focus:ring-blue-500 border-gray-300 rounded ${!selectedFiles.includes(file.id)&&'bg-white-css'}`}
-                                onChange={onChange}
+                                value={file.file_id}
+                                checked={selectedFiles.some((f) => f.file_id === file.file_id)} 
+                                className={`h-4 w-4 mr-2 custom-checkbox cursor-pointer focus:ring-blue-500 border-gray-300 rounded`}
+                                readOnly
                             />
                             <IconFileSelection filetype={file.type} />
                             <label className=" ml-1 text-sm font-light cursor-pointer">
-                                {file.label}
+                                {file.name}
                             </label>
-                        </div>
+                        </li>
                     )) : 
                     (
                         <NoData message="No available files."/>
                     )}
-                </div>
+                </ul>
             )}
         </div>
     )
