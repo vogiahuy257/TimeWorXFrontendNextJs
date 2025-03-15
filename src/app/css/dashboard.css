@@ -14,7 +14,7 @@
 }
 
 #dashboard.dark-mode {
-    --color-black: #ffffff;
+    --color-black: rgb(255, 255, 255);
     --color-gray: #292b2c;
     --color-white: #151515;
     --color-whiteGray: #232323;
@@ -494,7 +494,39 @@
     background-color: var(--color-white);
   }
 
-.bg-black-css
+#dashboard .bg-black-css
 {
     background-color: var(--color-black);
+}
+
+
+#dashboard .bg-gray-css-100{
+    background-color: rgba(var(--color-black-rgb),0.1);
+}
+
+#dashboard .bg-gray-css-50{
+    background-color: rgba(var(--color-black-rgb),0.05);
+}
+
+#dashboard .text-gray-css{
+    color: #626f81;
+}
+#dashboard.dark-mode .text-gray-css
+{
+    color: #9a9da1;
+}
+
+#dashboard .cardBox {
+    background-color: var(--color-white); /* bg-white-css */
+    transition: background-color 0.2s ease-in-out,box-shadow 0.2s ease-in-out; /* transition-all duration-200 */
+    box-shadow: 0 1px 2px rgba(var(--color-black-rgb), 0.05); /* shadow-sm */
+}
+
+#dashboard .cardBox:hover {
+    border-color: #e5e7eb; /* hover:border-gray-200 */
+    box-shadow: 0 4px 6px rgba(var(--color-black-rgb), 0.1); /* hover:shadow-md */
+}
+
+#dashboard .cardBox:active {
+    transform: scale(0.995); /* active:scale-[0.995] */
 }

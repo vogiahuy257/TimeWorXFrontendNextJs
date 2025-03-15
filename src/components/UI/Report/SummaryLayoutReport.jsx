@@ -20,7 +20,7 @@ export default function SummaryLayoutReport({
             <section className="custom-sumary-report h-[536px] flex flex-col relative p-3">
                 {/* nút bấm mở formSummaryReport */}
                 <div className="flex justify-end px-4 items-center gap-2 mt-4 mb-2 md:mt-0">
-                    <div className="flex items-center mr-auto gap-2 border relative">
+                    <div className="flex items-center mr-auto gap-2 relative">
                         <svg
                             className=" absolute right-2 top-1/2 -translate-y-1/2"
                             xmlns="http://www.w3.org/2000/svg"
@@ -35,13 +35,13 @@ export default function SummaryLayoutReport({
                             placeholder="Search reports..."
                             value={searchTerm}
                             onChange={e => setSearchTerm(e.target.value)}
-                            className="outline-none rounded-full w-auto text-sm py-1"
+                            className="outline-none rounded-full w-auto text-sm py-1 bg-white-css"
                         />
                     </div>
 
                     <button
                         onClick={handleOpenForm}
-                        className="bg-black text-white px-3 py-1 transition duration-200 ease-in-out hover:bg-gray-700 active:bg-blue-500 rounded-md flex justify-center items-center gap-1">
+                        className="bg-black text-white px-3 py-1 transition duration-100 ease-in-out hover:bg-gray-700 active:bg-blue-500 rounded-md flex justify-center items-center gap-1">
                         <p>Create</p>
                         <svg
                             width="18"

@@ -17,9 +17,13 @@ const LayoutComponent = ({ children }) => {
         }
     }, [user])
 
+    const handleGoBack = () => {
+        router.back()
+      }
+
     return (
         <section id="setting" className={`${settings?.color_system} scrollbar-hide overflow-auto w-full h-screen`}>
-                <Menu pathname={pathname}/>
+                <Menu pathname={pathname} handleGoBack={handleGoBack} />
                 {children}
         </section>
     )

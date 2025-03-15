@@ -39,68 +39,70 @@ export function useSummaryReports() {
 
     // Xử lý thay đổi search term
     useEffect(() => {
-        if (searchTerm.trim() === '') {
-            resetReports()
-            return
-        }
-
         searchTermRef.current = searchTerm
-
+    
         if (searchTimeout.current) clearTimeout(searchTimeout.current)
-
-        searchTimeout.current = setTimeout(() => {
-            searchReports()
-        }, 400)
-
+    
+        if (searchTerm.trim() === '') {
+            resetReports() // Gọi API lấy dữ liệu trang 1 ngay khi searchTerm rỗng
+        } else {
+            searchTimeout.current = setTimeout(() => {
+                searchReports()
+            }, 400)
+        }
+    
         return () => {
             if (searchTimeout.current) clearTimeout(searchTimeout.current)
         }
-    }, [searchTerm])
+    }, [searchTerm])    
 
     // Hàm tải báo cáo với phân trang
     const loadReports = useCallback(async (pageNumber) => {
-        if (loadingSummaryReport || searchTerm.trim() !== '') return 
-        setLoadingSummaryReport(true)
-
+        if (loadingSummaryReport) return; // Chỉ chặn khi đang tải
+    
+        setLoadingSummaryReport(true);
+    
         try {
-            const res = await summaryReportService.getSummaryReports({ page: pageNumber, per_page: 10 })
-
+            const res = await summaryReportService.getSummaryReports({ page: pageNumber, per_page: 10 });
+    
             if (!res.data || res.data.length === 0) {
-                setLoading(false)
-                return
+                setLoadingSummaryReport(false);
+                return;
             }
-
+    
             setReports((prev) => {
-                const newReports = [...prev, ...res.data]
-                const uniqueReports = Array.from(new Map(newReports.map(r => [r.summary_report_id, r])).values())
-                return uniqueReports.slice(-30)
-            })
-
+                const newReports = [...prev, ...res.data];
+                const uniqueReports = Array.from(new Map(newReports.map(r => [r.summary_report_id, r])).values());
+                return uniqueReports.slice(-30);
+            });
+    
             setPagination({
                 total: res.total,
                 per_page: res.per_page,
                 current_page: res.current_page
-            })
+            });
         } catch (error) {
-            toast.error('Error loading reports')
+            toast.error('Error loading reports');
         } finally {
-            setLoadingSummaryReport(false)
+            setLoadingSummaryReport(false);
         }
-    }, [loadingSummaryReport, searchTerm])
+    }, [loadingSummaryReport]); // Loại bỏ searchTerm khỏi dependency
+    
 
     // Reset danh sách khi tìm kiếm rỗng
     const resetReports = () => {
-        setReports([])
         setPagination({
             total: 0,
             per_page: 10,
             current_page: 1
-        })
-        setLoadingSummaryReport(false)
-        setTimeout(() => {
-            loadReports(1)
-        }, 100)
-    }
+        });
+    
+        setLoadingSummaryReport(false);
+    
+        loadReports(1); // Gọi API lấy dữ liệu trang 1
+    };
+    
+    
 
     // Hàm thêm báo cáo mới vào đầu danh sách
     const addNewReport = useCallback((newReport) => {
@@ -113,6 +115,9 @@ export function useSummaryReports() {
 
     return {
         reports,
+        searchTermRef,
+        setLoadingSummaryReport,
+        searchTimeout,
         setReports,
         setPagination,
         pagination,

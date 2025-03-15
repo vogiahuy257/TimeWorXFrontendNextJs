@@ -1,10 +1,10 @@
 import Link from "next/link"
 
-const Menu = ({pathname}) => {
+const Menu = ({pathname, handleGoBack}) => {
   return (
     <nav className="fixed z-50 bottom-8 right-8 flex flex-col gap-2">
-        <Link
-            href="/dashboard/home"
+        <button
+            onClick={handleGoBack}
             className="btn-menu-home fixed top-8 right-8 group flex items-center justify-start w-[58px] h-[58px] rounded-xl 
             bg-black text-white shadow-md transition-all duration-300 hover:w-[142px] active:scale-95 active:bg-gray-700"
             aria-label="Dashboard"
@@ -24,7 +24,7 @@ const Menu = ({pathname}) => {
             <span className="ml-12 opacity-0 transition-all duration-300 ease-in-out transform translate-x-2 group-hover:translate-x-0 group-hover:opacity-100">
                 Dashboard
             </span>
-        </Link>
+        </button>
 
       <Link
         href="/setting/system"
