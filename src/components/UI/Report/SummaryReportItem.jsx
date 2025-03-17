@@ -44,7 +44,7 @@ const SummaryReportItem = memo(({ report }) => {
                 <div className="flex-shrink-0 p-2 rounded-md transition-all duration-300 
                                 group-hover:bg-blue-600/80 group-hover:shadow-lg 
                                 group-hover:translate-x-1 group-hover:-translate-y-1">
-                    <ArrowRight className="h-5 w-5 transform -rotate-45 transition-all duration-300 group-hover:scale-110" />
+                    <ArrowRight className="h-5 w-5 group-hover:text-white transform -rotate-45 transition-all duration-300 group-hover:scale-110" />
                 </div>
 
             </div>
@@ -70,12 +70,12 @@ const SummaryReportItem = memo(({ report }) => {
                 </div>
             )}
 
-            {report.reported_by_user_id && (
+            {/* {report.reported_by_user_id && (
                 <div className="flex items-center text-sm text-gray-css">
                 <User className="h-4 w-4 mr-1.5 text-gray-css" />
                 <span>{report.reported_by_user_id}</span>
                 </div>
-            )}
+            )} */}
 
             {/* Status indicator */}
             {report.deleted_at && (

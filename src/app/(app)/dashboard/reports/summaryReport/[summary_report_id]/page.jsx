@@ -7,7 +7,9 @@ import LoadingBox from "@/components/UI/loading/LoadingBox"
 import NoData from "@/components/NoData"
 import { format } from "date-fns"
 import { useAuthContext } from "@/hooks/context/AuthContext"
-import { Calendar, CheckCircle, Download, FileText, Info, User, AlertTriangle, Clock,ArrowLeft } from "lucide-react"
+import { Calendar, CheckCircle, Download, FileText, Info, User, AlertTriangle, Clock,ArrowLeft,Trash2 } from "lucide-react"
+import DeleteModal from "@/components/DeleteModal"
+import { toast } from "react-toastify"
 
 const SummaryReportDetail = () => {
     const { user } = useAuthContext()
@@ -15,8 +17,11 @@ const SummaryReportDetail = () => {
     const [report, setReport] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+    const [errorDownload, setErrorDownload] = useState(null)
     const [isDownloading, setIsDownloading] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [activeTab, setActiveTab] = useState("completed")
+    const [isDeleting, setIsDeleting] = useState(false)
 
     const formatDate = (dateString) => {
         if (!dateString) return "N/A"
@@ -59,29 +64,50 @@ const SummaryReportDetail = () => {
     )
 
     const handleDownloadZip = async () => {
-            if (!report.zip_file_path) return
-            return
+            if (!report.zip_file_path || !report.summary_report_id) return
+
             setIsDownloading(true)
+            setErrorDownload(null)
             try {
-            // In a real implementation, you would use the actual API endpoint
-            const response = await fetch(`/api/reports/${report.summary_report_id}/download`)
-            const blob = await response.blob()
-        
-            // Create a download link and trigger the download
-            const url = window.URL.createObjectURL(blob)
-            const a = document.createElement("a")
-            a.href = url
-            a.download = report.zip_name || `report-${report.summary_report_id}.zip`
-            document.body.appendChild(a)
-            a.click()
-            window.URL.revokeObjectURL(url)
-            document.body.removeChild(a)
+                const { blob, filename } = await summaryReportService.downloadSummaryReportZip(report.summary_report_id,`summary_report_${report.name}`)
+
+                // Tạo URL từ blob và tự động tải xuống
+                const url = window.URL.createObjectURL(blob)
+                const link = document.createElement("a")
+                link.href = url
+                link.download = filename
+                document.body.appendChild(link)
+                link.click()
+
+                // Xóa URL sau khi tải xong
+                window.URL.revokeObjectURL(url)
+                document.body.removeChild(link)
             } catch (error) {
-            console.error("Download failed:", error)
+                console.error("Download failed:", error)
+                setErrorDownload(error?.message)
             } finally {
-            setIsDownloading(false)
+                setIsDownloading(false)
             }
     }
+
+    const handleDelete = async () => {
+        if (!report?.summary_report_id) return
+    
+        try {
+            setIsDeleting(true)
+            await summaryReportService.softDeleteSummaryReport(report.summary_report_id)
+            toast.success(`Summary Report ${report.summary_report_id} deleted successfully!`)
+            router.push("/dashboard/reports")
+        } catch (error) {
+            console.error("Error deleting report:", error)
+            toast.error("Failed to delete report.")
+        } finally {
+            setIsDeleting(false)
+            setShowDeleteModal(false)
+        }
+    }
+    
+
     const router = useRouter()
     const handleGoBack = () => {
         router.back()
@@ -106,7 +132,7 @@ const SummaryReportDetail = () => {
                         className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 dark:bg-blue-400
                                                 transition-all duration-300 ease-out
                                                 group-hover:w-full"
-                        ></span>
+                        />
                     </span>
                 </button>
 
@@ -118,22 +144,25 @@ const SummaryReportDetail = () => {
                         <p className="text-gray-500">Report ID: {report.summary_report_id}</p>
                     </div>
 
-                    {report.zip_file_path && (
-                        <button
-                            onClick={handleDownloadZip}
-                            disabled={isDownloading}
-                            className={`flex items-center justify-center px-4 py-2 rounded-md text-white font-medium
-                                transition-all duration-300 ease-in-out w-full sm:w-auto
-                                ${isDownloading ? "bg-gray-400 scale-95 opacity-50 cursor-not-allowed" 
-                                                : "bg-blue-700 hover:bg-blue-800 hover:scale-105 active:scale-95"}`}
-                        >
-                            <Download
-                                className={`mr-2 h-4 w-4 transition-transform duration-300 ease-in-out
-                                    ${isDownloading ? "animate-bounce" : ""}`}
-                            />
-                            {isDownloading ? "Downloading..." : `Download ${report.zip_name || "ZIP File"}`}
-                        </button>
-                    )}
+                    <div className="">
+                        {report.zip_file_path && (
+                            <button
+                                onClick={handleDownloadZip}
+                                disabled={isDownloading}
+                                className={`flex items-center justify-center px-4 py-2 rounded-md text-white font-medium
+                                    transition-all duration-300 ease-in-out w-full sm:w-auto
+                                    ${isDownloading ? "bg-gray-400 scale-95 opacity-50 cursor-not-allowed" 
+                                                    : "bg-blue-700 hover:bg-blue-800 hover:scale-105 active:scale-100"}`}
+                            >
+                                <Download
+                                    className={`mr-2 h-4 w-4 transition-transform duration-300 ease-in-out
+                                        ${isDownloading ? "animate-bounce" : ""}`}
+                                />
+                                {isDownloading ? "Downloading..." : `Download ${report.zip_name || "ZIP File"}`}
+                            </button>
+                        )}
+                        {errorDownload && <span className="text-xs text-red-500 font-semibold">{errorDownload}</span>}
+                    </div>
                 </div>
 
                 {/* Main report information */}
@@ -313,7 +342,26 @@ const SummaryReportDetail = () => {
                     </div>
                 </div>
                 </div>
+
+                    <button
+                        onClick={() => setShowDeleteModal(true)}
+                        className="flex items-center justify-center px-4 py-2 rounded-md text-white font-medium
+                            transition-all duration-200 ease-in-out w-1/2 sm:w-auto
+                            bg-red-600 hover:bg-red-700  active:scale-95"
+                    >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Delete Report
+                    </button>
             </div>
+
+            {showDeleteModal && (
+                <DeleteModal 
+                    onClose={() => setShowDeleteModal(false)}
+                    onConfirm={handleDelete}
+                    isDeleting={isDeleting}
+                />
+            )}
+
         </div>
     )
 }

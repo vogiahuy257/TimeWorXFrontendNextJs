@@ -4,12 +4,14 @@ import { summaryReportService } from '@/services/summaryReportService'
 
 export function useSummaryReports() {
     const [reports, setReports] = useState([]) 
+    const [deletedReports, setDeletedReports] = useState([])
     const [pagination, setPagination] = useState({
         total: 0,
         per_page: 10,
         current_page: 1
     }) 
     const [loadingSummaryReport, setLoadingSummaryReport] = useState(false)
+    const [loadingDeletedReports, setLoadingDeletedReports] = useState(false)
     const [searchTerm, setSearchTerm] = useState('')
     const searchTimeout = useRef(null)
     const searchTermRef = useRef(searchTerm)
@@ -113,18 +115,48 @@ export function useSummaryReports() {
         }))
     }, [])
 
+    // 🟢 Tải danh sách báo cáo đã xóa
+    const loadDeletedReports = useCallback(async () => {
+        setLoadingDeletedReports(true)
+        try {
+            const reports = await summaryReportService.getDeletedSummaryReports()
+            setDeletedReports(reports)
+        } catch (error) {
+            console.error("Error fetching deleted reports:", error)
+            toast.error("Failed to fetch deleted reports.")
+        } finally {
+            setLoadingDeletedReports(false)
+        }
+    }, [])
+
+    // 🟢 Khôi phục báo cáo đã xóa
+    const handleRestore = async (id) => {
+        try {
+            await summaryReportService.restoreSummaryReport(id)
+            toast.success("Report restored successfully!")
+            setDeletedReports((prev) => prev.filter((report) => report.summary_report_id !== id))
+            loadReports(1) // Load lại danh sách chính sau khi khôi phục
+        } catch (error) {
+            console.error("Error restoring report:", error)
+            toast.error("Failed to restore report.")
+        }
+    }
+
     return {
         reports,
+        deletedReports,
         searchTermRef,
         setLoadingSummaryReport,
-        searchTimeout,
         setReports,
         setPagination,
         pagination,
         loadingSummaryReport,
+        loadingDeletedReports,
         searchTerm,
         setSearchTerm,
         loadReports,
-        addNewReport
+        loadDeletedReports,
+        addNewReport,
+        handleRestore
     }
 }

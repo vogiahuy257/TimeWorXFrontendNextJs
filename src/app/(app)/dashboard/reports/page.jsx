@@ -14,7 +14,12 @@ import ReportLayout from './ReportLayout'
 // Dynamically Imported Components
 const ReportTaskForm = dynamic(
     () => import('@/components/UI/Report/ReportTaskForm'),
-    { ssr: false, loading: () => <LoadingPage/>},
+    { ssr: true, loading: () => <LoadingPage/>},
+)
+
+const ReportHistorySummary = dynamic(
+    () => import('@/components/UI/Report/ComponentsSummaryReportForm/ReportHistorySummary'),
+    { ssr: true, loading: () => <LoadingPage/>},
 )
 export default function Report() {
     const [projects, setProjects] = useState([])
@@ -24,6 +29,7 @@ export default function Report() {
     const [selectTask, setSelectTask] = useState(null)
     const [loading, setLoading] = useState(true)
     const [loadingTasks, setLoadingTasks] = useState(false)
+    const [modelHistorySummaryReport, setModelHistorySummaryReport] = useState(false)
     
     const selectedProjectId = useMemo(() => selectProject?.project_id ?? null, [selectProject])
     const memoizedProjects = useMemo(() => projects, [projects])
@@ -107,6 +113,7 @@ export default function Report() {
                         {/* Task Done của Project */}
                     <div className="w-full h-full flex flex-row">
                         <SummaryReport
+                            setModelHistorySummaryReport ={setModelHistorySummaryReport}
                             selectedProjectId={selectedProjectId}
                             memoizedProjects={memoizedProjects}
                         />
@@ -117,6 +124,14 @@ export default function Report() {
                 <ReportTaskForm
                     onClose={handleOpenReportTaskForm}
                     task={selectTask}
+                />
+            )}
+
+            {/* đã thêm model vào giờ test lại model và xử lý logic khôi phục và xóa vĩnh viễn */}
+            {modelHistorySummaryReport && (
+                <ReportHistorySummary
+                    isOpen = {modelHistorySummaryReport}
+                    onClose = {() => {setModelHistorySummaryReport(false)}}
                 />
             )}
         </ReportLayout>

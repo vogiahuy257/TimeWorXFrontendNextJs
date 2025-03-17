@@ -13,6 +13,7 @@ export default function SummaryLayoutReport({
     children,
     setSearchTerm,
     isOpenFormSummary,
+    setModelHistorySummaryReport
 }) {
     return (
         <div className="w-full report-content report-summary p-2 rounded-md shadow-md  relative">
@@ -41,7 +42,7 @@ export default function SummaryLayoutReport({
 
                     <button
                         onClick={handleOpenForm}
-                        className="bg-black text-white px-3 py-1 transition duration-100 ease-in-out hover:bg-gray-700 active:bg-blue-500 rounded-md flex justify-center items-center gap-1">
+                        className="bg-black text-white px-3 py-1 transition duration-100 ease-in-out hover:bg-gray-700 active:bg-gray-500 rounded-md flex justify-center items-center gap-1">
                         <p>Create</p>
                         <svg
                             width="18"
@@ -56,6 +57,12 @@ export default function SummaryLayoutReport({
                                 strokeLinecap="round"
                             />
                         </svg>
+                    </button>
+                    <button
+                        onClick={() => {setModelHistorySummaryReport(true)}}
+                        className="bg-black text-white px-3 py-1 transition duration-100 ease-in-out hover:bg-gray-700 active:bg-gray-500 rounded-md flex justify-center items-center gap-1">
+                        <p>History</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M480-144q-140 0-238-98t-98-238h72q0 109 77.5 186.5T480-216q109 0 186.5-77.5T744-480q0-109-77.5-186.5T480-744q-62 0-114.55 25.6Q312.91-692.8 277-648h107v72H144v-240h72v130q46-60 114.5-95T480-816q70 0 131.13 26.6 61.14 26.6 106.4 71.87 45.27 45.26 71.87 106.4Q816-550 816-480t-26.6 131.13q-26.6 61.14-71.87 106.4-45.26 45.27-106.4 71.87Q550-144 480-144Zm100-200L444-480v-192h72v162l115 115-51 51Z"/></svg>
                     </button>
                 </div>
 

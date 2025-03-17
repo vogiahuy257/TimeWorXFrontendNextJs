@@ -64,11 +64,29 @@ export const summaryReportService = {
     },
 
     // Tải xuống tệp ZIP của báo cáo tổng kết (nếu có)
-    downloadSummaryReportZip: async (id: string): Promise<{ blob: Blob, filename: string }> => {
+    downloadSummaryReportZip: async (id: string, customFilename?: string): Promise<{ blob: Blob, filename: string }> => {
         const res = await axios.get(`/api/summary-reports/${id}/download`, { responseType: 'blob' })
-        const filename = res.headers['content-disposition']?.split('filename=')[1] ?? `summary_report_${id}.zip`
-        return { blob: res.data, filename } // Trả về tệp ZIP dưới dạng blob cùng với tên file
+    
+        // Lấy tên file từ header Content-Disposition (nếu có)
+        let filename = `summary_report_${id}.zip`
+        const contentDisposition = res.headers['content-disposition']
+        
+        if (contentDisposition) {
+            const matches = contentDisposition.match(/filename="(.+)"/)
+            if (matches?.[1]) {
+                filename = matches[1]
+            }
+        }
+    
+        // Nếu có customFilename, ưu tiên sử dụng nó
+        if (customFilename) {
+            filename = customFilename.replace(/[\/\\:*?"<>|]/g, "_") // Xóa ký tự không hợp lệ
+            filename = filename.endsWith(".zip") ? filename : `${filename}.zip`
+        }
+    
+        return { blob: res.data, filename }
     },
+    
 
     // Xóa mềm một báo cáo tổng kết (chỉ ẩn đi, có thể khôi phục)
     softDeleteSummaryReport: async (id: string): Promise<boolean> => {

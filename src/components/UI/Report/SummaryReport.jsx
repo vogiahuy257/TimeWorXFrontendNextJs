@@ -8,6 +8,7 @@ import { useSummaryReports } from '@/hooks/useSummaryReports'
 export default function SummaryPageReport({
     memoizedProjects,
     selectedProjectId,
+    setModelHistorySummaryReport
 }) {
     const [isOpenFormSummary, setIsOpenFormSummary] = useState(false)
     const {
@@ -57,6 +58,7 @@ export default function SummaryPageReport({
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
             isOpenFormSummary={isOpenFormSummary}
+            setModelHistorySummaryReport={setModelHistorySummaryReport}
         >
 
             <div className="space-y-4">
