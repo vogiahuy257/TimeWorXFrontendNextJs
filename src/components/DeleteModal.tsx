@@ -34,7 +34,7 @@ const DeleteModal = ({ onClose, onConfirm, isDeleting = false }: DeleteModalProp
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default DeleteModal;
+export default DeleteModal

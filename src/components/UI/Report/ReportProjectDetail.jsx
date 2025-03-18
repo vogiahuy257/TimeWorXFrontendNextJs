@@ -106,7 +106,7 @@ const ReportProjectDetail = ({ project }) => {
                     <div className="flex items-center gap-2">
                         <h3 className="text-sm font-medium ">Status:</h3>
                         <p className="text-sm font-medium flex items-center">
-                            <span className={`inline-block w-2.5 h-2.5 rounded-full ${bg} mr-2`}></span>
+                            <span className={`inline-block w-2.5 h-2.5 rounded-full ${bg} mr-2`}/>
                             {project.project_status}
                         </p>
                     </div>

@@ -1,9 +1,9 @@
 import { memo } from 'react'
 import { useRouter } from 'next/navigation'
-import { Calendar, Clock, User, ArrowRight } from "lucide-react"
+import { Calendar, Clock, ArrowRight } from "lucide-react"
 
 const SummaryReportItem = memo(({ report }) => {
-    const router = useRouter();
+    const router = useRouter()
 
     const formatDate = (dateString) => {
         if (!dateString) return ""
@@ -16,7 +16,7 @@ const SummaryReportItem = memo(({ report }) => {
             month: "2-digit",
             day: "2-digit",
           })
-        } catch (error) {
+        } catch {
           return dateString
         }
       }
@@ -92,7 +92,8 @@ const SummaryReportItem = memo(({ report }) => {
             )}
             </div>
         </button>
-    );
-}, (prevProps, nextProps) => prevProps.report.summary_report_id === nextProps.report.summary_report_id);
-
-export default SummaryReportItem;
+    )
+}, (prevProps, nextProps) => prevProps.report.summary_report_id === nextProps.report.summary_report_id)
+// 🟢 Thêm display name để fix lỗi react/display-name
+SummaryReportItem.displayName = "SummaryReportItem"
+export default SummaryReportItem

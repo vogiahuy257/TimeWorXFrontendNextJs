@@ -26,9 +26,9 @@ const SummaryReportDetail = () => {
     const formatDate = (dateString) => {
         if (!dateString) return "N/A"
         try {
-        return format(new Date(dateString), "dd/MM/yyyy HH:mm")
-        } catch (error) {
-        return dateString
+            return format(new Date(dateString), "dd/MM/yyyy HH:mm")
+        } catch {
+            return dateString
         }
     }
 
@@ -40,7 +40,6 @@ const SummaryReportDetail = () => {
                 setLoading(true)
                 const data = await summaryReportService.getSummaryReportById(summary_report_id)
                 setReport(data)
-                console.log(data)
             } catch (err) {
                 setError(err.message)
             } finally {

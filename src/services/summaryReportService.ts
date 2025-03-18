@@ -72,15 +72,16 @@ export const summaryReportService = {
         const contentDisposition = res.headers['content-disposition']
         
         if (contentDisposition) {
-            const matches = contentDisposition.match(/filename="(.+)"/)
+            const matches = contentDisposition.match(/filename="(.+)"/) // Xóa dấu \ thừa
             if (matches?.[1]) {
                 filename = matches[1]
             }
         }
+        
     
         // Nếu có customFilename, ưu tiên sử dụng nó
         if (customFilename) {
-            filename = customFilename.replace(/[\/\\:*?"<>|]/g, "_") // Xóa ký tự không hợp lệ
+            filename = customFilename.replace(/[\\/\\:*?"<>|]/g, "_")
             filename = filename.endsWith(".zip") ? filename : `${filename}.zip`
         }
     
@@ -91,24 +92,24 @@ export const summaryReportService = {
     // Xóa mềm một báo cáo tổng kết (chỉ ẩn đi, có thể khôi phục)
     softDeleteSummaryReport: async (id: string): Promise<boolean> => {
         const res = await axios.delete(`/api/summary-reports/${id}`)
-        return res.status === 200 // Trả về true nếu xóa thành công
+        return res.status === 200
     },
 
     // Xóa vĩnh viễn một báo cáo tổng kết, không thể khôi phục
     permanentlyDeleteSummaryReport: async (id: string): Promise<boolean> => {
         const res = await axios.delete(`/api/summary-reports/${id}/permanent`)
-        return res.status === 200 // Trả về true nếu xóa thành công
+        return res.status === 200
     },
 
     // Lấy danh sách báo cáo đã bị xóa mềm
     getDeletedSummaryReports: async (): Promise<SummaryReport[]> => {
-        const res = await axios.get('/api/summary-reports/deleted')
-        return res.data // Trả về danh sách báo cáo đã bị xóa mềm
+        const res = await axios.post('/api/summary-reports/deleted')
+        return res.data 
     },
 
     // Khôi phục một báo cáo tổng kết đã bị xóa mềm
     restoreSummaryReport: async (id: string): Promise<boolean> => {
         const res = await axios.post(`/api/summary-reports/${id}/restore`)
-        return res.status === 200 // Trả về true nếu khôi phục thành công
+        return res.status === 200 
     }
 }

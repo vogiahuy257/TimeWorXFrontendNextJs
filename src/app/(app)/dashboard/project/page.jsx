@@ -214,7 +214,6 @@ export default function Folder() {
                 })
                 .catch(error => {
                     toast.error(`Error updating project: ${error.message}`)
-                    console.log( error)
                 })
         } else {
             // Create new project

@@ -69,7 +69,7 @@ export default function Report() {
             setLoadingTasks(true)
             try {
                 const { data } = await axios.get(`/api/tasks/${selectedProjectId}/done`)
-                const sortedData = data.sort((a, b) => (a.status_key === 'verify' ? -1 : 1))
+                const sortedData = data.sort((a) => (a.status_key === 'verify' ? -1 : 1))
                 setTaskData(sortedData.length ? sortedData : []) // Nếu không có task, set mảng rỗng
             } catch {
                 toast.error('Failed to fetch project tasks.')

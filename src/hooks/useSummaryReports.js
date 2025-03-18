@@ -25,19 +25,19 @@ export function useSummaryReports() {
                 per_page: 10,
                 search: searchTermRef.current.trim()
             })
-
+    
             setReports(res.data || [])
             setPagination({
                 total: res.total,
                 per_page: res.per_page,
                 current_page: 1
             })
-        } catch (error) {
+        } catch {
             toast.error('Error searching reports')
         } finally {
             setLoadingSummaryReport(false)
         }
-    }, [])
+    }, [searchTermRef.current]) // Cập nhật mỗi khi search term thay đổ    
 
     // Xử lý thay đổi search term
     useEffect(() => {
@@ -60,51 +60,55 @@ export function useSummaryReports() {
 
     // Hàm tải báo cáo với phân trang
     const loadReports = useCallback(async (pageNumber) => {
-        if (loadingSummaryReport) return; // Chỉ chặn khi đang tải
+        if (loadingSummaryReport) return
     
-        setLoadingSummaryReport(true);
-    
+        setLoadingSummaryReport(true)
         try {
-            const res = await summaryReportService.getSummaryReports({ page: pageNumber, per_page: 10 });
+            const res = await summaryReportService.getSummaryReports({ page: pageNumber, per_page: 10 })
     
             if (!res.data || res.data.length === 0) {
-                setLoadingSummaryReport(false);
-                return;
+                return
             }
     
             setReports((prev) => {
-                const newReports = [...prev, ...res.data];
-                const uniqueReports = Array.from(new Map(newReports.map(r => [r.summary_report_id, r])).values());
-                return uniqueReports.slice(-30);
-            });
+                const newReports = [...prev, ...res.data]
+                return Array.from(new Map(newReports.map(r => [r.summary_report_id, r])).values()).slice(-30)
+            })
     
-            setPagination({
+            setPagination((prev) => ({
+                ...prev,
                 total: res.total,
-                per_page: res.per_page,
                 current_page: res.current_page
-            });
-        } catch (error) {
-            toast.error('Error loading reports');
+            }))
+        } catch {
+            toast.error('Error loading reports')
         } finally {
-            setLoadingSummaryReport(false);
+            setLoadingSummaryReport(false)
         }
-    }, [loadingSummaryReport]); // Loại bỏ searchTerm khỏi dependency
+    }, []) // Không phụ thuộc vào loadingSummaryReport
+    
     
 
     // Reset danh sách khi tìm kiếm rỗng
-    const resetReports = () => {
-        setPagination({
-            total: 0,
-            per_page: 10,
-            current_page: 1
-        });
+    const resetReports = useCallback(async () => {
+        setPagination({ total: 0, per_page: 10, current_page: 1 })
+        setReports([]) // Xóa danh sách cũ trước khi tải mới
     
-        setLoadingSummaryReport(false);
-    
-        loadReports(1); // Gọi API lấy dữ liệu trang 1
-    };
-    
-    
+        setLoadingSummaryReport(true)
+        try {
+            const res = await summaryReportService.getSummaryReports({ page: 1, per_page: 10 })
+            setReports(res.data || [])
+            setPagination({
+                total: res.total,
+                per_page: res.per_page,
+                current_page: 1
+            })
+        } catch  {
+            toast.error('Error loading reports')
+        } finally {
+            setLoadingSummaryReport(false)
+        }
+    }, [])
 
     // Hàm thêm báo cáo mới vào đầu danh sách
     const addNewReport = useCallback((newReport) => {
@@ -121,9 +125,8 @@ export function useSummaryReports() {
         try {
             const reports = await summaryReportService.getDeletedSummaryReports()
             setDeletedReports(reports)
-        } catch (error) {
+        } catch  {
             console.error("Error fetching deleted reports:", error)
-            toast.error("Failed to fetch deleted reports.")
         } finally {
             setLoadingDeletedReports(false)
         }
@@ -134,11 +137,40 @@ export function useSummaryReports() {
         try {
             await summaryReportService.restoreSummaryReport(id)
             toast.success("Report restored successfully!")
-            setDeletedReports((prev) => prev.filter((report) => report.summary_report_id !== id))
-            loadReports(1) // Load lại danh sách chính sau khi khôi phục
-        } catch (error) {
+            // Lấy báo cáo vừa khôi phục từ danh sách đã xóa
+            const restoredReport = deletedReports.find(report => report.summary_report_id === id)
+
+            // Cập nhật danh sách báo cáo chính ngay lập tức
+            if (restoredReport) {
+                setReports(prev => [restoredReport, ...prev.slice(0, 29)])
+            }
+
+            // Xóa báo cáo khỏi danh sách đã xóa
+            setDeletedReports(prev => prev.filter(report => report.summary_report_id !== id))
+            
+            // Cập nhật tổng số báo cáo
+            setPagination(prev => ({
+                ...prev,
+                total: prev.total + 1
+            }))
+        } catch  {
             console.error("Error restoring report:", error)
             toast.error("Failed to restore report.")
+        }
+    }
+
+    // 🟢 Xóa vĩnh viễn báo cáo
+    const handlePermanentDelete = async (id) => {
+        try {
+            await summaryReportService.permanentlyDeleteSummaryReport(id)
+            toast.success("Report permanently deleted!")
+
+            // Cập nhật danh sách đã xóa
+            setDeletedReports(prev => prev.filter(report => report.summary_report_id !== id))
+
+        } catch  {
+            console.error("Error permanently deleting report:", error)
+            toast.error("Failed to permanently delete report.")
         }
     }
 
@@ -157,6 +189,7 @@ export function useSummaryReports() {
         loadReports,
         loadDeletedReports,
         addNewReport,
-        handleRestore
+        handleRestore,
+        handlePermanentDelete
     }
 }

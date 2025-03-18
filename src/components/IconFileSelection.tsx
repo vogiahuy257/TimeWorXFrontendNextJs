@@ -10,7 +10,7 @@ export const IconFileSelection: React.FC<IconFileSelectionProps> = ({
     filetype,
 }) => {
     if(!filetype){
-        const filetype = filename ? filename.split('.').pop() || '' : ''
+        filetype = filename ? filename.split('.').pop() || '' : ''
     }
     
     const getIcon = () => {
