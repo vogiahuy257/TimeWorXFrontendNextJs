@@ -1,23 +1,11 @@
-'use client'
 
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
 
 const LoginLinks = ({ user }) => {
-    const [scrollY, setScrollY] = useState(0)
-
-    useEffect(() => {
-        const handleScroll = () => setScrollY(window.scrollY)
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
-
+   
     return (
         <nav
             className="fixed w-full bg-white bg-opacity-90 backdrop-blur-sm z-50 transition-all duration-300 ease-in-out"
-            style={{
-                boxShadow: `0 0 ${scrollY / 5}px rgba(101, 172, 240,0.5)`,
-            }}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-16">

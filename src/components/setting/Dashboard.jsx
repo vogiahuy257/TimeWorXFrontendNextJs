@@ -36,7 +36,7 @@ const Dashboard = ({theme,screen_mode ,className}) => {
                 <div className="content relative row-start-2 col-start-2 flex items-center justify-center">
                     <div className='box-after w-4 h-4 absolute top-0 left-0 rounded-tl-xl'/>
                     <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-content text-center">
-                        Welcome TimeWor
+                        Welcome to TimeWor
                         <span className="text-X">X</span>
                     </p>
                 </div>
