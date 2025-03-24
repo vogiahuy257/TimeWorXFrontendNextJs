@@ -8,7 +8,8 @@ import { useSummaryReports } from '@/hooks/useSummaryReports'
 export default function SummaryPageReport({
     memoizedProjects,
     selectedProjectId,
-    setModelHistorySummaryReport
+    setModelHistorySummaryReport,
+    setLoadingPage
 }) {
     const [isOpenFormSummary, setIsOpenFormSummary] = useState(false)
     const {
@@ -67,6 +68,7 @@ export default function SummaryPageReport({
                         <SummaryReportItem
                             key={report.summary_report_id}
                             report={report}
+                            setLoadingPage={setLoadingPage}
                         />
                     ))
                     : !loadingSummaryReport && (

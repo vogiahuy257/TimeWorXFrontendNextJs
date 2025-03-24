@@ -29,7 +29,7 @@ export default function ReportHistorySummary ({ isOpen, onClose })
                 ) : deletedReports.length === 0 ? (
                     <NoData message="No deleted reports found." className={'text-gray-css'}/>
                 ) : (
-                    <ul className="max-h-60 flex flex-col w-full p-2 gap-2 overflow-y-auto scrollbar-hide">
+                    <ul className="max-h-60 flex flex-col w-full p-2 gap-3 overflow-y-auto scrollbar-hide">
                         {deletedReports.map((report) => (
                             <li key={report.summary_report_id} className="flex group cursor-pointer justify-between items-center p-3 bg-white-css shadow-sm rounded-lg border border-gray-400 hover:shadow-lg transition-all">
                                 {/* Tên báo cáo */}

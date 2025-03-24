@@ -83,51 +83,14 @@
 #dashboard .block .block-menu-top {
     position: relative;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     height: 70px;
     color: var(--color-black);
 }
 
-#dashboard .block .block-menu-top .box-avatar {
-    background-color: var(--color-white);
-    width: 100%;
-}
-
-#dashboard .block .block-menu-top .box-avatar .button {
-    display: block;
-    width: 100%;
+#dashboard .block .block-menu-top .block-notification button {
     color: var(--color-black);
-    text-align: center;
-    padding: 5px 0px;
-    border-radius: var(--border-radius-small);
-}
-
-#dashboard .block .block-menu-top .box-avatar .button:hover {
-    background-color: var(--color-black);
-    color: var(--color-white);
-}
-
-#dashboard .block .block-menu-top .block-notification a {
-    position: relative;
-    color: var(--color-black);
-}
-
-#dashboard .block .block-menu-top .block-notification a svg {
-    width: 18px;
-    height: auto;
-}
-
-#dashboard .block .block-menu-top .avatar-user {
-    width: 45px;
-    height: 45px;
-    background-color: var(--color-gray);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 20px;
-    cursor: pointer;
 }
 
 /*------------------- block menu left -----------------*/

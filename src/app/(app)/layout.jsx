@@ -5,7 +5,7 @@ import AuthenticatedLayout from '@/app/(app)/AuthenticatedLayout'
 import { ToastContainer } from 'react-toastify'
 import LoadingBox from '@/components/UI/loading/LoadingBox'
 import 'react-toastify/dist/ReactToastify.css'
-
+import '@/app/css/dashboard.css'
 import '@/app/css/dashboard-report.css'
 import '@/app/css/dashboard-home.css'
 import '@/app/css/dashboard-task-reportform.css'
@@ -23,14 +23,14 @@ const AppLayout = ({ children }) => {
 }
 
 const DashboardContent = ({ children }) => {
-    const { settings, logout } = useAuthContext()
+    const { user,settings, logout } = useAuthContext()
 
     if (!settings) {
         return <LoadingBox />
     }
 
     return (
-        <AuthenticatedLayout settings={settings} logout={logout}>
+        <AuthenticatedLayout user={user} settings={settings} logout={logout}>
             <ToastContainer className="custom_toast" />
             {children}
         </AuthenticatedLayout>

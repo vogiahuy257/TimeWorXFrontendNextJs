@@ -116,6 +116,7 @@ export default function Report() {
                             setModelHistorySummaryReport ={setModelHistorySummaryReport}
                             selectedProjectId={selectedProjectId}
                             memoizedProjects={memoizedProjects}
+                            setLoadingPage={setLoading}
                         />
                     </div>
                 </div>
