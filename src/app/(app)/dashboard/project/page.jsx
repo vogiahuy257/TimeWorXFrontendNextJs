@@ -11,7 +11,7 @@ import ProjectLayout from './ProjectLayout'
 const CardProject = dynamic(
     () => import('@/components/UI/Project/CardProject'),
     {
-        ssr: false,
+        ssr: true,
     },
 )
 

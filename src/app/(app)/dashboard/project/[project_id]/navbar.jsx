@@ -1,16 +1,14 @@
-import Button from '@/components/Button'
-
+import Link from "next/link"
 export default function NavBar({
     projectName,
     countUserToProject,
-    handleBackClick,
     toggleUserList,
     toggleDeletedTasks,
 }) {
     return (
         <div className="block-project">
             <div className="block-element-left">
-                <Button className="btn-black" onClick={handleBackClick}>
+                <Link className="btn-black" href={'/dashboard/project'}>
                     <svg
                         width="24"
                         height="24"
@@ -23,46 +21,30 @@ export default function NavBar({
                             fill="currentColor"
                         />
                     </svg>
-                </Button>
+                </Link>
                 <div className="block-project-name">
-                    <h1>{projectName}</h1>
+                    <h1>{projectName ? (projectName) : ('Your Project')}</h1>
                 </div>
             </div>
             <div className="block-element-right">
-                <Button
+                <button
                     onClick={toggleUserList}
-                    className="btn btn-person justify-center items-center flex"
+                    className="group relative flex items-center justify-center gap-2 border border-gray-600 rounded-lg px-4 py-2 shadow-sm transition-all hover:shadow-md duration-300 ease-in-out"
                 >
-                    <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <circle cx="12" cy="9" r="4" fill="currentColor" />
-                        <circle cx="17" cy="9" r="3" fill="currentColor" />
-                        <circle cx="7" cy="9" r="3" fill="currentColor" />
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M17.5685 18H19.895C20.4867 18 20.9403 17.4901 20.7966 16.9162C20.4284 15.4458 19.448 13 17 13C16.114 13 15.4201 13.3205 14.8781 13.7991C16.3858 14.7773 17.1654 16.4902 17.5685 18Z"
-                            fill="currentColor"
-                        />
-                        <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M9.12197 13.7991C8.57989 13.3205 7.88609 13 7 13C4.55208 13 3.57166 15.4458 3.20343 16.9162C3.05971 17.4901 3.51335 18 4.10498 18H6.43155C6.83464 16.4902 7.61422 14.7773 9.12197 13.7991Z"
-                            fill="currentColor"
-                        />
-                        <path
-                            d="M12 14C15.7087 14 16.6665 17.301 16.9139 19.0061C16.9932 19.5526 16.5523 20 16 20H8C7.44772 20 7.00684 19.5526 7.08614 19.0061C7.33351 17.301 8.29134 14 12 14Z"
-                            fill="currentColor"
-                        />
-                    </svg>
-                    <p className="pl-1 text-sm"> {countUserToProject}</p>
-                </Button>
-                <Button
+                    {/* Hiển thị số lượng người (Mặc định) */}
+                    <span className="flex items-center gap-1 transition-all duration-300 ease-in-out group-hover:opacity-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M40-272q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v32q0 33-23.5 56.5T600-160H120q-33 0-56.5-23.5T40-240v-32Zm800 112H738q11-18 16.5-38.5T760-240v-40q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v40q0 33-23.5 56.5T840-160ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z"/></svg>
+                        <p className="text-sm font-medium">{countUserToProject ? (countUserToProject) : ('0')}</p>
+                    </span>
+
+                    {/* Hiển thị chữ "Share" khi hover */}
+                    <span className="absolute flex items-center gap-1 opacity-0 transition-all duration-300 ease-in-out group-hover:opacity-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M500-482q29-32 44.5-73t15.5-85q0-44-15.5-85T500-798q60 8 100 53t40 105q0 60-40 105t-100 53Zm198 322q11-18 16.5-38.5T720-240v-40q0-36-16-68.5T662-406q51 18 94.5 46.5T800-280v40q0 33-23.5 56.5T720-160h-22Zm102-360h-40q-17 0-28.5-11.5T720-560q0-17 11.5-28.5T760-600h40v-40q0-17 11.5-28.5T840-680q17 0 28.5 11.5T880-640v40h40q17 0 28.5 11.5T960-560q0 17-11.5 28.5T920-520h-40v40q0 17-11.5 28.5T840-440q-17 0-28.5-11.5T800-480v-40Zm-480 40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM0-240v-32q0-34 17.5-62.5T64-378q62-31 126-46.5T320-440q66 0 130 15.5T576-378q29 15 46.5 43.5T640-272v32q0 33-23.5 56.5T560-160H80q-33 0-56.5-23.5T0-240Zm320-320q33 0 56.5-23.5T400-640q0-33-23.5-56.5T320-720q-33 0-56.5 23.5T240-640q0 33 23.5 56.5T320-560ZM80-240h480v-32q0-11-5.5-20T540-306q-54-27-109-40.5T320-360q-56 0-111 13.5T100-306q-9 5-14.5 14T80-272v32Zm240-400Zm0 400Z"/></svg>
+                        <p className="text-sm font-medium text-nowrap">Add</p>
+                    </span>
+                </button>
+                
+                <button
                     onClick={toggleDeletedTasks}
                     className="btn btn-history"
                 >
@@ -81,7 +63,7 @@ export default function NavBar({
                             strokeLinejoin="round"
                         />
                     </svg>
-                </Button>
+                </button>
             </div>
         </div>
     )

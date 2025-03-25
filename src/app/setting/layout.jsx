@@ -18,7 +18,7 @@ const LayoutComponent = ({ children }) => {
     }, [user])
 
     const handleGoBack = () => {
-        router.push('/Dashboard/Home')
+        router.push('/dashboard/home')
       }
 
     return (

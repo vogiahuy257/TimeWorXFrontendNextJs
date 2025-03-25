@@ -20,10 +20,12 @@ const TaskForm = ({
     const user_id = user.id
     const [taskName, setTaskName] = useState('')
     const [deadline, setDeadLine] = useState('')
+    const [created_at, setCreatedAt] = useState('')
     const [description, setDescription] = useState('')
     const [selectedUsers, setSelectedUsers] = useState([])
     const [users, setUsers] = useState([])
     const [deadLineError, setDeadLineError] = useState('')
+    const [startDateError, setStartDateError] = useState('')
     // giới hạn task tối đa
     const [confirmUser, setConfirmUser] = useState(null)
     const taskLimit = 4
@@ -64,7 +66,22 @@ const TaskForm = ({
             new Date(selectedDate) >= new Date(project_deadline)
         ) {
             setDeadLineError(
-                `Deadline cannot be greater than the project's end date: ${formatDeadline(project_deadline)}`,
+                `End Date cannot be greater than the project's end date: ${formatDeadline(project_deadline)}`,
+            )
+        } else {
+            setDeadLineError('')
+        }
+    }
+    const onChangeStartDate = e => {
+        const selectedDate = e.target.value
+        setCreatedAt(selectedDate)
+
+        if (
+            project_deadline &&
+            new Date(selectedDate) >= new Date(project_deadline)
+        ) {
+            setStartDateError(
+                `Start Date cannot be greater than the project's end date: ${formatDeadline(project_deadline)}`,
             )
         } else {
             setDeadLineError('')
@@ -83,6 +100,12 @@ const TaskForm = ({
         return `${year}-${month}-${day}`
     }
 
+    const convertDateCreateAtFormat = (isoDate) => {
+        if (!isoDate) return ""; // Nếu không có dữ liệu, trả về chuỗi rỗng
+        return new Date(isoDate).toISOString().split("T")[0]; // Lấy phần YYYY-MM-DD
+    };
+    
+
     const formatDeadline = deadline => {
         const date = new Date(deadline)
         const day = String(date.getDate()).padStart(2, '0')
@@ -95,14 +118,17 @@ const TaskForm = ({
         if (task && projectId != null) {
             setTaskName(task.content)
             setDescription(task.description || '')
+            setCreatedAt(task.created_at || '')
             setDeadLine(convertDateFormat(task.deadline) || '')
             setSelectedUsers(task.users || [])
         } else if (task) {
             setTaskName(task.name)
+            setCreatedAt(task.created_at|| '')
             setDescription(task.description || '')
             setDeadLine(convertDateFormat(task.end_date) || '')
         } else {
             setTaskName('')
+            setCreatedAt('')
             setDescription('')
             setDeadLine('')
             setSelectedUsers([])
@@ -118,7 +144,7 @@ const TaskForm = ({
             new Date(deadline) >= new Date(project_deadline)
         ) {
             setDeadLineError(
-                `Deadline cannot be greater than the project's end date: ${formatDeadline(project_deadline)}`,
+                `End Date cannot be greater than the project's end date: ${formatDeadline(project_deadline)}`,
             )
             return
         }
@@ -126,6 +152,7 @@ const TaskForm = ({
             taskData = {
                 task_name: taskName,
                 deadline: deadline,
+                created_at: created_at,
                 description: description,
                 status: task_status,
                 users: selectedUsers.map(user => user.id),
@@ -226,15 +253,11 @@ const TaskForm = ({
                             <h2 className="font-medium text-xl">
                                 {is_staff
                                     ? `View ${task?.content}`
-                                    : projectId
-                                      ? user_id
-                                          ? task
-                                              ? `Edit ${task.name}`
-                                              : 'Create Task'
-                                          : task
-                                            ? `Edit ${task.content}`
-                                            : 'Create Task'
-                                      : 'Create Your Personal Plan'}
+                                    : task
+                                        ? `Edit ${task.content}`
+                                        : projectId
+                                        ? "Create Task"
+                                        : "Create Your Personal Plan"}
                             </h2>
                         </div>
 
@@ -276,7 +299,7 @@ const TaskForm = ({
                             <p className="font-normal">
                                 {' '}
                                 {project_deadline
-                                    ? `Completion Date: ${formatDeadline(project_deadline)}`
+                                    ? `Project Completion: ${formatDeadline(project_deadline)}`
                                     : null}
                             </p>
                         </div>
@@ -298,26 +321,49 @@ const TaskForm = ({
                                 />
                             </div>
 
-                            <div className="form-group time-group">
-                                <label htmlFor="time-starts">
-                                    Completion time:
-                                </label>
-                                <input
-                                    type="date"
-                                    id="time-starts"
-                                    value={
-                                        is_staff
-                                            ? convertDateFormat(task?.deadline)
-                                            : deadline
-                                    }
-                                    onChange={onChangeDeadLine}
-                                    disabled={is_staff}
-                                />
-                                {deadLineError && (
-                                    <p className="text-error">
-                                        {deadLineError}
-                                    </p>
-                                )}
+                            <div className='flex gap-6'>
+                                <div className="form-group time-group">
+                                    <label htmlFor="time-starts">
+                                        Start Date:
+                                    </label>
+                                    <input
+                                        type="date"
+                                        id="time-starts"
+                                        value={
+                                            is_staff
+                                                ? convertDateCreateAtFormat(task?.created_at)
+                                                : convertDateCreateAtFormat(created_at)
+                                        }
+                                        onChange={onChangeStartDate}
+                                        disabled={is_staff}
+                                    />
+                                    {startDateError && (
+                                        <p className="text-error">
+                                            {startDateError}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-group time-group">
+                                    <label htmlFor="time-starts">
+                                        End Date:
+                                    </label>
+                                    <input
+                                        type="date"
+                                        id="time-starts"
+                                        value={
+                                            is_staff
+                                                ? convertDateFormat(task?.deadline)
+                                                : deadline
+                                        }
+                                        onChange={onChangeDeadLine}
+                                        disabled={is_staff}
+                                    />
+                                    {deadLineError && (
+                                        <p className="text-error">
+                                            {deadLineError}
+                                        </p>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="form-group">

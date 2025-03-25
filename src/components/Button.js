@@ -1,5 +1,5 @@
 const Button = ({ type = 'submit', className, ...props }) => (
-    <button type={type} className={`${className} btn`} {...props} />
+    <button type={type} className={`${className}`} {...props} />
 )
 
 export default Button

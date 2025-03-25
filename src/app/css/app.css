@@ -24,7 +24,7 @@
     --color-red-rgb: 218, 30, 40;
     --color-green: #25a249;
     --background-y-p: linear-gradient(135deg, #f7d7ff, #fbfcdb);
-    --background: linear-gradient(135deg, #f2f8fc, #e6f7ff);
+    --background: #222222;
     --background-blue: linear-gradient(
         135deg,
         rgba(45, 106, 185, 0.9),
@@ -84,15 +84,12 @@ li {
     list-style: none;
 }
 
-@layer utilities {
     .custom-scrollbar::-webkit-scrollbar {
-        width: 4px;
-        display: block;
+        width: 5px;
     }
 
     .custom-scrollbar::-webkit-scrollbar-track {
         background: var(--color-whiteGray);
-        border-radius: var(--border-radius-medium);
     }
 
     .custom-scrollbar::-webkit-scrollbar-thumb {
@@ -104,7 +101,6 @@ li {
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
         background-color: var(--color-black-gray);
     }
-}
 
 .scrollbar-hide {
     -ms-overflow-style: none; /* IE và Edge */

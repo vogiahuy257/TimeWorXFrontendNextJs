@@ -269,14 +269,24 @@
 #dashboard .block #main .content main #project-view main {
     margin-top: 32px;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     width: 100%;
+    height: auto;
     margin: auto;
 }
+#dashboard .block #main .content main #project-view main::-webkit-scrollbar {
+    height: 0.5rem;
+}
+
+#dashboard .block #main .content main #project-view main::-webkit-scrollbar-track {
+    background: var(--color-whiteGray);
+}
+
 
 #dashboard .block #main .content main #project-view main .block-task {
     margin: 10px 10px;
     width: 100%;
+    min-width: 240px;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -320,10 +330,13 @@
     background-color: var(--color-whiteGray);
     padding: 8px 8px;
     padding-bottom: 15px;
+    gap: 0.5rem;
+    border-top-right-radius: var(--border-radius-small);
     border-bottom-left-radius: var(--border-radius-small);
     border-bottom-right-radius: var(--border-radius-small);
-    box-shadow: 0 4px 0 var(--color-status);
-    box-shadow: inset 0 0px 8px var(--color-shadow);
+    box-shadow: inset 0 0px 4px var(--color-shadow);
+    overflow-y: auto;
+    max-height: 380px;
 }
 
 #dashboard
