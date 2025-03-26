@@ -1,13 +1,13 @@
 export interface Task {
   id: string;
   content: string;
-  created_at: string;
+  time_start: string;
   deadline: string;
   description: string;
   is_late: boolean;
   is_near_deadline: boolean;
   project_id: number;
-  status: string;
+  status_key: string;
   user_count: number;
 }
 

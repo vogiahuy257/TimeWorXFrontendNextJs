@@ -1,8 +1,8 @@
 import styles from './css/LoadingSmall.module.css'
 
-const LoadingSmall = ({ content }) => {
+const LoadingSmall = ({ content,className = null }) => {
     return (
-        <div className={`flex flex-col items-center z-50 justify-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}>
+        <div className={`${className} flex flex-col items-center z-50 justify-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}>
              <div className={styles.loader}>
                 <div/>
                 <div/>

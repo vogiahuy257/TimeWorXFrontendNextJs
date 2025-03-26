@@ -478,6 +478,15 @@
     color: #9a9da1;
 }
 
+#dashboard .text-gray-black-css{
+    color: #3e4651;
+}
+
+#dashboard.dark-mode .text-gray-black-css
+{
+    color: #bec1c6;
+}
+
 #dashboard .cardBox {
     background-color: var(--color-white); /* bg-white-css */
     transition: background-color 0.2s ease-in-out,box-shadow 0.2s ease-in-out; /* transition-all duration-200 */

@@ -9,7 +9,7 @@ import ProjectIdLayout from './ProjectIdLayout'
 import useProjectData from '@/hooks/useProjectData'
 
 const TaskGanttChart = dynamic(() => import('@/components/task-gantt-chart/index'), {
-    ssr: true,
+    ssr: false,
     loading: () => <LoadingPage content={'Loading task form ...'}/>,
 })
 // Dynamic import for components

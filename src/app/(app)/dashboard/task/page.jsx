@@ -106,12 +106,14 @@ export default function Task() {
 
     const updateTaskStatus = async (id, newStatus, isPersonalPlan = false) => {
         try {
+            console.log(id)
+            console.log(isPersonalPlan)
             const endpoint = isPersonalPlan
                 ? `/api/personal-plans/${id}/status`
                 : `/api/v1/tasks/${id}`
             const data = isPersonalPlan
                 ? { plan_status: newStatus }
-                : { status: newStatus }
+                : { status_key: newStatus }
             await axios.put(endpoint, data)
         } catch (error) {
             toast.error('Error updating task status: ' + error.message)

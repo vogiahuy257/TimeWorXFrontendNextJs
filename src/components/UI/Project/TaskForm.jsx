@@ -17,10 +17,10 @@ const TaskForm = ({
     is_staff,
 }) => {
     const {user} = useAuthContext()
-    const user_id = user.id
+    const user_id = user.id 
     const [taskName, setTaskName] = useState('')
     const [deadline, setDeadLine] = useState('')
-    const [created_at, setCreatedAt] = useState('')
+    const [time_start, setTimeStart] = useState('')
     const [description, setDescription] = useState('')
     const [selectedUsers, setSelectedUsers] = useState([])
     const [users, setUsers] = useState([])
@@ -74,7 +74,7 @@ const TaskForm = ({
     }
     const onChangeStartDate = e => {
         const selectedDate = e.target.value
-        setCreatedAt(selectedDate)
+        setTimeStart(selectedDate)
 
         if (
             project_deadline &&
@@ -100,12 +100,6 @@ const TaskForm = ({
         return `${year}-${month}-${day}`
     }
 
-    const convertDateCreateAtFormat = (isoDate) => {
-        if (!isoDate) return ""; // Nếu không có dữ liệu, trả về chuỗi rỗng
-        return new Date(isoDate).toISOString().split("T")[0]; // Lấy phần YYYY-MM-DD
-    };
-    
-
     const formatDeadline = deadline => {
         const date = new Date(deadline)
         const day = String(date.getDate()).padStart(2, '0')
@@ -115,20 +109,27 @@ const TaskForm = ({
     }
 
     useEffect(() => {
-        if (task && projectId != null) {
+        if (task && projectId != null) 
+        {
+            console.log('task')
+            console.log(task)
             setTaskName(task.content)
             setDescription(task.description || '')
-            setCreatedAt(task.created_at || '')
+            setTimeStart(task.time_start || '')
             setDeadLine(convertDateFormat(task.deadline) || '')
             setSelectedUsers(task.users || [])
-        } else if (task) {
+        }
+        else if (task && task.type == 'personalPlan')
+        {
             setTaskName(task.name)
-            setCreatedAt(task.created_at|| '')
-            setDescription(task.description || '')
-            setDeadLine(convertDateFormat(task.end_date) || '')
-        } else {
+            setTimeStart(convertDateFormat(task.start_date))
+            setDeadLine(convertDateFormat(task.end_date))
+            setDescription(task.description)
+        }  
+        else 
+        {
             setTaskName('')
-            setCreatedAt('')
+            setTimeStart('')
             setDescription('')
             setDeadLine('')
             setSelectedUsers([])
@@ -152,7 +153,7 @@ const TaskForm = ({
             taskData = {
                 task_name: taskName,
                 deadline: deadline,
-                created_at: created_at,
+                time_start: time_start,
                 description: description,
                 status: task_status,
                 users: selectedUsers.map(user => user.id),
@@ -162,7 +163,7 @@ const TaskForm = ({
                 user_id: user_id,
                 plan_name: taskName,
                 plan_description: description,
-                start_date: new Date().toISOString().split('T')[0],
+                start_date: time_start || new Date().toISOString().split('T')[0],
                 end_date: deadline,
                 plan_status: task_status,
                 plan_priority: 'Medium',
@@ -170,6 +171,7 @@ const TaskForm = ({
         }
 
         try {
+            console.log(taskData)
             if (task && projectId) {
                 await axios.put(
                     `/api/project-view/${projectId}/tasks/${task.id}`,
@@ -177,6 +179,7 @@ const TaskForm = ({
                 )
                 onClose()
                 toast.success('Task saved successfully!')
+                await refreshTasks(user_id)
             } else if (projectId) {
                 await axios.post(
                     `/api/project-view/${projectId}/tasks`,
@@ -184,25 +187,26 @@ const TaskForm = ({
                 )
                 onClose()
                 toast.success('Task create successfully!')
+                await refreshTasks(user_id)
             } else if (user_id != null && task) {
                 await axios.put(`/api/personal-plans/${task.id}`, taskData)
                 onClose()
-                toast.success('Task saved successfully!')
+                toast.success('Personal Plan saved successfully!')
+                
+                await refreshTasks()
             } else if (user_id != null) {
                 await axios.post(`/api/personal-plans`, taskData)
                 onClose()
-                toast.success('Task create successfully!')
+                toast.success('Personal Plan create successfully!')
+                
+                await refreshTasks()
             }
 
-            await refreshTasks(user_id)
         } catch (error) {
-            toast.error('Error saving task:', error)
+            onClose()
+            toast.error('Error saving task:', error?.message)
         }
     }
-
-    // const toggleUserBox = () => {
-    //     setIsUserBoxVisible(!isUserBoxVisible)
-    // }
 
     const handleUserSelection = user => {
         // Kiểm tra nếu người dùng đã có trong danh sách selectedUsers
@@ -252,57 +256,57 @@ const TaskForm = ({
                             </svg>
                             <h2 className="font-medium text-xl">
                                 {is_staff
-                                    ? `View ${task?.content}`
+                                    ? `View ${taskName}`
                                     : task
-                                        ? `Edit ${task.content}`
+                                        ? `Edit ${taskName}`
                                         : projectId
                                         ? "Create Task"
                                         : "Create Your Personal Plan"}
                             </h2>
                         </div>
 
-                        <div className="mt-2 flex items-center gap-1 px-1">
-                            <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M16.75 3.56V2C16.75 1.59 16.41 1.25 16 1.25C15.59 1.25 15.25 1.59 15.25 2V3.5H8.74998V2C8.74998 1.59 8.40998 1.25 7.99998 1.25C7.58998 1.25 7.24998 1.59 7.24998 2V3.56C4.54998 3.81 3.23999 5.42 3.03999 7.81C3.01999 8.1 3.25999 8.34 3.53999 8.34H20.46C20.75 8.34 20.99 8.09 20.96 7.81C20.76 5.42 19.45 3.81 16.75 3.56Z"
-                                    fill="currentColor"
-                                />
-                                <path
-                                    opacity="0.4"
-                                    d="M21 10.84V12.58C21 13.19 20.46 13.66 19.86 13.56C19.58 13.52 19.29 13.49 19 13.49C15.97 13.49 13.5 15.96 13.5 18.99C13.5 19.45 13.68 20.09 13.87 20.67C14.09 21.32 13.61 21.99 12.92 21.99H8C4.5 21.99 3 19.99 3 16.99V10.83C3 10.28 3.45 9.82996 4 9.82996H20C20.55 9.83996 21 10.29 21 10.84Z"
-                                    fill="currentColor"
-                                />
-                                <path
-                                    d="M19 15C16.79 15 15 16.79 15 19C15 19.75 15.21 20.46 15.58 21.06C16.27 22.22 17.54 23 19 23C20.46 23 21.73 22.22 22.42 21.06C22.79 20.46 23 19.75 23 19C23 16.79 21.21 15 19 15ZM21.07 18.57L18.94 20.54C18.8 20.67 18.61 20.74 18.43 20.74C18.24 20.74 18.05 20.67 17.9 20.52L16.91 19.53C16.62 19.24 16.62 18.76 16.91 18.47C17.2 18.18 17.68 18.18 17.97 18.47L18.45 18.95L20.05 17.47C20.35 17.19 20.83 17.21 21.11 17.51C21.39 17.81 21.37 18.28 21.07 18.57Z"
-                                    fill="currentColor"
-                                />
-                                <path
-                                    d="M8.5 15C8.24 15 7.98 14.89 7.79 14.71C7.61 14.52 7.5 14.26 7.5 14C7.5 13.74 7.61 13.48 7.79 13.29C8.02 13.06 8.37 12.95 8.7 13.02C8.76 13.03 8.82 13.05 8.88 13.08C8.94 13.1 9 13.13 9.06 13.17C9.11 13.21 9.16 13.25 9.21 13.29C9.39 13.48 9.5 13.74 9.5 14C9.5 14.26 9.39 14.52 9.21 14.71C9.16 14.75 9.11 14.79 9.06 14.83C9 14.87 8.94 14.9 8.88 14.92C8.82 14.95 8.76 14.97 8.7 14.98C8.63 14.99 8.56 15 8.5 15Z"
-                                    fill="currentColor"
-                                />
-                                <path
-                                    d="M12 14.9999C11.74 14.9999 11.48 14.8899 11.29 14.7099C11.11 14.5199 11 14.2599 11 13.9999C11 13.7399 11.11 13.48 11.29 13.29C11.67 12.92 12.34 12.92 12.71 13.29C12.89 13.48 13 13.7399 13 13.9999C13 14.2599 12.89 14.5199 12.71 14.7099C12.52 14.8899 12.26 14.9999 12 14.9999Z"
-                                    fill="currentColor"
-                                />
-                                <path
-                                    d="M8.5 18.5C8.24 18.5 7.98 18.39 7.79 18.21C7.61 18.02 7.5 17.76 7.5 17.5C7.5 17.24 7.61 16.98 7.79 16.79C7.89 16.7 7.99 16.63 8.12 16.58C8.49 16.42 8.93 16.51 9.21 16.79C9.39 16.98 9.5 17.24 9.5 17.5C9.5 17.76 9.39 18.02 9.21 18.21C9.02 18.39 8.76 18.5 8.5 18.5Z"
-                                    fill="currentColor"
-                                />
-                            </svg>
-
-                            <p className="font-normal">
-                                {' '}
-                                {project_deadline
-                                    ? `Project Completion: ${formatDeadline(project_deadline)}`
-                                    : null}
-                            </p>
-                        </div>
+                        
+                        {project_deadline && (
+                            <div className="mt-2 flex items-center gap-1 px-1">
+                                <svg
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M16.75 3.56V2C16.75 1.59 16.41 1.25 16 1.25C15.59 1.25 15.25 1.59 15.25 2V3.5H8.74998V2C8.74998 1.59 8.40998 1.25 7.99998 1.25C7.58998 1.25 7.24998 1.59 7.24998 2V3.56C4.54998 3.81 3.23999 5.42 3.03999 7.81C3.01999 8.1 3.25999 8.34 3.53999 8.34H20.46C20.75 8.34 20.99 8.09 20.96 7.81C20.76 5.42 19.45 3.81 16.75 3.56Z"
+                                        fill="currentColor"
+                                    />
+                                    <path
+                                        opacity="0.4"
+                                        d="M21 10.84V12.58C21 13.19 20.46 13.66 19.86 13.56C19.58 13.52 19.29 13.49 19 13.49C15.97 13.49 13.5 15.96 13.5 18.99C13.5 19.45 13.68 20.09 13.87 20.67C14.09 21.32 13.61 21.99 12.92 21.99H8C4.5 21.99 3 19.99 3 16.99V10.83C3 10.28 3.45 9.82996 4 9.82996H20C20.55 9.83996 21 10.29 21 10.84Z"
+                                        fill="currentColor"
+                                    />
+                                    <path
+                                        d="M19 15C16.79 15 15 16.79 15 19C15 19.75 15.21 20.46 15.58 21.06C16.27 22.22 17.54 23 19 23C20.46 23 21.73 22.22 22.42 21.06C22.79 20.46 23 19.75 23 19C23 16.79 21.21 15 19 15ZM21.07 18.57L18.94 20.54C18.8 20.67 18.61 20.74 18.43 20.74C18.24 20.74 18.05 20.67 17.9 20.52L16.91 19.53C16.62 19.24 16.62 18.76 16.91 18.47C17.2 18.18 17.68 18.18 17.97 18.47L18.45 18.95L20.05 17.47C20.35 17.19 20.83 17.21 21.11 17.51C21.39 17.81 21.37 18.28 21.07 18.57Z"
+                                        fill="currentColor"
+                                    />
+                                    <path
+                                        d="M8.5 15C8.24 15 7.98 14.89 7.79 14.71C7.61 14.52 7.5 14.26 7.5 14C7.5 13.74 7.61 13.48 7.79 13.29C8.02 13.06 8.37 12.95 8.7 13.02C8.76 13.03 8.82 13.05 8.88 13.08C8.94 13.1 9 13.13 9.06 13.17C9.11 13.21 9.16 13.25 9.21 13.29C9.39 13.48 9.5 13.74 9.5 14C9.5 14.26 9.39 14.52 9.21 14.71C9.16 14.75 9.11 14.79 9.06 14.83C9 14.87 8.94 14.9 8.88 14.92C8.82 14.95 8.76 14.97 8.7 14.98C8.63 14.99 8.56 15 8.5 15Z"
+                                        fill="currentColor"
+                                    />
+                                    <path
+                                        d="M12 14.9999C11.74 14.9999 11.48 14.8899 11.29 14.7099C11.11 14.5199 11 14.2599 11 13.9999C11 13.7399 11.11 13.48 11.29 13.29C11.67 12.92 12.34 12.92 12.71 13.29C12.89 13.48 13 13.7399 13 13.9999C13 14.2599 12.89 14.5199 12.71 14.7099C12.52 14.8899 12.26 14.9999 12 14.9999Z"
+                                        fill="currentColor"
+                                    />
+                                    <path
+                                        d="M8.5 18.5C8.24 18.5 7.98 18.39 7.79 18.21C7.61 18.02 7.5 17.76 7.5 17.5C7.5 17.24 7.61 16.98 7.79 16.79C7.89 16.7 7.99 16.63 8.12 16.58C8.49 16.42 8.93 16.51 9.21 16.79C9.39 16.98 9.5 17.24 9.5 17.5C9.5 17.76 9.39 18.02 9.21 18.21C9.02 18.39 8.76 18.5 8.5 18.5Z"
+                                        fill="currentColor"
+                                    />
+                                </svg>
+                                <p className="font-normal">
+                                        Project Completion: {formatDeadline(project_deadline)}  
+                                </p>
+                            </div>
+                        )}
+                        
 
                         <div className="form-main px-1">
                             <div className="form-group task-group">
@@ -329,11 +333,7 @@ const TaskForm = ({
                                     <input
                                         type="date"
                                         id="time-starts"
-                                        value={
-                                            is_staff
-                                                ? convertDateCreateAtFormat(task?.created_at)
-                                                : convertDateCreateAtFormat(created_at)
-                                        }
+                                        value={time_start}
                                         onChange={onChangeStartDate}
                                         disabled={is_staff}
                                     />
@@ -350,11 +350,7 @@ const TaskForm = ({
                                     <input
                                         type="date"
                                         id="time-starts"
-                                        value={
-                                            is_staff
-                                                ? convertDateFormat(task?.deadline)
-                                                : deadline
-                                        }
+                                        value={deadline}
                                         onChange={onChangeDeadLine}
                                         disabled={is_staff}
                                     />
