@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
-import axios from '@/libs/axios'
-import { toast } from 'react-toastify'
+import { useState, useEffect } from "react"
+import { toast } from "react-toastify"
+import axios from "@/libs/axios"
 import PrimaryButton from '@/components/Button'
 import ConfirmationForm from '@/components/ConfirmationForm'
 import './css/TaskUserForm.css'
@@ -43,7 +43,7 @@ const TaskUsers = ({ projectId, onClose, setCountUserToProject }) => {
             setAllUsers(response.data)
         } catch (error) {
             setMessageError(
-                error.response.data.message || 'Error fetching all users.',
+                error.response?.data?.message || 'Error fetching all users.',
             )
             setConfirmationError(true)
         }

@@ -343,27 +343,10 @@
     .save-button {
     padding: 5px 8px;
     border-radius: var(--border-radius-sSmall);
-    background-color: var(--color-white);
-    color: var(--color-black);
-    border: 2px solid var(--color-black);
-    transform: translate(0, 0);
-    transition:
-        box-shadow 0.1s ease-in-out,
-        transform 0.1s ease-in-out;
-}
-
-#dashboard
-    .block
-    #main
-    .content
-    main
-    #project-view
-    #task-form
-    .task-form-button
-    .save-button {
-    background-color: var(--color-whiteGray);
-    color: var(--color-black);
-    border: 2px solid var(--color-light-blue);
+    background-color: #000;
+    opacity: 1;
+    color: #fff;
+    transition: background-color .2s ease-in-out;
 }
 
 #dashboard
@@ -375,8 +358,7 @@
     #task-form
     .task-form-button
     .save-button:hover {
-    transform: translate(0, -3px);
-    box-shadow: 0 3px 0 var(--color-light-blue);
+    background-color: #2c2c2c9c;
 }
 
 #dashboard
@@ -388,8 +370,8 @@
     #task-form
     .task-form-button
     .save-button:active {
-    transform: translate(0, 0);
-    box-shadow: none;
+    background-color: #ffffff;
+    color: #000;
 }
 
 #dashboard

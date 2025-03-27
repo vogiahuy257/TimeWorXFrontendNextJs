@@ -106,8 +106,6 @@ export default function Task() {
 
     const updateTaskStatus = async (id, newStatus, isPersonalPlan = false) => {
         try {
-            console.log(id)
-            console.log(isPersonalPlan)
             const endpoint = isPersonalPlan
                 ? `/api/personal-plans/${id}/status`
                 : `/api/v1/tasks/${id}`

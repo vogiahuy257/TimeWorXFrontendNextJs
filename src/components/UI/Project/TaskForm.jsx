@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import './css/TaskForm.css'
-import PrimaryButton from '@/components/Button'
 import { toast } from 'react-toastify'
 import ConfirmationForm from '@/components/ConfirmationForm'
 import axios from '@/libs/axios'
@@ -111,8 +110,6 @@ const TaskForm = ({
     useEffect(() => {
         if (task && projectId != null) 
         {
-            console.log('task')
-            console.log(task)
             setTaskName(task.content)
             setDescription(task.description || '')
             setTimeStart(task.time_start || '')
@@ -171,7 +168,6 @@ const TaskForm = ({
         }
 
         try {
-            console.log(taskData)
             if (task && projectId) {
                 await axios.put(
                     `/api/project-view/${projectId}/tasks/${task.id}`,
@@ -400,7 +396,7 @@ const TaskForm = ({
                                                 {selectedUser.name}
                                             </span>
                                         </div>
-                                        <PrimaryButton className="chat-button">
+                                        <button className="chat-button">
                                             <svg
                                                 width="24"
                                                 height="24"
@@ -415,7 +411,7 @@ const TaskForm = ({
                                                     fill="#222222"
                                                 />
                                             </svg>
-                                        </PrimaryButton>
+                                        </button>
                                     </div>
                                 ))}
                             </div>
@@ -423,7 +419,7 @@ const TaskForm = ({
                     </div>
 
                     <div className="task-form-button h-full">
-                        <PrimaryButton
+                        <button
                             className="close-button"
                             type="button"
                             onClick={onClose}
@@ -450,7 +446,7 @@ const TaskForm = ({
                                     strokeLinejoin="round"
                                 />
                             </svg>
-                        </PrimaryButton>
+                        </button>
                         {projectId && (
                             <div className="h-2/5 user-box shadow-md rounded-lg p-4 max-h-80">
                                 <h3 className="text-lg font-semibold ">

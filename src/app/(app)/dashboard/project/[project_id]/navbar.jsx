@@ -1,9 +1,13 @@
 import Link from "next/link"
+import { BarChart, Activity } from "lucide-react"
+
 export default function NavBar({
     projectName,
     countUserToProject,
     toggleUserList,
     toggleDeletedTasks,
+    isTimeline,
+    isBroad
 }) {
     return (
         <div className="block-project">
@@ -23,7 +27,22 @@ export default function NavBar({
                     </svg>
                 </Link>
                 <div className="block-project-name">
-                    <h1>{projectName ? (projectName) : ('Your Project')}</h1>
+                    <h1 className="text-xl font-semibold flex items-center gap-2">
+                    {projectName ? projectName : "Your Project"}
+                    <span>-</span>
+                    {isBroad && (
+                        <span className="flex items-center gap-1">
+                            <BarChart size={20} />
+                            Board
+                        </span>
+                    )} 
+                    {isTimeline && (
+                        <span className="flex items-center gap-1">
+                            <Activity size={20} />
+                            Timeline
+                        </span>
+                    )}
+                    </h1>
                 </div>
             </div>
             <div className="block-element-right">

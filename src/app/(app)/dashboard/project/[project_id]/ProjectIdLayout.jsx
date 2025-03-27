@@ -2,11 +2,19 @@ import LoadingBox from "@/components/UI/loading/LoadingBox"
 import NavBar from "./navbar"
 import CircularMenu from "./CircularMenu"
 
-export default function ProjectIdLayout({children, viewBoard,setViewBoard,loading, projectName, countUserToProject, toggleUserList,toggleDeletedTasks})
+import { usePathname } from "next/navigation"
+
+
+export default function ProjectIdLayout({children,loading, projectName, countUserToProject, toggleUserList,toggleDeletedTasks})
 {
+    const pathname = usePathname()
+    const isBroad = pathname.includes("/broad")
+    const isTimeline = pathname.includes("/timeline")
     return(
         <section id="project-view">
             <NavBar
+                isBroad = {isBroad}
+                isTimeline = {isTimeline}
                 projectName={projectName}
                 countUserToProject={countUserToProject}
                 toggleUserList={toggleUserList}
@@ -16,8 +24,9 @@ export default function ProjectIdLayout({children, viewBoard,setViewBoard,loadin
                 <LoadingBox content={'Loading data ...'}/>
             ) : (children)}
             <CircularMenu
-                viewBoard = {viewBoard}
-                setViewBoard = {setViewBoard}
+                pathname={pathname}
+                isBroad = {isBroad}
+                isTimeline = {isTimeline}
             />
         </section>
     )

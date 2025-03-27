@@ -2,16 +2,12 @@
 
 import {  useState } from 'react'
 import {  useParams } from 'next/navigation'
-import ProjectBroad from '@/components/UI/Project/projectView/ProjectBroad'
 import dynamic from 'next/dynamic'
 import LoadingPage from '@/components/UI/loading/LoadingPage'
-import ProjectIdLayout from './ProjectIdLayout'
+import ProjectIdLayout from '../ProjectIdLayout'
 import useProjectData from '@/hooks/useProjectData'
+import ProjectBroad from '@/components/UI/Project/projectView/ProjectBroad'
 
-const TaskGanttChart = dynamic(() => import('@/components/task-gantt-chart/index'), {
-    ssr: false,
-    loading: () => <LoadingPage content={'Loading task form ...'}/>,
-})
 // Dynamic import for components
 const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), {
     ssr: false,
@@ -21,14 +17,14 @@ const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), {
 const HistoryBox = dynamic(
     () => import('@/components/UI/Project/HistoryBox'),
     {
-        ssr: false,
+        ssr: true,
     },
 )
 
 const TaskUsers = dynamic(
     () => import('@/components/UI/Project/TaskUsersForm'),
     {
-        ssr: false,
+        ssr: true,
         loading: () => <LoadingPage />,
     },
 )
@@ -56,7 +52,6 @@ const DashboardProjectView = () => {
         countUserToProject,
         projectDeadLine,
         tasks,
-        allTasks,
         loadingDaTaTask,
         handleDeleteTask,
         updateTaskStatus,
@@ -72,7 +67,6 @@ const DashboardProjectView = () => {
     const [showUserList, setShowUserList] = useState(false)
     const [showComments, setShowComments] = useState(false)
     const [showFormReportToTask, setShowFormReportToTask] = useState(false)
-    const [viewBoard,setViewBoard] = useState(true);
 
     const toggleComment = () => {
         setShowComments(!showComments)
@@ -80,6 +74,7 @@ const DashboardProjectView = () => {
 
     const toggleDeletedTasks = () => {
         setShowDeletedTasks(!showDeletedTasks)
+        console.log(project)
     }
 
     const toggleUserList = () => {
@@ -116,38 +111,26 @@ const DashboardProjectView = () => {
         <ProjectIdLayout
             loading={loadingDaTaTask}
             projectName={project?.name}
-            setViewBoard = {setViewBoard}
-            viewBoard = {viewBoard}
             countUserToProject={countUserToProject}
             toggleUserList={toggleUserList}
             toggleDeletedTasks={toggleDeletedTasks}
         >
-
-            {/* Main Project View */}
-            {viewBoard ? (
-                <ProjectBroad
-                    updateTaskStatus={updateTaskStatus}
-                    tasks={tasks}
-                    handleAddTask={handleAddTask}
-                    handleShowReportClick={handleShowReportClick}
-                    handleViewClick={handleViewClick}
-                    handleDeleteTask={handleDeleteTask}
-                    handleCommentClick={handleCommentClick}
-                    setTasks={setTasks}
-                />
-            ):(
-                <TaskGanttChart
-                    tasks={allTasks}
-                />
-            )}
+            <ProjectBroad
+                updateTaskStatus={updateTaskStatus}
+                tasks={tasks}
+                handleAddTask={handleAddTask}
+                handleShowReportClick={handleShowReportClick}
+                handleViewClick={handleViewClick}
+                handleDeleteTask={handleDeleteTask}
+                handleCommentClick={handleCommentClick}
+                setTasks={setTasks}
+            />
             
-            
-
             {/* Hiển thị History */}
             {showDeletedTasks && (
                 <HistoryBox
                     resetPage={fetchProjectData}
-                    projectId={project.id}
+                    project_id={project.id}
                     isTaskProjectViews={true}
                 />
             )}

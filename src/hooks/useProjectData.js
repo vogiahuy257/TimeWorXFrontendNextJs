@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import axios from "@/libs/axios"
 import { toast } from "react-toastify"
 
@@ -15,16 +15,12 @@ const useProjectData = (project_id) => {
   const [allTasks, setAllTasks] = useState([])
   const [loadingDaTaTask, setLoadingDaTaTask] = useState(true)
 
-  const hasFetched = useRef(false)
-
   const fetchProjectData = useCallback(async () => {
-    if (hasFetched.current) return
 
     try {
       setLoadingDaTaTask(true)
       const response = await axios.get(`/api/project-view/${project_id}`)
       const projectData = response.data
-
       setProject(projectData.project)
       setCountUserToProject(projectData.project.user_count)
       setProjectDeadLine(projectData.project.deadline)
@@ -39,12 +35,10 @@ const useProjectData = (project_id) => {
       setTasks(updatedTasks)
 
       setAllTasks(
-        Object.entries(updatedTasks).flatMap(([status, tasks]) =>
-          tasks.map(task => ({ ...task, status_key: status }))
+        Object.entries(updatedTasks).flatMap(([status_key, tasks]) =>
+          tasks.map(task => ({ ...task, status_key: status_key }))
         )
       )
-
-      hasFetched.current = true
     } catch (error) {
       toast.error(`Error fetching project details: ${error}`)
     } finally {
@@ -63,18 +57,12 @@ const useProjectData = (project_id) => {
       await axios.delete(`/api/project-view/${task.id}`)
       toast.success(`${task.content} task deleted!`)
 
-      setTasks(prevTasks => {
-        const updatedTasks = { ...prevTasks }
-        updatedTasks[task.status_key] = updatedTasks[task.status_key].filter(t => t.id !== task.id)
-        return updatedTasks
-      })
-
-      setAllTasks(prevAllTasks => prevAllTasks.filter(t => t.id !== task.id))
+      fetchProjectData()
 
     } catch (error) {
       toast.error(`Error deleting task: ${error}`)
     }
-  }, [])
+  }, [fetchProjectData])
 
   // ✅ Cập nhật trạng thái task mà không gọi lại API toàn bộ
   const updateTaskStatus = useCallback(async (taskId, newStatus) => {
@@ -109,7 +97,7 @@ const useProjectData = (project_id) => {
     } catch (error) {
       toast.error(`Error updating task status: ${error.message}`)
     }
-  }, [])
+  }, [fetchProjectData])
 
   return useMemo(() => ({
     project,

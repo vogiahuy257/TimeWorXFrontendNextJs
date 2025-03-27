@@ -18,7 +18,7 @@ export default function CardProject({
         >
             <Link
                 className="card-form-view"
-                href={`/dashboard/project/${project.project_id}`}
+                href={`/dashboard/project/${project.project_id}/broad`}
                 onClick={onClickCardProject}
             >
                 <div className="card-title">

@@ -103,7 +103,7 @@ export function useSummaryReports() {
                 per_page: res.per_page,
                 current_page: 1
             })
-        } catch  {
+        } catch{
             toast.error('Error loading reports')
         } finally {
             setLoadingSummaryReport(false)
@@ -125,7 +125,7 @@ export function useSummaryReports() {
         try {
             const reports = await summaryReportService.getDeletedSummaryReports()
             setDeletedReports(reports)
-        } catch  {
+        } catch (error) {
             console.error("Error fetching deleted reports:", error)
         } finally {
             setLoadingDeletedReports(false)
@@ -153,7 +153,7 @@ export function useSummaryReports() {
                 ...prev,
                 total: prev.total + 1
             }))
-        } catch  {
+        } catch (error) {
             console.error("Error restoring report:", error)
             toast.error("Failed to restore report.")
         }
@@ -168,7 +168,7 @@ export function useSummaryReports() {
             // Cập nhật danh sách đã xóa
             setDeletedReports(prev => prev.filter(report => report.summary_report_id !== id))
 
-        } catch  {
+        } catch (error) {
             console.error("Error permanently deleting report:", error)
             toast.error("Failed to permanently delete report.")
         }

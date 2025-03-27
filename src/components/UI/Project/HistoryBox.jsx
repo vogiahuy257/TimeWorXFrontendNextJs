@@ -14,7 +14,7 @@ const  HistoryBox = ({ resetPage,project_id,isTaskProjectViews }) => {
         try {
             if(isTaskProjectViews && project_id)
             {
-                response = await axios.get(`/v1/project-view/${project_id}/deleted-tasks`)
+                response = await axios.get(`/api/v1/project-view/${project_id}/deleted-tasks`)
             }
             else if(project_id)
             {
@@ -25,9 +25,10 @@ const  HistoryBox = ({ resetPage,project_id,isTaskProjectViews }) => {
                 //danh cho trường hợp ở trang task
                 response = await axios.get(`/api/v1/personal-plans/trashed`) // Lấy các kế hoạch cá nhân đã xóa   
             }
-            setDeletedTasks(response.data)
-        } catch {
-            toast.error('Lỗi khi tải lich sử')
+            setDeletedTasks(response.data) // ✅ Cập nhật dữ liệu nếu có
+            
+        } catch (error) {
+            toast.error(`Lỗi khi tải lịch sử: ${error.response?.data?.message || error.message}`)
         }
         finally{
             setLoadingHistory(false)
@@ -102,13 +103,13 @@ const  HistoryBox = ({ resetPage,project_id,isTaskProjectViews }) => {
                     <LoadingBox/>
                 ):
                 (
-                    deletedTasks.map(task => (
-                        <li key={project_id ? task.project_id : task.plan_id} className={`${styles.deleted_tasks_li} mb-2 p-2 rounded-md`}> {/* Dùng plan_id cho các kế hoạch cá nhân */}
-                            <p>{project_id ? task.project_name : task.plan_name}</p> {/* Hiển thị tên kế hoạch cá nhân */}
+                    deletedTasks.map((task,index) => (
+                        <li key={index} className={`${styles.deleted_tasks_li} mb-2 p-2 rounded-md`}> {/* Dùng plan_id cho các kế hoạch cá nhân */}
+                            <p>{project_id ? (isTaskProjectViews ? (task.task_name) : (task.project_name))  : task.plan_name}</p> {/* Hiển thị tên kế hoạch cá nhân */}
                             <div className={`${styles.deleted_task_btn}`}>
                                 <PrimaryButton
                                     className={`${styles.btn_restore}`}
-                                    onClick={() => handleRestore(project_id ? task.project_id : task.plan_id)} // Khôi phục kế hoạch cá nhân
+                                    onClick={() => handleRestore(project_id ? (isTaskProjectViews ? (task.task_id) : (task.project_id)) : task.plan_id)} // Khôi phục kế hoạch cá nhân
                                 >
                                     <svg
                                         width="18"
@@ -129,7 +130,7 @@ const  HistoryBox = ({ resetPage,project_id,isTaskProjectViews }) => {
 
                                 <PrimaryButton
                                     className={`${styles.btn_delete}`}
-                                    onClick={() => handlePermanentDelete(project_id ? task.project_id : task.plan_id)} // Xóa vĩnh viễn kế hoạch cá nhân
+                                    onClick={() => handlePermanentDelete(project_id ? (isTaskProjectViews ? (task.task_id) : (task.project_id)) : task.plan_id)} // Xóa vĩnh viễn kế hoạch cá nhân
                                 >
                                     <svg
                                         width="16"
