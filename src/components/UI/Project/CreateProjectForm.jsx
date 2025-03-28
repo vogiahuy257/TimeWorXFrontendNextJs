@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import PrimaryButton from '@/components/Button'
+import ProjectPriorityDropDown from './ProjectPriorityDropDown'
 import './css/CreateProjectForm.css'
 
 const CreateProjectForm = ({  onClose, onSubmit, title, project }) => {
@@ -8,6 +9,7 @@ const CreateProjectForm = ({  onClose, onSubmit, title, project }) => {
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const [error, setError] = useState('')
+    const [projectPriority, setProjectPriority] = useState('Low')
     const [nameError, setNameError] = useState('')
     const [descriptionError, setDescriptionError] = useState('')
 
@@ -26,6 +28,7 @@ const CreateProjectForm = ({  onClose, onSubmit, title, project }) => {
             setProjectDescription(project.project_description)
             setStartDate(formatDate(project.start_date))
             setEndDate(formatDate(project.end_date))
+            setProjectPriority(project.project_priority)
         }
     }, [project])
 
@@ -109,6 +112,7 @@ const CreateProjectForm = ({  onClose, onSubmit, title, project }) => {
         const projectData = {
             project_name: projectName,
             project_description: projectDescription,
+            project_priority: projectPriority,
             start_date: startDate,
             end_date: endDate,
             project_status: 'to-do',
@@ -150,7 +154,7 @@ const CreateProjectForm = ({  onClose, onSubmit, title, project }) => {
                 <div className="create-project-form">
                     <form onSubmit={handleSubmit}>
                         <label>Project Name</label>
-                        <div className="projectName flex flex-col justify-center items-center mb-2">
+                        <div className="projectName flex gap-4 justify-center items-center mb-2">
                             <input
                                 type="text"
                                 value={projectName}
@@ -161,6 +165,10 @@ const CreateProjectForm = ({  onClose, onSubmit, title, project }) => {
                                     {nameError}
                                 </p>
                             )}
+                            <ProjectPriorityDropDown
+                                priority={projectPriority}
+                                setProjectPriority={setProjectPriority}
+                            />
                         </div>
 
                         <label>Project Description</label>
@@ -177,7 +185,6 @@ const CreateProjectForm = ({  onClose, onSubmit, title, project }) => {
                                 </p>
                             )}
                         </div>
-
                         <div className="box-input">
                             <div className="project-date">
                                 <div>
@@ -187,11 +194,6 @@ const CreateProjectForm = ({  onClose, onSubmit, title, project }) => {
                                             type="date"
                                             value={startDate}
                                             onChange={handleStartDateChange}
-                                            min={
-                                                new Date()
-                                                    .toISOString()
-                                                    .split('T')[0]
-                                            }
                                             required
                                         />
                                     </div>
@@ -213,7 +215,7 @@ const CreateProjectForm = ({  onClose, onSubmit, title, project }) => {
                             </div>
                             {error && <p className="error-message">{error}</p>}
                         </div>
-
+                        
                         <PrimaryButton type="submit" className="btn-submit">
                             {project ? 'Save' : 'Create'}
                         </PrimaryButton>

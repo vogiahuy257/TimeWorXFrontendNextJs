@@ -115,6 +115,11 @@ const DashboardProjectView = () => {
             toggleUserList={toggleUserList}
             toggleDeletedTasks={toggleDeletedTasks}
         >
+            <div className='px-2'>
+                <h1>hello</h1>
+                <h1>hello</h1>
+                <h3>hello</h3>
+            </div>
             <ProjectBroad
                 updateTaskStatus={updateTaskStatus}
                 tasks={tasks}

@@ -1,12 +1,4 @@
 /* card */
-#dashboard .block #main .content main #project #container .block-project {
-    width: auto;
-    display: flex;
-    gap: 18px;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    margin: auto;
-}
 
 #dashboard
     .block
@@ -62,13 +54,11 @@
     height: 150px;
     position: relative;
     color: var(--color-black);
-    margin-top: 25px;
-    margin-bottom: 25px;
     transition:
         transform 0.3s ease-in-out,
         box-shadow 0.3s ease-in-out;
     cursor: pointer;
-    margin-left: 8px;
+    margin-bottom: 2.2rem;
 }
 
 #dashboard

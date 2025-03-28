@@ -241,9 +241,9 @@ export default function Folder() {
             handleSearch={handleSearch}
         >
             {/* main */}
-            <section id="container">
-                <div className="mainContainer w-full">
-                    <div className="block-project">
+            <section id="container" className='pb-6'>
+                <div className="mainContainer w-full ">
+                    <div className="block-project m-auto mt-4 px-2 flex gap-4 justify-start flex-wrap">
                         {/* title is class name done, to-do, in-progress, verify */}
                         {
                             filteredProjects.map(project => (

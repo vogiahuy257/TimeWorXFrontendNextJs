@@ -377,15 +377,16 @@ const TaskForm = ({
                         </div>
 
                         {projectId && (
-                            <div className="user-list flex flex-col justify-center items-center p-4 rounded-md custom-scrollbar">
+                            <div className="max-h-[240px] h-auto overflow-y-auto p-2 gap-2 flex flex-col justify-center items-center py-4 rounded-md custom-scrollbar">
                                 {selectedUsers.map(selectedUser => (
                                     <div
-                                        className="user-item"
+                                        className="w-full px-2 py-4 rounded-md border ring-gray-700 shadow-lg flex bg-white-css"
                                         key={selectedUser.id}
                                     >
-                                        <div className="user-info">
-                                            <span className="user-icon">
+                                        <div className="flex gap-2">
+                                            <span className="ml-2">
                                                 <Image
+                                                    className=' rounded-full'
                                                     src="/image/y.jpg"
                                                     alt=""
                                                     width={24}
@@ -396,7 +397,7 @@ const TaskForm = ({
                                                 {selectedUser.name}
                                             </span>
                                         </div>
-                                        <button className="chat-button">
+                                        <button className="ml-auto mr-2">
                                             <svg
                                                 width="24"
                                                 height="24"

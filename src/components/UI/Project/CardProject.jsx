@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import React from 'react'
+import ProjectPriority from './ProjectPriority'
 
 import './css/CardProject.css'
 
@@ -30,7 +31,7 @@ export default function CardProject({
                     </div>
                 </div>
 
-                <div className="card-header">
+                <div className="card-header relative">
                     <div className="text">
                         <div className="card-form">
                             <p className="w-3/4 h-auto break-words text-ellipsis truncate line-clamp-2">
@@ -89,11 +90,17 @@ export default function CardProject({
                                 </button>
                             </div>
                         </div>
-
-                        <p className="description line-clamp-2">
-                            {project.project_description}
-                        </p>
-
+                        <div className=' h-full pb-2 flex flex-col'>
+                            <p className="description line-clamp-2">
+                                {project.project_description}
+                            </p>
+                            
+                            <ProjectPriority
+                                priority={project.project_priority}
+                                className={'mt-auto mr-auto gap-0.5 px-1 py-0.5'}
+                                sizeIcon={'18px'}
+                            />
+                        </div>
                         {/* notification deadlinetask */}
                         <div className="custom-notification mt-auto flex items-center">
                             <div className="custom_complete">
