@@ -502,3 +502,110 @@
 #dashboard .cardBox:active {
     transform: scale(0.995); /* active:scale-[0.995] */
 }
+
+#dashboard .box-notification.active
+{
+    background-color: var(--color-white);
+    color: var(--color-black);
+}
+#dashboard .box-notification.active::after
+{
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    bottom: 0;
+    left: -1rem;
+    border-bottom-right-radius: 0.75rem;
+    box-shadow: 4px 4px 0 var(--color-white);
+}
+#dashboard .box-notification.active button{
+    background-color: black;
+    color: #ffffff;
+}
+#dashboard .box-notification button
+{
+    transition: color .2s ease-in-out, background-color .2s ease-in-out;
+}
+#dashboard .box-notification:hover button{
+    background-color: black;
+    color: #ffffff;
+}
+
+#dashboard .box-notification.active .content-notification
+{
+    background-color: var(--color-white);
+    box-shadow: 0 8px 8px rgba(var(--color-black-rgb), 0.1);
+}
+
+#dashboard .box-notification .item-notification{
+    border-bottom: 0.25rem;
+    border-style: solid;
+    border-color: var(--color-black);
+    box-shadow: 0 0 8px rgba(var(--color-black-rgb), 0.1);
+}
+
+#dashboard .box-notification .item-notification.seen::after
+{
+    content: '';
+    width: 0.75rem;
+    height: 0.75rem;
+    position: absolute;
+    border-radius: 100%;
+    top: -0.25rem;
+    right: -0.25rem;
+    background-color: var(--color-light-blue);
+}
+
+@keyframes openNotification{
+    from{
+        height:  0px;
+    }
+    to{
+       height: 322px;
+    }
+}
+
+#dashboard .box-notification .list-notification{
+    animation: openNotification 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#dashboard .box-notification .btn-done-all span,
+#dashboard .box-notification .btn-clear span {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+#dashboard .box-notification .btn-done-all:hover span,
+#dashboard .box-notification .btn-clear:hover span {
+    display: inline;
+}
+
+#dashboard .box-notification .btn-done-all,
+#dashboard .box-notification .btn-clear{
+    width: 26px;
+    height: 26px;
+    transition: width .2s ease-in-out;
+}
+#dashboard .box-notification .btn-done-all:hover
+{
+    width: 138px;
+}
+#dashboard .box-notification .btn-clear:hover{
+    width: 138px;
+}
+
+#dashboard .box-notification .btn-done-all:active,
+#dashboard .box-notification .btn-clear:active
+{
+    background-color: rgba(var(--color-black-rgb), 0.8);
+}

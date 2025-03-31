@@ -23,7 +23,7 @@ const AppLayout = ({ children }) => {
 
 const DashboardContent = ({ children }) => {
     const { user,settings, logout } = useAuthContext()
-
+    
     if (!settings) {
         return <LoadingBox />
     }
