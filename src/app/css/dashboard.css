@@ -519,15 +519,15 @@
     border-bottom-right-radius: 0.75rem;
     box-shadow: 4px 4px 0 var(--color-white);
 }
-#dashboard .box-notification.active button{
+#dashboard .box-notification.active button:not(.btn-item-notification){
     background-color: black;
     color: #ffffff;
 }
-#dashboard .box-notification button
+#dashboard .box-notification button:not(.btn-item-notification)
 {
     transition: color .2s ease-in-out, background-color .2s ease-in-out;
 }
-#dashboard .box-notification:hover button{
+#dashboard .box-notification:hover button:not(.btn-item-notification){
     background-color: black;
     color: #ffffff;
 }
@@ -542,7 +542,19 @@
     border-bottom: 0.25rem;
     border-style: solid;
     border-color: var(--color-black);
-    box-shadow: 0 0 8px rgba(var(--color-black-rgb), 0.1);
+    box-shadow: 0 2px 8px rgba(var(--color-black-rgb), 0.1);
+    transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+#dashboard .box-notification .list-notification:hover .item-notification
+{
+    opacity: 0.4;
+}
+
+#dashboard .box-notification .list-notification .item-notification:hover{
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(var(--color-black-rgb), 0.4);
 }
 
 #dashboard .box-notification .item-notification.seen::after
@@ -588,24 +600,4 @@
 #dashboard .box-notification .btn-done-all:hover span,
 #dashboard .box-notification .btn-clear:hover span {
     display: inline;
-}
-
-#dashboard .box-notification .btn-done-all,
-#dashboard .box-notification .btn-clear{
-    width: 26px;
-    height: 26px;
-    transition: width .2s ease-in-out;
-}
-#dashboard .box-notification .btn-done-all:hover
-{
-    width: 138px;
-}
-#dashboard .box-notification .btn-clear:hover{
-    width: 138px;
-}
-
-#dashboard .box-notification .btn-done-all:active,
-#dashboard .box-notification .btn-clear:active
-{
-    background-color: rgba(var(--color-black-rgb), 0.8);
 }
