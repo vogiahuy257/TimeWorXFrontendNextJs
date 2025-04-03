@@ -1,5 +1,4 @@
 /* card */
-
 #dashboard
     .block
     #main
@@ -156,7 +155,7 @@
     color: var(--color-white);
     width: 139px;
     height: 30px;
-    border-radius: var(--border-radius-medium);
+    border-radius: var(--border-radius-small);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -248,38 +247,6 @@
     text-overflow: ellipsis;
 }
 
-/* form edit and delete */
-#dashboard
-    .block
-    #main
-    .content
-    main
-    #project
-    #container
-    .block-project
-    .card
-    .card-header
-    .card-form {
-    display: flex;
-    align-items: center;
-}
-
-#dashboard
-    .block
-    #main
-    .content
-    main
-    #project
-    #container
-    .block-project
-    .card
-    .card-header
-    .btn-form {
-    display: flex;
-    margin-left: auto;
-    gap: 6px;
-}
-
 #dashboard
     .block
     #main
@@ -344,67 +311,6 @@
     background-color: var(--color-red);
     color: #ffffff;
     box-shadow: 0 0 4px var(--color-red);
-}
-
-#dashboard
-    .block
-    #main
-    .content
-    main
-    #project
-    #container
-    .block-project
-    .card
-    .card-header
-    .custom_complete {
-    font-size: var(--font-size-small);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2px;
-    width: 28%;
-    position: relative;
-    border-radius: var(--border-radius-sSmall);
-}
-
-#dashboard
-    .block
-    #main
-    .content
-    main
-    #project
-    #container
-    .block-project
-    .card
-    .card-header
-    .custom_complete
-    svg {
-    padding: 4px;
-    height: 100%;
-    color: var(--color-white);
-    background-color: var(--color-green);
-    border-radius: var(--border-radius-sSmall);
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
-#dashboard
-    .block
-    #main
-    .content
-    main
-    #project
-    #container
-    .block-project
-    .card
-    .card-header
-    .custom_complete
-    p {
-    width: 100%;
-    border-radius: var(--border-radius-sSmall);
-    text-align: end;
-    padding-right: 4px;
 }
 
 /* custom - notification */

@@ -4,6 +4,7 @@ import PrimaryButton from '@/components/Button'
 import { toast } from 'react-toastify'
 import styles from './css/HistoryBox.module.css'
 import LoadingBox from '../loading/LoadingBox'
+import NoData from '@/components/NoData'
 
 const  HistoryBox = ({ resetPage,project_id,isTaskProjectViews }) => {
     const [deletedTasks, setDeletedTasks] = useState([])
@@ -102,7 +103,7 @@ const  HistoryBox = ({ resetPage,project_id,isTaskProjectViews }) => {
                 {loadingHistory ? (
                     <LoadingBox/>
                 ):
-                (
+                (deletedTasks.length > 0 ? (
                     deletedTasks.map((task,index) => (
                         <li key={index} className={`${styles.deleted_tasks_li} mb-2 p-2 rounded-md`}> {/* Dùng plan_id cho các kế hoạch cá nhân */}
                             <p>{project_id ? (isTaskProjectViews ? (task.task_name) : (task.project_name))  : task.plan_name}</p> {/* Hiển thị tên kế hoạch cá nhân */}
@@ -162,7 +163,12 @@ const  HistoryBox = ({ resetPage,project_id,isTaskProjectViews }) => {
                             </div>
                         </li>
                     ))
-                )}
+                ) : (
+                    <NoData
+                        className={'h-full'}
+                        message={'No history found'}
+                    />
+                ))}
             </ul>
         </div>
     )

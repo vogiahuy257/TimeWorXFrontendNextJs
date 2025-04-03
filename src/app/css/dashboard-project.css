@@ -29,29 +29,20 @@
 
 #dashboard .block #main .content main #project #menu .btn{
     background-color: var(--color-black);
-    padding: 10px 12px;
     color: var(--color-white);
     border-radius: var(--border-radius-sSmall);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-weight: var(--font-weight-regular);
     font-size: var(--font-size-small);
-    opacity: 1;
     transition: opacity .2s ease-in-out;
 }
 #dashboard .block #main .content main #project #menu .btn-history
 {
     padding: 10px;
 }
-#dashboard .block #main .content main #project #menu .btn:hover {
-    opacity: 0.8;
-}
 
 #dashboard .block #main .content main #project #menu .block-button-left svg {
     width: 20px;
     height: 20px;
-    margin-left: 5px;
 }
 
 #dashboard .block #main .content main #project #menu .block-button-right {

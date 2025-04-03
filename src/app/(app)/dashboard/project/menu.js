@@ -10,8 +10,8 @@ const menu = ({
     return (
         <section id="menu">
             <div className="block-button-left flex gap-2">
-                <PrimaryButton onClick={handleCreate} className={'btn'}>
-                    <p>Create Project</p>
+                <PrimaryButton onClick={handleCreate} className={'btn p-3 gap-1 flex justify-center items-center opacity-100 hover:opacity-80'}>
+                    <p className='text-xs md:text-sm hidden sm:block'>Create Project</p>
                     <svg
                         width="25"
                         height="25"
@@ -30,12 +30,12 @@ const menu = ({
 
                 <PrimaryButton
                     onClick={handleProjectAnalysis}
-                    className={'btn'}
+                    className={'btn p-3 gap-1 flex justify-center items-center opacity-100 hover:opacity-80'}
                 >
-                    <p>Project Progress</p>
+                    <p className='text-xs md:text-sm hidden sm:block'>Project Progress</p>
                     <svg
-                        width="24"
-                        height="24"
+                        width="20"
+                        height="20"
                         viewBox="0 0 24 24"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"

@@ -519,15 +519,15 @@
     border-bottom-right-radius: 0.75rem;
     box-shadow: 4px 4px 0 var(--color-white);
 }
-#dashboard .box-notification.active button:not(.btn-item-notification){
+#dashboard .box-notification.active button:not(.btn-item-notification,.btn-delete-notification){
     background-color: black;
     color: #ffffff;
 }
-#dashboard .box-notification button:not(.btn-item-notification)
+#dashboard .box-notification button:not(.btn-item-notification,.btn-delete-notification)
 {
     transition: color .2s ease-in-out, background-color .2s ease-in-out;
 }
-#dashboard .box-notification:hover button:not(.btn-item-notification){
+#dashboard .box-notification:hover button:not(.btn-item-notification,.btn-delete-notification){
     background-color: black;
     color: #ffffff;
 }
@@ -545,7 +545,18 @@
     box-shadow: 0 2px 8px rgba(var(--color-black-rgb), 0.1);
     transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
 }
-
+#dashboard .box-notification .item-notification.info{
+    border-color: var(--color-light-blue);
+}
+#dashboard .box-notification .item-notification.success{
+    border-color: var(--color-green);
+}
+#dashboard .box-notification .item-notification.warning{
+    border-color: var(--color-yellow);
+}
+#dashboard .box-notification .item-notification.error{
+    border-color: var(--color-red);
+}
 #dashboard .box-notification .list-notification:hover .item-notification
 {
     opacity: 0.4;
@@ -560,12 +571,12 @@
 #dashboard .box-notification .item-notification.seen::after
 {
     content: '';
-    width: 0.75rem;
-    height: 0.75rem;
+    width: 0.5rem;
+    height: 0.5rem;
     position: absolute;
     border-radius: 100%;
-    top: -0.25rem;
-    right: -0.25rem;
+    top: -0.14rem;
+    left: -0.14rem;
     background-color: var(--color-light-blue);
 }
 

@@ -2,6 +2,7 @@
 import IconDelete from '@/components/icon/iconDelete'
 import IconDoneAll from '@/components/icon/iconDoneAll'
 import IconNotification from '@/components/icon/iconNotification'
+import IconX from '@/components/icon/iconX'
 import NoData from '@/components/NoData'
 // custom hooks
 import useNotifications from '@/hooks/useNotifications'
@@ -68,12 +69,12 @@ export default function Notification({user}) {
                             {notifications.map((notif, index) => (
                                 <li
                                     key={index}
-                                    className={`item-notification cursor-pointer relative rounded-md transition ${notif.read_status ? '' : 'seen'}`}>
+                                    className={`item-notification flex items-center group ${notif.notification_type && notif.notification_type} cursor-pointer relative rounded-md transition ${notif.read_status ? '' : 'seen'}`}>
                                     <button 
-                                        className='btn-item-notification p-2  flex flex-col items-start gap-2'
+                                        className='btn-item-notification p-4  flex flex-col items-start gap-2'
                                         onClick={() => handleMarkAsReadOnClick(notif.id)}
                                     >
-                                        <p className="text-sm text-gray-black-css">
+                                        <p className="text-sm text-gray-black-css text-start">
                                             {notif.message}
                                         </p>
                                         <span className="text-xs text-gray-css">
@@ -82,6 +83,12 @@ export default function Notification({user}) {
                                             ).toLocaleString()}{' '}
                                             {/* Định dạng thời gian */}
                                         </span>
+                                    </button>
+                                    <button
+                                        className="btn-delete-notification ml-auto mr-2 opacity-0 group-hover:opacity-100 hover:text-red-600 transition-all duration-200 ease-in-out"
+                                        onClick={() => handleDeleteNotification(notif.id)}
+                                    >
+                                        <IconX size="24" />
                                     </button>
                                 </li>
                             ))}

@@ -44,7 +44,7 @@ export default function ProjectPriority({ classNameText,priority,className,sizeI
   }
 
   return (
-    <div className={`flex items-center rounded-lg ${style.colors} border shadow-sm  ${className}`}>
+    <div className={`flex items-center rounded-md ${style.colors} border shadow-sm  ${className}`}>
       {/* Priority text */}
       <span className={`font-medium ${classNameText ? classNameText : ' text-xs'}`}>{priority}</span>
 
