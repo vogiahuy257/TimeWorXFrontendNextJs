@@ -1,124 +1,136 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useRef, useMemo } from 'react'
 import {
   getNotifications,
   markAsRead,
   markAllAsRead,
   deleteNotification,
   deleteAllNotifications,
-} from '@/services/notificationService';
-import { useClickAway } from 'react-use';
+} from '@/services/notificationService'
+import { useClickAway } from 'react-use'
+import useSWR from 'swr'
 
 interface Notification {
-  id: number;
-  user_id: string;
-  notification_type: string;
-  message: string;
-  link: string | null;
-  read_status: boolean;
-  notification_date: string;
+  id: number
+  user_id: string
+  notification_type: string
+  message: string
+  link: string | null
+  read_status: boolean
+  notification_date: string
 }
 
 const useNotifications = (user: any) => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [openNotification, setOpenNotification] = useState<boolean>(false);
-  const notificationRef = useRef<HTMLDivElement | null>(null);
-  const hasFetched = useRef(false);
-  const [selectedNotifications, setSelectedNotifications] = useState<number[]>([]);
+  const [openNotification, setOpenNotification] = useState<boolean>(false)
+  const notificationRef = useRef<HTMLDivElement | null>(null)
+  const [selectedNotifications, setSelectedNotifications] = useState<number[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   useClickAway(notificationRef, () => {
-    if (openNotification) setOpenNotification(false);
-  });
+    if (openNotification) setOpenNotification(false)
+  })
 
-  useEffect(() => {
-    if (!user || hasFetched.current) return;
+  // ✅ Fetch thông báo với useSWR (tự động cập nhật mỗi 5 giây)
+  const { data: notifications = [], error: fetchError, mutate } = useSWR(
+    user ? '/api/notifications' : null,
+    getNotifications,
+    {
+      refreshInterval: 5000, // Kiểm tra thông báo mới mỗi 5 giây
+      revalidateOnFocus: true, // Tự động fetch lại khi quay lại tab
+      revalidateOnReconnect: true, // Fetch lại khi có mạng
+    }
+  )
 
-    hasFetched.current = true;
+  if (fetchError && !error) setError('Lỗi khi tải thông báo')
 
-    const fetchNotifications = async () => {
-      try {
-        const data = await getNotifications();
-        setNotifications(data);
-      } catch (err) {
-        setError('Lỗi khi tải thông báo');
-      }
-    };
-
-    fetchNotifications();
-  }, [user]);
-
+  // 🔹 Đếm số thông báo chưa đọc
   const unreadCount = useMemo(() => {
-    return notifications.filter((n) => !n.read_status).length;
-  }, [notifications]);
+    return notifications.filter((n) => !n.read_status).length
+  }, [notifications])
 
+  // ✅ Giữ nguyên logic: Khi người dùng gọi hàm này mới gửi API
   const handleMarkAsRead = async () => {
-    if (selectedNotifications.length === 0) return;
+    if (selectedNotifications.length === 0) return
     try {
-      // Gửi danh sách notificationId tới backend để đánh dấu đã đọc
-      await markAsRead(selectedNotifications);  // Chuyển đổi thành mảng khi gọi API
+      await markAsRead(selectedNotifications) // Gửi API đánh dấu tất cả đã đọc
+      mutate() // ✅ Fetch lại danh sách mới từ API
     } catch (err) {
-      setError('Lỗi khi đánh dấu thông báo là đã đọc');
+      const errorMessage = err instanceof Error ? err.message : 'Có lỗi xảy ra'
+      setError(`Lỗi khi đánh dấu thông báo là đã đọc: ${errorMessage}`)
+    } finally {
+      setSelectedNotifications([]) // ✅ Reset danh sách sau khi gọi API
     }
-    finally{
-      // Reset selectedNotifications sau khi gọi API
-      setSelectedNotifications([]);
-    }
-  };  
-  
-  const handleMarkAsReadOnClick = async (id: number) => {
-    try {
-      // Cập nhật ngay lập tức giao diện để đánh dấu đã đọc
-      setNotifications((prevNotifications) => {
-        return prevNotifications.map((notif) =>
+  }
+
+  // ✅ Giữ nguyên logic: Chỉ cập nhật selectedNotifications, không gọi API
+  const handleMarkAsReadOnClick = (id: number) => {
+    // Cập nhật giao diện hiển thị là đã đọc
+    mutate(
+      (prevData: Notification[] = []) =>
+        prevData.map((notif) =>
           notif.id === id ? { ...notif, read_status: true } : notif
-        );
-      });
+        ),
+      false // ⚠️ Không gọi lại API ngay, chỉ cập nhật UI tạm thời
+    )
   
-      // Thêm id vào selectedNotifications
-      setSelectedNotifications((prevSelected) => [...prevSelected, id]);
-    } catch (err) {
-      setError('Lỗi khi đánh dấu thông báo là đã đọc');
-    }
-  };  
+    // Thêm ID vào selectedNotifications nếu chưa có
+    setSelectedNotifications((prevSelected) =>
+      prevSelected.includes(id) ? prevSelected : [...prevSelected, id]
+    )
+  }
+  
 
-  const handleMarkAllAsRead = useCallback(async () => {
-    
-    setNotifications((prevNotifications) => {
-      const updated = prevNotifications.map((notif) => ({ ...notif, read_status: true }));
-      return updated;
-    });
-
+  // 🔹 Đánh dấu tất cả thông báo là đã đọc
+  const handleMarkAllAsRead = async () => {
+    // Cập nhật UI ngay lập tức bằng cách đánh dấu tất cả thông báo là đã đọc
+    mutate(
+      (prevData: Notification[] = []) =>
+        prevData.map((notif) => ({ ...notif, read_status: true })), // Đánh dấu tất cả thông báo là đã đọc
+      false // ❌ Không gọi lại API, chỉ cập nhật UI
+    )
+  
     try {
-      await markAllAsRead();
-    } catch (err) {
-      setError('Lỗi khi đánh dấu tất cả thông báo là đã đọc');
+      // Gọi API để đánh dấu tất cả thông báo là đã đọc
+      await markAllAsRead()
+    } catch{
+      setError('Lỗi khi đánh dấu tất cả thông báo là đã đọc')
     }
-  }, [setNotifications]);
+  }  
 
-  const handleDeleteNotification = useCallback(async (id: number) => {
-    
-    setNotifications((prevNotifications) => {
-      const updated = prevNotifications.filter((notif) => notif.id !== id);
-      return updated;
-    });
-
+  // 🔹 Xóa 1 thông báo
+  const handleDeleteNotification = async (id: number) => {
+    // Cập nhật UI ngay lập tức mà không gọi lại API
+    mutate(
+      (prevData: Notification[] = []) =>
+        prevData.filter((notif) => notif.id !== id),
+      false // ❌ Không gọi API lại, chỉ update UI
+    )
+  
     try {
-      await deleteNotification(id);
-    } catch (err) {
-      setError('Lỗi khi xóa thông báo');
+      // Gọi API để xóa thông báo
+      await deleteNotification(id)
+    } catch{
+      setError('Lỗi khi xóa thông báo')
     }
-  }, [setNotifications]);
+  }
+  
 
-  const handleDeleteAllNotifications = useCallback(async () => {
+  // 🔹 Xóa tất cả thông báo
+  const handleDeleteAllNotifications = async () => {
+    // Cập nhật UI ngay lập tức bằng cách xóa tất cả thông báo từ danh sách
+    mutate(
+      (_: Notification[] = []) => [], 
+      false // ❌ Không gọi lại API, chỉ cập nhật UI
+    )
     
-    setNotifications([]);
-
+    
     try {
-      await deleteAllNotifications();
-    } catch (err) {
-      setError('Lỗi khi xóa tất cả thông báo');
+      // Gọi API để xóa tất cả thông báo
+      await deleteAllNotifications()
+    } catch{
+      setError('Lỗi khi xóa tất cả thông báo')
     }
-  }, [setNotifications]);
+  }
+  
 
   return {
     notifications,
@@ -127,12 +139,13 @@ const useNotifications = (user: any) => {
     notificationRef,
     error,
     unreadCount,
+    selectedNotifications, // ✅ Trả về selectedNotifications để kiểm tra danh sách đã chọn
     handleMarkAsReadOnClick,
     handleMarkAsRead,
     handleMarkAllAsRead,
     handleDeleteNotification,
     handleDeleteAllNotifications,
-  };
-};
+  }
+}
 
-export default useNotifications;
+export default useNotifications

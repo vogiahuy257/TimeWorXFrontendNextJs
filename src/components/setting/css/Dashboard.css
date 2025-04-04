@@ -15,6 +15,7 @@
     aspect-ratio: 16 / 9; /* Giữ cố định tỷ lệ 16:9 */
     transform: translate(-50%,-50%);
     transition: all .2s ease-in-out;
+    box-shadow: 0 4px 10px var(--color-shadow);
 }
 
 #dashboardSetting.full

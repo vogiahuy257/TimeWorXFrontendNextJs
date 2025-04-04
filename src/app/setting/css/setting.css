@@ -13,6 +13,105 @@
     --bg-color-blue-while: #222222;
 }
 
+/* Pink Mode */
+#setting.pink-mode {
+    --color-black: rgb(112, 68, 84);
+    --color-gray: #e0b0c5;
+    --color-white: #fff7fa;
+    --color-whiteGray: #f7d8e7;
+    --color-black-rgb: 112, 68, 84;
+    --color-white-rgb: 255, 247, 250;
+    --color-black-gray: #9a7a87;
+    --color-shadow: rgba(207, 150, 174, 0.5);
+    --bg-color-blue-while: #fef2f7;
+    --background: #f5d0e0;
+    --background-blue: linear-gradient(
+        135deg,
+        rgba(219, 162, 184, 0.9),
+        rgba(235, 195, 210, 0.9)
+    );
+}
+/* Blue Mode */
+#setting.blue-mode {
+    --color-black: rgb(36, 36, 36);
+    --color-gray: #d6e6f5;
+    --color-white: #eef7ff;
+    --color-whiteGray: #bcd9fa;
+    --color-black-rgb: 65, 105, 225;
+    --color-white-rgb: 238, 247, 255;
+    --color-black-gray: #4b4b4b;
+    --color-shadow: rgba(119, 173, 236, 0.5);
+    --bg-color-blue-while: #f0f7ff;
+    --background: #9ec3ff;
+    --background-blue: linear-gradient(
+        135deg,
+        rgba(65, 105, 225, 0.9),
+        rgba(135, 206, 250, 0.9)
+    );
+}
+
+#setting.sunset-mode {
+    --color-yellow: #ff9a8b; /* Cam Pastel */
+    --color-yellow-rgb: 255, 154, 139;
+    --color-cream: #fad0c4; /* Hồng Pastel */
+    --color-black: #3e3e3e; /* Đen Đậm */
+    --color-black-rgb: 62, 62, 62;
+    --color-black-gray: #f8c3a6; /* Xám Cam */
+    --color-gray: #ffe3e3; /* Xám Hồng */
+    --color-white: #ffffff;
+    --color-white-rgb: 255, 255, 255;
+    --color-whiteGray: #ffe9d4; /* Trắng Hồng */
+    --color-light-gray: #ffe9d4; /* Xám Nhạt */
+    --color-light-blue: #ff8b68; /* Cam Đậm */
+    --color-light-blue-rgb: 255, 139, 104;
+    --color-blue: #a18cd1; /* Tím Pastel */
+    --color-blue-rgb: 161, 140, 209;
+    --color-red: #ff8a80; /* Đỏ Cam */
+    --color-red-rgb: 255, 138, 128;
+    --color-green: #ffd97f; /* Vàng Nhạt */
+    --background-y-p: linear-gradient(135deg, #ff9a8b, #fad0c4, #a18cd1);
+    --background: #ffe3e3; /* Nền Hồng Nhạt */
+    --background-blue: linear-gradient(
+        135deg,
+        rgba(255, 154, 139, 0.9),
+        rgba(250, 208, 196, 0.9)
+    );
+    --bg-color-blue-while: #ffe9d4;
+    --color-shadow: rgba(255, 156, 139, 0.3); /* Bóng Cam Pastel */
+}
+
+#setting.cyber-mode {
+    --color-yellow: rgb(243, 156, 18); /* Xanh Dương Neon */
+    --color-yellow-rgb: 0, 210, 255;
+    --color-cream: #9b59b6; /* Tím Neon */
+    --color-black: rgb(216, 66, 254); /* Màu Xám Đen */
+    --color-black-rgb: 216, 66, 254;
+    --color-black-gray: #1e1e1e; /* Đen */
+    --color-gray: #2c3e50; /* Xám Xanh Dương */
+    --color-white: #10284d; /* Trắng Nhạt */
+    --color-white-rgb: 236, 240, 241;
+    --color-whiteGray: #34495e; /* Xám Đen */
+    --color-light-gray: #1e1e1e; /* Xám Đen */
+    --color-light-blue: #328ecb; /* Xanh Dương Neon */
+    --color-light-blue-rgb: 52, 152, 219;
+    --color-blue: #ff9d00; /* Vàng Neon */
+    --color-blue-rgb: 243, 156, 18;
+    --color-red: #e74c3c; /* Đỏ Neon */
+    --color-red-rgb: 231, 76, 60;
+    --color-green: #2ecc71; /* Xanh Lá Neon */
+    --background-y-p: linear-gradient(135deg, #00d2ff, #9b59b6, #f39c12);
+    --background: #1e1e1e; /* Nền Đen */
+    --background-blue: linear-gradient(
+        135deg,
+        rgba(0, 210, 255, 0.9),
+        rgba(155, 89, 182, 0.9)
+    );
+    --bg-color-blue-while: #34495e;
+    --color-shadow: rgba(0, 210, 255, 0.3); /* Bóng Xanh Dương Neon */
+}
+
+
+
 #setting{
     background: radial-gradient(
         circle,

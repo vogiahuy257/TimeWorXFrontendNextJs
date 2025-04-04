@@ -8,8 +8,8 @@ const AuthenticatedLayout = ({ user,settings,children,logout }) => {
     const url = usePathname()
 
     return (
-        <section id="dashboard" className={settings.color_system == 'dark-mode' ? "dark-mode dark": "light-mode"}>
-            <div className={`block ${settings.screen_mode}`}>
+        <section id="dashboard" className={settings?.color_system}>
+            <div className={`block ${settings?.screen_mode}`}>
                 <div className="block-menu-top">
                     <Notification user ={user}/>
                     <div className="flex items-center z-50">

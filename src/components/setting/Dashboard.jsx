@@ -5,7 +5,7 @@ const Dashboard = ({theme,screen_mode ,className}) => {
         <div className={`${className} mt-8 h-[40vh] w-full relative sm:h-1/2`}>
             <div
                 id="dashboardSetting"
-                className={`${theme} ${screen_mode} rounded-xl shadow-lg grid grid-rows-[auto_1fr] grid-cols-[auto_1fr] h-full w-full`}
+                className={`${theme} ${screen_mode} rounded-xl grid grid-rows-[auto_1fr] grid-cols-[auto_1fr] h-full w-full`}
             >
                 {/* Menu top - Full width */}
                 <div className="menu-top row-start-1 col-span-2 h-12 bg-gray-200 flex items-center justify-center rounded-t-xl">

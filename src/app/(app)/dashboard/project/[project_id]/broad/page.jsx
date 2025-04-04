@@ -74,7 +74,6 @@ const DashboardProjectView = () => {
 
     const toggleDeletedTasks = () => {
         setShowDeletedTasks(!showDeletedTasks)
-        console.log(project)
     }
 
     const toggleUserList = () => {

@@ -66,6 +66,10 @@ const pageSystemSetting = () => {
                     >
                         <option value="light-mode">Light Mode</option>
                         <option value="dark-mode">Dark Mode</option>
+                        <option value="pink-mode">Pink Mode</option>
+                        <option value="blue-mode">Blue Mode</option>
+                        <option value="sunset-mode">Sunset Mode</option>
+                        <option value="cyber-mode">Cyber Mode</option> 
                     </select>
 
                     {/* Chọn Screen Mode */}
