@@ -6,6 +6,7 @@ import {
   deleteNotification,
   deleteAllNotifications,
 } from '@/services/notificationService'
+import { useRouter } from 'next/navigation'
 import { useClickAway } from 'react-use'
 import useSWR from 'swr'
 
@@ -20,6 +21,8 @@ interface Notification {
 }
 
 const useNotifications = (user: any) => {
+  
+  const router = useRouter()
   const [openNotification, setOpenNotification] = useState<boolean>(false)
   const notificationRef = useRef<HTMLDivElement | null>(null)
   const [selectedNotifications, setSelectedNotifications] = useState<number[]>([])
@@ -34,7 +37,7 @@ const useNotifications = (user: any) => {
     user ? '/api/notifications' : null,
     getNotifications,
     {
-      refreshInterval: 5000, // Kiểm tra thông báo mới mỗi 5 giây
+      refreshInterval: 20000, // Kiểm tra thông báo mới mỗi 5 giây
       revalidateOnFocus: true, // Tự động fetch lại khi quay lại tab
       revalidateOnReconnect: true, // Fetch lại khi có mạng
     }
@@ -62,7 +65,7 @@ const useNotifications = (user: any) => {
   }
 
   // ✅ Giữ nguyên logic: Chỉ cập nhật selectedNotifications, không gọi API
-  const handleMarkAsReadOnClick = (id: number) => {
+  const handleMarkAsReadOnClick = (id: number,link?: string) => {
     // Cập nhật giao diện hiển thị là đã đọc
     mutate(
       (prevData: Notification[] = []) =>
@@ -76,6 +79,13 @@ const useNotifications = (user: any) => {
     setSelectedNotifications((prevSelected) =>
       prevSelected.includes(id) ? prevSelected : [...prevSelected, id]
     )
+    if (link && typeof link === 'string' && link.trim() !== '') {
+      router.replace(link)
+      if (selectedNotifications.length === 0) {
+        handleMarkAsRead()
+      }
+    }
+    
   }
   
 

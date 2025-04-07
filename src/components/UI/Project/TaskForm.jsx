@@ -199,8 +199,9 @@ const TaskForm = ({
             }
 
         } catch (error) {
+            
+            toast.error('Error saving task:', error)
             onClose()
-            toast.error('Error saving task:', error?.message)
         }
     }
 

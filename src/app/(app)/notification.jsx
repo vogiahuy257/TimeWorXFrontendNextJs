@@ -44,7 +44,7 @@ export default function Notification({user}) {
             )}
 
             {openNotification && (
-                <div className="content-notification absolute z-40 top-full right-0 rounded-b-lg rounded-tl-lg pb-4 w-96">
+                <div className="content-notification absolute z-50 top-full right-0 rounded-b-lg rounded-tl-lg pb-4 w-96">
                     <div className="p-4 flex items-center">
                         <h3 className="font-semibold">Thông báo</h3>
                         <div className="ml-auto flex gap-2">
@@ -72,7 +72,10 @@ export default function Notification({user}) {
                                     className={`item-notification flex items-center group ${notif.notification_type && notif.notification_type} cursor-pointer relative rounded-md transition ${notif.read_status ? '' : 'seen'}`}>
                                     <button 
                                         className='btn-item-notification p-4  flex flex-col items-start gap-2'
-                                        onClick={() => handleMarkAsReadOnClick(notif.id)}
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            handleMarkAsReadOnClick(notif.id,notif.link)
+                                        }}
                                     >
                                         <p className="text-sm text-gray-black-css text-start">
                                             {notif.message}
@@ -86,7 +89,11 @@ export default function Notification({user}) {
                                     </button>
                                     <button
                                         className="btn-delete-notification ml-auto mr-2 opacity-0 group-hover:opacity-100 hover:text-red-600 transition-all duration-200 ease-in-out"
-                                        onClick={() => handleDeleteNotification(notif.id)}
+                                        onClick={(e) => {
+                                            e.stopPropagation() // 🔒 Chặn sự kiện click lan lên li
+                                            handleDeleteNotification(notif.id)
+                                          }}
+                                        
                                     >
                                         <IconX size="24" />
                                     </button>

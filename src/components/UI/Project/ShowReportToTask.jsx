@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import ReportComment from './ReportComment'
 import ReportDetails from './ReportDetails'
 import LoadingSmall from '../loading/LoadingSmall'
+import IconX from '@/components/icon/iconX'
 
 const ShowReportToTask = ({ task, onClose, updateTaskStatus }) => {
     const [reportData, setReportData] = useState(null)
@@ -76,32 +77,11 @@ const ShowReportToTask = ({ task, onClose, updateTaskStatus }) => {
                     className=" absolute flex justify-center items-center btn-close z-50 top-4 right-4 p-1.5 rounded-xl"
                     onClick={onClose}
                 >
-                    <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M18 6L6 18"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                        <path
-                            d="M6 6L18 18"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
+                    <IconX/>
                 </button>
                 
-                <div className="flex flex-col-reverse scrollbar-hide items-center w-full gap-4 overflow-y-auto lg:flex-row">
-                     <div className="report-content-task-form h-full w-[80%] p-8 pb-4 rounded-lg shadow lg:w-1/2">
+                <div className="flex flex-col scrollbar-hide items-center w-full gap-4 overflow-y-auto lg:flex-row">
+                     <div className="report-content-task-form h-full w-[80%] p-8 pb-4 mt-10 rounded-lg shadow lg:w-1/2">
                             {loadingReportData ? (
                                 <div className='relative w-full h-[500px] top-0 left-0'>
                                     <LoadingSmall/>   
@@ -119,7 +99,7 @@ const ShowReportToTask = ({ task, onClose, updateTaskStatus }) => {
                    
                         
 
-                    <div className="w-[80%] mt-10 h-full report-content-task-form bg-gray-100  rounded-lg shadow-md lg:w-1/2">
+                    <div className="w-[80%] mb-10 h-full report-content-task-form bg-gray-100  rounded-lg shadow-md lg:w-1/2">
                         <ReportComment
                             taskId={task.id}
                             is_project_manager={true}

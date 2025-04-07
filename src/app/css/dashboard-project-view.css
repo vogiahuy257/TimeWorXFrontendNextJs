@@ -366,7 +366,7 @@
     main
     .block-task
     .block-task-header {
-    z-index: 999;
+    z-index: 40;
     display: flex;
     height: 40px;
     width: 100%;

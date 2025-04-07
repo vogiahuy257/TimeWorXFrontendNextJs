@@ -5,13 +5,20 @@ import { useEffect, useState, useMemo } from "react"
 import { summaryReportService } from "@/services/summaryReportService"
 import LoadingBox from "@/components/UI/loading/LoadingBox"
 import NoData from "@/components/NoData"
+import dynamic from "next/dynamic"
 import { format } from "date-fns"
 import { useAuthContext } from "@/hooks/context/AuthContext"
 import { Calendar, CheckCircle, Download, FileText, Info, User, AlertTriangle, Clock,ArrowLeft,Trash2 } from "lucide-react"
-import DeleteModal from "@/components/DeleteModal"
 import { toast } from "react-toastify"
 
+const DeleteModal = dynamic(() => import("@/components/DeleteModal"),
+{
+    ssr: true,
+});
+
 const SummaryReportDetail = () => {
+    
+    const router = useRouter()
     const { user } = useAuthContext()
     const { summary_report_id } = useParams()
     const [report, setReport] = useState(null)
@@ -49,8 +56,6 @@ const SummaryReportDetail = () => {
         fetchReport()
     }, [summary_report_id])
 
-    const memoizedReport = useMemo(() => report, [report])
-
     if (loading) return <LoadingBox content={`loading data ${summary_report_id} ...`}/>
     if (error) return 
     (
@@ -61,6 +66,8 @@ const SummaryReportDetail = () => {
     if (!memoizedReport) return (
         <NoData className={`w-full h-full `} message={`No data to ${summary_report_id}.`}/>
     )
+
+    const memoizedReport = useMemo(() => report, [report])
 
     const handleDownloadZip = async () => {
             if (!report.zip_file_path || !report.summary_report_id) return
@@ -105,9 +112,7 @@ const SummaryReportDetail = () => {
             setShowDeleteModal(false)
         }
     }
-    
 
-    const router = useRouter()
     const handleGoBack = () => {
         router.back()
       }
@@ -204,7 +209,7 @@ const SummaryReportDetail = () => {
                         <p className="text-sm font-medium text-gray-500">Reported By</p>
                         <div className="flex items-center">
                             <User className="mr-2 h-4 w-4 text-gray-500" />
-                            <p className="font-medium">{user.name}</p>
+                            <p className="font-medium">{user?.name || "Unknown user"}</p>
                         </div>
                         </div>
                         <div>

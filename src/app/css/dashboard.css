@@ -337,10 +337,10 @@
 #dashboard .block .block-menu-left .menu-mid .box-active {
     background-color: var(--color-white);
     width: calc(100% - 10px);
-    height: 70px;
+    height: 71px;
     position: absolute;
     top: 0;
-    right: 0;
+    right: -1px;
     border-top-left-radius: var(--border-radius-medium);
     border-bottom-left-radius: var(--border-radius-medium);
     transform: translateY(var(--box-activeMove));
@@ -357,7 +357,7 @@
 #dashboard .block .block-menu-left .menu-mid .box-active::before {
     position: absolute;
     top: -20px;
-    right: 0;
+    right: 1px;
     border-bottom-right-radius: var(--border-radius-small);
     box-shadow: 5px 5px 0px var(--color-white);
 }
@@ -365,7 +365,7 @@
 #dashboard .block .block-menu-left .menu-mid .box-active::after {
     position: absolute;
     bottom: -20px;
-    right: 0;
+    right: 1px;
     border-top-right-radius: var(--border-radius-small);
     box-shadow: 5px -5px 0px var(--color-white);
 }

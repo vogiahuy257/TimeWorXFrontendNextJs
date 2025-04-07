@@ -1,5 +1,5 @@
 import axios from '@/libs/axios'
-
+import { toast } from 'react-toastify'
 export interface SummaryReport {
     summary_report_id: string  
     project_id?: string | null
@@ -48,6 +48,7 @@ export const summaryReportService = {
     // Gửi yêu cầu tạo một báo cáo tổng kết mới
     createSummaryReport: async (data: CreateSummaryReportRequest): Promise<SummaryReport> => {
         const res = await axios.post('/api/summary-reports', data)
+        toast.success("Summary report generated successfully!")
         return res.data // Trả về dữ liệu báo cáo vừa tạo
     },
 

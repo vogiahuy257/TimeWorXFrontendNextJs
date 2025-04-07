@@ -87,8 +87,8 @@ export default function SummaryReportForm({ addNewReport,handleOpenForm, project
     const handleSubmit = useCallback(async () => {
         if (!formRef.current) return
         try {
-            const newReport = await summaryReportService.createSummaryReport({
-                project_id: formData.project_id || null, // Nếu không có thì gửi null
+            const data = {
+                project_id: formData.project_id || null,
                 name: formData.name,
                 report_date: formData.report_date,
                 summary: formData.summary,
@@ -99,15 +99,16 @@ export default function SummaryReportForm({ addNewReport,handleOpenForm, project
                     file_id: file.file_id,
                     path: file.path,
                     file_name: file.name
-                })) // Gửi đúng format yêu cầu của backend
-            })
+                }))
+            }
+            const newReport = await summaryReportService.createSummaryReport(data)
             addNewReport(newReport)
             handleOpenForm()
-    
         } catch (err) {
-            console.error("Error creating summary report:", err.response?.data?.message || err.message)
+            console.error("❌ Error creating summary report:", err.response?.data?.message || err.message)
         }
-    }, [formData])    
+    }, [formData])
+       
           
 
     return (
