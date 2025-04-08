@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import axios from '@/libs/axios'
-import { useAuthContext } from '@/hooks/context/AuthContext'
+import { useAuthContext } from '@/context/AuthContext'
 import Image from 'next/image'
 import LoadingSmall from '../loading/LoadingSmall'
 

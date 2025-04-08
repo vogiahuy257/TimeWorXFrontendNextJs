@@ -103,7 +103,7 @@ export default function Report() {
                             />
                         </div>
                         {/* xem chi tiết project */}
-                        <div className={`h-64 report-content detail-box rounded-md relative`}>
+                        <div className={`h-72 report-content detail-box rounded-md relative`}>
                             <ReportProjectDetail
                                 project={selectProject}
                             />

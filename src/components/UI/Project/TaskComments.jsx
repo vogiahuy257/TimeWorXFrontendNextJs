@@ -5,7 +5,7 @@ import PrimaryButton from '@/components/Button'
 import TextareaAutosize from 'react-textarea-autosize'
 import './css/TaskComments.css'
 import Image from 'next/image'
-import { useAuthContext } from '@/hooks/context/AuthContext'
+import { useAuthContext } from '@/context/AuthContext'
 
 const TaskComments = ({ taskId, onClose, isManagerComment }) => {
     const {user} = useAuthContext()

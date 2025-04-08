@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuthContext, AuthProvider } from '@/hooks/context/AuthContext'
+import { useAuthContext, AuthProvider } from '@/context/AuthContext'
 import AuthenticatedLayout from '@/app/(app)/AuthenticatedLayout'
 import { ToastContainer } from 'react-toastify'
 import LoadingBox from '@/components/UI/loading/LoadingBox'

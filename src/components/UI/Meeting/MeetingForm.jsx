@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import './css/meeting.css'
-import { useAuthContext } from '@/hooks/context/AuthContext'
+import { useAuthContext } from '@/context/AuthContext'
 import LoadingSmall from '../loading/LoadingSmall'
 
 const MeetingForm = ({ styles, onClose, meeting, getData }) => {

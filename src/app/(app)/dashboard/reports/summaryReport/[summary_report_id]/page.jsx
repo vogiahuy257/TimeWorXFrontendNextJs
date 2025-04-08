@@ -5,16 +5,17 @@ import { useEffect, useState, useMemo } from "react"
 import { summaryReportService } from "@/services/summaryReportService"
 import LoadingBox from "@/components/UI/loading/LoadingBox"
 import NoData from "@/components/NoData"
-import dynamic from "next/dynamic"
+// import dynamic from "next/dynamic"
 import { format } from "date-fns"
-import { useAuthContext } from "@/hooks/context/AuthContext"
+import DeleteModal from "@/components/DeleteModal"
+import { useAuthContext } from "@/context/AuthContext"
 import { Calendar, CheckCircle, Download, FileText, Info, User, AlertTriangle, Clock,ArrowLeft,Trash2 } from "lucide-react"
 import { toast } from "react-toastify"
 
-const DeleteModal = dynamic(() => import("@/components/DeleteModal"),
-{
-    ssr: true,
-});
+// const DeleteModal = dynamic(() => import("@/components/DeleteModal"),
+// {
+//     ssr: true,
+// })
 
 const SummaryReportDetail = () => {
     
@@ -56,6 +57,8 @@ const SummaryReportDetail = () => {
         fetchReport()
     }, [summary_report_id])
 
+    const memoizedReport = useMemo(() => report, [report])
+
     if (loading) return <LoadingBox content={`loading data ${summary_report_id} ...`}/>
     if (error) return 
     (
@@ -66,8 +69,6 @@ const SummaryReportDetail = () => {
     if (!memoizedReport) return (
         <NoData className={`w-full h-full `} message={`No data to ${summary_report_id}.`}/>
     )
-
-    const memoizedReport = useMemo(() => report, [report])
 
     const handleDownloadZip = async () => {
             if (!report.zip_file_path || !report.summary_report_id) return
@@ -144,8 +145,8 @@ const SummaryReportDetail = () => {
                 {/* Header with report name and download button */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h1 className="text-2xl font-bold">{report.name}</h1>
-                        <p className="text-gray-500">Report ID: {report.summary_report_id}</p>
+                        <h1 className="text-2xl font-bold">{report?.name || "N/A"}</h1>
+                        <p className="text-gray-500">Report ID: {report?.summary_report_id || "N/A"}</p>
                     </div>
 
                     <div className="">

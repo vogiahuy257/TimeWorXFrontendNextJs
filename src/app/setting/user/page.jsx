@@ -1,5 +1,5 @@
 'use client'
-import { useAuthContext } from '@/hooks/context/AuthContext'
+import { useAuthContext } from '@/context/AuthContext'
 import { useState, useEffect } from 'react'
 import Avatar from '@/components/Avatar'
 import EditableEmail from './EditableEmail'

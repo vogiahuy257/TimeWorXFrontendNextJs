@@ -1,7 +1,7 @@
 'use client'
 import Menu from "@/components/setting/Menu"
 import { usePathname, useRouter } from "next/navigation"
-import { AuthProvider, useAuthContext } from "@/hooks/context/AuthContext"
+import { AuthProvider, useAuthContext } from "@/context/AuthContext"
 import './css/setting.css'
 import { useEffect } from "react"
 

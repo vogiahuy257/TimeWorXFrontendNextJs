@@ -111,13 +111,12 @@
     width: 49%;
     background-color: #000000;
     color: #f9f9f9;
-    font-size: var(--font-size-small);
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
 }
 #dashboard #report .project-detail .project-name::before {
     position: absolute;
-    bottom: -12px;
+    bottom: -16px;
     left: 2px;
     content: '';
     width: 1rem;
@@ -129,7 +128,7 @@
 
 #dashboard #report .project-detail .project-name::after {
     position: absolute;
-    bottom: 5px;
+    bottom: 1px;
     right: -20px;
     content: '';
     width: 20px;
@@ -143,6 +142,10 @@
     top: 0;
     right: 0;
     width: 50%;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: var(--background-blue);
     color: #f9f9f9;
     font-size: var(--font-size-small);

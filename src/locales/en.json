@@ -1,0 +1,16 @@
+{
+  "Home": {
+    "welcome": "Welcome To DashBoard",
+    "description": "To start your project you need to click this button",
+    "goProject": "Go Project"
+  },
+  "Navigation": {
+    "home": "Home",
+    "project": "Project",
+    "task": "Task",
+    "calendar": "Calendar",
+    "reports": "Reports",
+    "setting": "Setting",
+    "logout": "Logout"
+  }
+}

@@ -1,6 +1,6 @@
 'use client'
 import { useState,useEffect } from 'react'
-import { useAuthContext } from '@/hooks/context/AuthContext'
+import { useAuthContext } from '@/context/AuthContext'
 import Dashboard from '@/components/setting/Dashboard'
 import Loading from '../loading'
 
@@ -95,8 +95,7 @@ const pageSystemSetting = () => {
                     >
                         <option value="vi">Vietnamese</option>
                         <option value="en">English</option>
-                        <option value="ja">Japanese</option>
-                        <option value="zh">Chinese</option>
+                        <option value="jp">Japanese</option>
                     </select>
                 </div>
             </div>

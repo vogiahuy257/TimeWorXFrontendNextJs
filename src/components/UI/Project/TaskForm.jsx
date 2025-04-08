@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import ConfirmationForm from '@/components/ConfirmationForm'
 import axios from '@/libs/axios'
 import Image from 'next/image'
-import { useAuthContext } from '@/hooks/context/AuthContext'
+import { useAuthContext } from '@/context/AuthContext'
 
 const TaskForm = ({
     onClose,
