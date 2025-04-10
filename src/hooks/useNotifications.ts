@@ -56,6 +56,7 @@ const useNotifications = (user: any) => {
   
     const channel = echo.private(`notification.${userId}`)
     channel.listen('.notification.received', (event: any) => {
+      
       setNotifications((prev) => [event, ...prev])
     })
   

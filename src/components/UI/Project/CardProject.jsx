@@ -10,11 +10,12 @@ export default function CardProject({
     formatDateRange,
     handleDelete,
     handleEdit,
-    onClickCardProject
+    onClickCardProject,
+    animateBounce = true,
 }) {
     return (
         <div
-            className={`card group ${project.project_status || ''}`}
+            className={`card group ${animateBounce ? "animationCard" : ""} ${project.project_status || ''}`}
             key={project.project_id}
         >
             <Link

@@ -8,7 +8,6 @@ import LoadingPage from '@/components/UI/loading/LoadingPage'
 import ProjectLayout from './ProjectLayout'
 import useEcho from "@/hooks/echo"
 import { useAuthContext } from '@/context/AuthContext'
-import { motion } from 'framer-motion'
 
 // Dynamic import for components
 const CardProject = dynamic(
@@ -52,7 +51,8 @@ export default function Folder() {
     const { user } = useAuthContext()
     const [projects, setProjects] = useState([])
     // lam animation
-    const [recentlyUpdatedId, setRecentlyUpdatedId] = useState(null)
+    const [bouncingProjectIds, setBouncingProjectIds] = useState([]);
+
     const [filteredProjects, setFilteredProjects] = useState([])
     const [isDeletedFormOpen, setIsDeletedFormOpen] = useState(false)
     const [isFormOpen, setIsFormOpen] = useState(false)
@@ -136,7 +136,12 @@ export default function Folder() {
         
                 return sortProjectsByStatus(updatedProjects);
             });
-        });
+
+            setBouncingProjectIds((prev) => [...prev, event.project_id])
+            setTimeout(() => {
+                setBouncingProjectIds((prev) => prev.filter(id => id !== event.project_id))
+            }, 1300)
+        })
         
         return () => {
         echo.leave(`user.${user.id}`)
@@ -274,7 +279,7 @@ export default function Folder() {
             handleSearch={handleSearch}
         >
             {/* main */}
-            <section id="container" className='pb-6'>
+            <section id="container" className='pb-6 pt-4'>
                 <div className="mainContainer w-full ">
                     <div className="block-project m-auto mt-4 px-2 flex gap-8 justify-center flex-wrap md:justify-start">
                         {/* title is class name done, to-do, in-progress, verify */}
@@ -287,6 +292,7 @@ export default function Folder() {
                                     handleDelete={isDeteleProject}
                                     handleEdit={handleEdit}
                                     onClickCardProject={onClickCardProject}
+                                    animateBounce={bouncingProjectIds.includes(project.project_id)}
                                 />
                             ))
                         }
