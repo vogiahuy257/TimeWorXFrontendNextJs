@@ -1,11 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState,useMemo } from 'react'
 import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import dynamic from 'next/dynamic'
 import LoadingPage from '@/components/UI/loading/LoadingPage'
 import ProjectLayout from './ProjectLayout'
+import useEcho from "@/hooks/echo"
+import { useAuthContext } from '@/context/AuthContext'
+import { motion } from 'framer-motion'
 
 // Dynamic import for components
 const CardProject = dynamic(
@@ -46,7 +49,10 @@ const ConfirmationForm = dynamic(
 )
 
 export default function Folder() {
+    const { user } = useAuthContext()
     const [projects, setProjects] = useState([])
+    // lam animation
+    const [recentlyUpdatedId, setRecentlyUpdatedId] = useState(null)
     const [filteredProjects, setFilteredProjects] = useState([])
     const [isDeletedFormOpen, setIsDeletedFormOpen] = useState(false)
     const [isFormOpen, setIsFormOpen] = useState(false)
@@ -57,21 +63,27 @@ export default function Folder() {
     const [loadingData, setLoadingData] = useState(true)
     const [loadingCardProject, setLoadingCardProject] = useState(false)
 
+    // echo    
+    const echo = useEcho()
+
     const onClickCardProject = () => {
         setLoadingCardProject(!loadingCardProject)
     }
+
     const statusOrder = {
         verify: 1,
         'in-progress': 2,
         'to-do': 3,
         done: 4,
-    }
+    };
+    
 
-    const sortProjectsByStatus = projects => {
-        return projects.sort((a, b) => {
-            return statusOrder[a.project_status] - statusOrder[b.project_status]
-        })
-    }
+    const sortProjectsByStatus = (projects) => {
+        return [...projects].sort((a, b) => {
+            return statusOrder[a.project_status] - statusOrder[b.project_status];
+        });
+    };
+    
 
     const fetchProjectData = async () => {
         try {
@@ -109,6 +121,27 @@ export default function Folder() {
     useEffect(() => {
         fetchProjectData()
     }, [])
+    
+    useEffect(() => {
+        if (!echo || !user) return
+    
+        const channel = echo.private(`user.${user.id}`)
+        channel.listen('.project.status.updated', (event) => {
+            setFilteredProjects((prevProjects) => {
+                const updatedProjects = prevProjects.map((project) =>
+                    project.project_id === event.project_id
+                        ? { ...project, project_status: event.project_status }
+                        : project
+                );
+        
+                return sortProjectsByStatus(updatedProjects);
+            });
+        });
+        
+        return () => {
+        echo.leave(`user.${user.id}`)
+        }
+    }, [echo, user])
 
     // new
     useEffect(() => {

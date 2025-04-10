@@ -54,28 +54,6 @@ const useNotifications = (user: any) => {
   useEffect(() => {
     if (!echo || !userId) return
   
-    // Log trạng thái kết nối sẽ chỉnh để hiện thị ra ngoài sau để xem user đó có online không
-    // const connection = (echo.connector as any)?.pusher?.connection
-    // if (connection) {
-    //   connection.bind('connected', () => {
-    //     console.log('✅ Echo connected to Reverb WebSocket server!')
-    //   })
-  
-    //   connection.bind('error', (err: any) => {
-    //     console.error('❌ Echo connection error:', err)
-    //   })
-  
-    //   connection.bind('disconnected', () => {
-    //     console.warn('⚠️ Echo disconnected from Reverb server')
-    //   })
-  
-    //   connection.bind('connecting', () => {
-    //     console.log('🔄 Echo is connecting to Reverb...')
-    //   })
-    // } else {
-    //   console.warn('⚠️ No Echo connection instance found')
-    // }
-  
     const channel = echo.private(`notification.${userId}`)
     channel.listen('.notification.received', (event: any) => {
       setNotifications((prev) => [event, ...prev])
