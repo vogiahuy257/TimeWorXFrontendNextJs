@@ -17,13 +17,10 @@ interface CreateNotificationData {
   link?: string
 }
 
-// Địa chỉ API của bạn
-const API_URL = '/api/notifications'
-
 // Lấy danh sách thông báo
 export const getNotifications = async (): Promise<Notification[]> => {
   try {
-    const response = await axios.get(API_URL)
+    const response = await axios.get('/api/notifications')
     return response.data
   } catch (error) {
     console.error('Lỗi khi lấy thông báo:', error)
