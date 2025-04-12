@@ -3,17 +3,17 @@ import IconFire from "@/components/icon/iconFire"
 export default function ProjectPriority({ classNameText,priority,className,sizeIcon }) {
   // Visual data for each priority level
   const priorityData = {
-    Low: {
+    LOW: {
       colors: "bg-green-100 text-green-800 border-green-300",
       iconColor: "text-green-600",
       fireCount: 1,
     },
-    Medium: {
+    MEDIUM: {
       colors: "bg-yellow-100 text-yellow-800 border-yellow-300",
       iconColor: "text-amber-600",
       fireCount: 2,
     },
-    High: {
+    HIGH: {
       colors: "bg-red-100 text-red-800 border-red-300",
       iconColor: "text-rose-600",
       fireCount: 3,
@@ -28,7 +28,7 @@ export default function ProjectPriority({ classNameText,priority,className,sizeI
   }
 
   // Get the style data for the current priority
-  const style = priorityData[priority] || defaultStyle
+  const style = priorityData[priority.toUpperCase()] || defaultStyle
 
   // Generate fire icons based on priority level
   const renderFireIcons = () => {

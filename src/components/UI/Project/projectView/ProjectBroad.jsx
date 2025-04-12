@@ -200,16 +200,16 @@ export default function ProjectBroad({
                                                             </div>
                                                         </div>
                                                         <div className='flex w-full mt-1'>
-                                                            <p className="truncate flex justify-center items-center text-sm font-normal max-w-56">
+                                                            <p className="truncate text-gray-css flex justify-center items-center text-sm max-w-56">
                                                                 <IconUserCheck
-                                                                    size={18}
+                                                                    size={16}
                                                                     className="mr-0.5"
                                                                 />
-                                                                huy
+                                                                <span className='text-xs font-normal text-gray-css text-gray-css'>{task?.in_charge_user_name || 'N/A'}</span>
                                                             </p>
                                                             <ProjectPriority
                                                                 // priority={project.project_priority}
-                                                                priority={'Low'}
+                                                                priority={task.priority}
                                                                 className={'py-0.5 px-1.5 ml-auto'}
                                                                 sizeIcon={'14'}
                                                             />

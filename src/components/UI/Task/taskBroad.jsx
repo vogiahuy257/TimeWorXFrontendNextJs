@@ -1,6 +1,7 @@
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd'
 import PrimaryButton from '@/components/Button'
-
+import IconUserCheck from '@/components/icon/iconUserCheck'
+import ProjectPriority from '@/components/UI/Project/ProjectPriority'
 export default function TaskBroad({
  tasks,
  updateTaskStatus,
@@ -266,9 +267,23 @@ export default function TaskBroad({
                                                                 </div>
                                                             </div>
                                                         
-                                                            <div className='flex w-full'>
-                                                                <p>medium</p>
-                                                            </div>
+                                                            {task.type ==
+                                                                'personalPlan' ? null : (
+                                                                <div className='flex w-full mt-0.5'>
+                                                                    <p className="truncate flex justify-center items-center text-sm font-normal max-w-56">
+                                                                        <IconUserCheck
+                                                                            size={16}
+                                                                            className="mr-0.5"
+                                                                        />
+                                                                        <span className=' text-xs font-normal text-gray-css'>{task?.in_charge_user_name || 'N/A'}</span>
+                                                                    </p>
+                                                                    <ProjectPriority
+                                                                        priority={task.priority}
+                                                                        className={'py-0.5 px-1.5 ml-auto'}
+                                                                        sizeIcon={'14'}
+                                                                    />
+                                                                </div>
+                                                            )}
                                                         </div>
                                                         <div
                                                             className={

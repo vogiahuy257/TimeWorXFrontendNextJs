@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import './css/TaskForm.css'
 import { toast } from 'react-toastify'
 import ConfirmationForm from '@/components/ConfirmationForm'
+import ProjectPriorityDropDown from './ProjectPriorityDropDown'
 import axios from '@/libs/axios'
+import TaskFormSelectedUsers from './TaskFormSelectedUsers'
 import Image from 'next/image'
 import { useAuthContext } from '@/context/AuthContext'
 
@@ -20,6 +22,8 @@ const TaskForm = ({
     const [taskName, setTaskName] = useState('')
     const [deadline, setDeadLine] = useState('')
     const [time_start, setTimeStart] = useState('')
+    const [inChargeUserId, setInChargeUserId] = useState('')
+    const [priority, setPriority] = useState('')
     const [description, setDescription] = useState('')
     const [selectedUsers, setSelectedUsers] = useState([])
     const [users, setUsers] = useState([])
@@ -110,6 +114,8 @@ const TaskForm = ({
     useEffect(() => {
         if (task && projectId != null) 
         {
+            setPriority(task.priority || '')
+            setInChargeUserId(task.in_charge_user_id || '')
             setTaskName(task.content)
             setDescription(task.description || '')
             setTimeStart(task.time_start || '')
@@ -125,6 +131,8 @@ const TaskForm = ({
         }  
         else 
         {
+            setPriority('')
+            setInChargeUserId('')
             setTaskName('')
             setTimeStart('')
             setDescription('')
@@ -148,6 +156,8 @@ const TaskForm = ({
         }
         if (projectId != null) {
             taskData = {
+                priority: priority,
+                in_charge_user_id: inChargeUserId,
                 task_name: taskName,
                 deadline: deadline,
                 time_start: time_start,
@@ -233,6 +243,7 @@ const TaskForm = ({
             <div className="task-form-container relative">
                 <form onSubmit={handleSubmit}>
                     <div className="task-form-header">
+
                         <div className="flex items-center gap-1 px-1 pt-1">
                             <svg
                                 width="30"
@@ -321,7 +332,19 @@ const TaskForm = ({
                                     required
                                 />
                             </div>
-
+                            {projectId && (
+                            <div className='form-group task-group relative'>
+                                <label htmlFor="priority">
+                                    Priority:
+                                </label>
+                                <ProjectPriorityDropDown
+                                    className={'mr-auto'}
+                                    direction = {'left'}
+                                    priority={priority}
+                                    setProjectPriority={setPriority}   
+                                />
+                            </div>
+                            )}
                             <div className='flex gap-6'>
                                 <div className="form-group time-group">
                                     <label htmlFor="time-starts">
@@ -378,43 +401,15 @@ const TaskForm = ({
                         </div>
 
                         {projectId && (
-                            <div className="max-h-[240px] h-auto overflow-y-auto p-2 gap-2 flex flex-col justify-center items-center py-4 rounded-md custom-scrollbar">
+                            <div className="max-h-[210px] h-auto overflow-y-auto p-2 gap-2 flex flex-col justify-start items-center py-4 rounded-md custom-scrollbar">
                                 {selectedUsers.map(selectedUser => (
-                                    <div
-                                        className="w-full px-2 py-4 rounded-md border ring-gray-700 shadow-lg flex bg-white-css"
+                                    <TaskFormSelectedUsers
                                         key={selectedUser.id}
-                                    >
-                                        <div className="flex gap-2">
-                                            <span className="ml-2">
-                                                <Image
-                                                    className=' rounded-full'
-                                                    src="/image/y.jpg"
-                                                    alt=""
-                                                    width={24}
-                                                    height={24}
-                                                />
-                                            </span>
-                                            <span className="username">
-                                                {selectedUser.name}
-                                            </span>
-                                        </div>
-                                        <button className="ml-auto mr-2">
-                                            <svg
-                                                width="24"
-                                                height="24"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    clipRule="evenodd"
-                                                    d="M3 10.4C3 8.15979 3 7.03969 3.43597 6.18404C3.81947 5.43139 4.43139 4.81947 5.18404 4.43597C6.03969 4 7.15979 4 9.4 4H14.6C16.8402 4 17.9603 4 18.816 4.43597C19.5686 4.81947 20.1805 5.43139 20.564 6.18404C21 7.03969 21 8.15979 21 10.4V11.6C21 13.8402 21 14.9603 20.564 15.816C20.1805 16.5686 19.5686 17.1805 18.816 17.564C17.9603 18 16.8402 18 14.6 18H7.41421C7.149 18 6.89464 18.1054 6.70711 18.2929L4.70711 20.2929C4.07714 20.9229 3 20.4767 3 19.5858V18V13V10.4ZM9 8C8.44772 8 8 8.44772 8 9C8 9.55228 8.44772 10 9 10H15C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8H9ZM9 12C8.44772 12 8 12.4477 8 13C8 13.5523 8.44772 14 9 14H12C12.5523 14 13 13.5523 13 13C13 12.4477 12.5523 12 12 12H9Z"
-                                                    fill="#222222"
-                                                />
-                                            </svg>
-                                        </button>
-                                    </div>
+                                        selectedUser={selectedUser}
+                                        inChargeUserId = {inChargeUserId}
+                                        setInChargeUserId={setInChargeUserId}
+                                        is_staff={is_staff}
+                                    />
                                 ))}
                             </div>
                         )}

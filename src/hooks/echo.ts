@@ -18,7 +18,7 @@ const useEcho = () => {
         if (typeof window === 'undefined') return // Chỉ chạy trên client
         
         window.Pusher = Pusher // Gán Pusher vào window để sử dụng trong Echo
-        
+        Pusher.logToConsole = false 
         const echo = new Echo({
             broadcaster: 'reverb',
             key: process.env.NEXT_PUBLIC_REVERB_APP_KEY,
@@ -46,7 +46,6 @@ const useEcho = () => {
                 (process.env.NEXT_PUBLIC_REVERB_SCHEME ?? 'https') === 'https',
             enabledTransports: ['ws', 'wss'],
         })
-
         setEchoInstance(echo)
     }, [])
 

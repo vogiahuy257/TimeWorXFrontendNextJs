@@ -577,6 +577,10 @@
     color: #9a9da1;
 }
 
+#dashboard .text-white-css{
+    color: var(--color-white);
+}
+
 #dashboard .text-gray-black-css{
     color: #3e4651;
 }

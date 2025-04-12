@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import ProjectPriority from "./ProjectPriority"
 
-export default function ProjectPriorityDropDown({ priority, setProjectPriority }) {
+export default function ProjectPriorityDropDown({ priority, setProjectPriority, className = null,direction = 'right' }) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
 
@@ -25,7 +25,7 @@ export default function ProjectPriorityDropDown({ priority, setProjectPriority }
   }, [])
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className={`relative ${className}`} ref={dropdownRef}>
       <div
         className="flex items-center gap-1 rounded-lg border shadow-sm cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
@@ -33,7 +33,7 @@ export default function ProjectPriorityDropDown({ priority, setProjectPriority }
         <ProjectPriority priority={priority} classNameText={'text-sm'} className={'py-2 px-4'} sizeIcon={'20px'}/>
       </div>
       {isOpen && (
-        <div className="absolute right-0 mt-2 bg-white-css border rounded-lg shadow-md p-2 z-10">
+        <div className={`absolute ${direction == 'right' ? 'right-0' : 'left-0'} mt-2 bg-white-css border rounded-lg shadow-md p-2 z-10`}>
           {Object.entries(priorityData).map(([key, data]) => (
             <div
               key={key}
