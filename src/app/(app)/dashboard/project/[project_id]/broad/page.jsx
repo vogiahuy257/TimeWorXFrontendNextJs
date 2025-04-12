@@ -7,7 +7,6 @@ import LoadingPage from '@/components/UI/loading/LoadingPage'
 import ProjectIdLayout from '../ProjectIdLayout'
 import useProjectData from '@/hooks/useProjectData'
 import ProjectBroad from '@/components/UI/Project/projectView/ProjectBroad'
-
 // Dynamic import for components
 const TaskForm = dynamic(() => import('@/components/UI/Project/TaskForm'), {
     ssr: false,
