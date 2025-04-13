@@ -3,6 +3,7 @@ import { BarChart, Activity } from "lucide-react"
 
 export default function NavBar({
     projectName,
+    isDashboard,
     countUserToProject,
     toggleUserList,
     toggleDeletedTasks,
@@ -40,6 +41,12 @@ export default function NavBar({
                         <span className="flex items-center gap-1">
                             <Activity size={20} />
                             Timeline
+                        </span>
+                    )}
+                    {isDashboard && (
+                        <span className="flex items-center gap-1">
+                            <Activity size={20} />
+                            Dashboard
                         </span>
                     )}
                     </h1>

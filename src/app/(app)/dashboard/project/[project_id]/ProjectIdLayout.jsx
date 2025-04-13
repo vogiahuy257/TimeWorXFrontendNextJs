@@ -8,13 +8,16 @@ import { usePathname } from "next/navigation"
 export default function ProjectIdLayout({children,loading, projectName, countUserToProject, toggleUserList,toggleDeletedTasks})
 {
     const pathname = usePathname()
-    const isBroad = pathname.includes("/broad")
-    const isTimeline = pathname.includes("/timeline")
+    const pathParts = pathname.split('/')
+    const isBroad = pathParts[pathParts.length - 1] === "broad"
+    const isTimeline = pathParts[pathParts.length - 1] === "timeline"
+    const isDashboard = pathParts[pathParts.length - 1] === "dashboard"
     return(
         <section id="project-view">
             <NavBar
                 isBroad = {isBroad}
                 isTimeline = {isTimeline}
+                isDashboard = {isDashboard}
                 projectName={projectName}
                 countUserToProject={countUserToProject}
                 toggleUserList={toggleUserList}
@@ -25,6 +28,7 @@ export default function ProjectIdLayout({children,loading, projectName, countUse
             ) : (children)}
             <CircularMenu
                 pathname={pathname}
+                isDashboard = {isDashboard}
                 isBroad = {isBroad}
                 isTimeline = {isTimeline}
             />
