@@ -5,7 +5,6 @@ import ConfirmationForm from '@/components/ConfirmationForm'
 import ProjectPriorityDropDown from './ProjectPriorityDropDown'
 import axios from '@/libs/axios'
 import TaskFormSelectedUsers from './TaskFormSelectedUsers'
-import Image from 'next/image'
 import { useAuthContext } from '@/context/AuthContext'
 
 const TaskForm = ({
@@ -23,7 +22,7 @@ const TaskForm = ({
     const [deadline, setDeadLine] = useState('')
     const [time_start, setTimeStart] = useState('')
     const [inChargeUserId, setInChargeUserId] = useState('')
-    const [priority, setPriority] = useState('')
+    const [priority, setPriority] = useState('Low')
     const [description, setDescription] = useState('')
     const [selectedUsers, setSelectedUsers] = useState([])
     const [users, setUsers] = useState([])
@@ -114,7 +113,7 @@ const TaskForm = ({
     useEffect(() => {
         if (task && projectId != null) 
         {
-            setPriority(task.priority || '')
+            setPriority(task.priority || 'Low')
             setInChargeUserId(task.in_charge_user_id || '')
             setTaskName(task.content)
             setDescription(task.description || '')
@@ -131,7 +130,7 @@ const TaskForm = ({
         }  
         else 
         {
-            setPriority('')
+            setPriority('Low')
             setInChargeUserId('')
             setTaskName('')
             setTimeStart('')

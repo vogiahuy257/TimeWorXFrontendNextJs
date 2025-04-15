@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import ProjectPriority from "./ProjectPriority"
 
-export default function ProjectPriorityDropDown({ priority, setProjectPriority, className = null,direction = 'right' }) {
+export default function ProjectPriorityDropDown({ priority = "Low", setProjectPriority, className = null,direction = 'right' }) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
 

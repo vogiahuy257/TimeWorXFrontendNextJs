@@ -1,6 +1,6 @@
 import IconFire from "@/components/icon/iconFire"
 
-export default function ProjectPriority({ classNameText,priority,className,sizeIcon }) {
+export default function ProjectPriority({ classNameText,priority = "LOW",className,sizeIcon }) {
   // Visual data for each priority level
   const priorityData = {
     LOW: {

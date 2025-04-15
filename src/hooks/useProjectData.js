@@ -33,7 +33,7 @@ const useProjectData = (project_id) => {
         verify: projectData.tasks["verify"] || [],
         done: projectData.tasks["done"] || [],
       }
-
+      
       setTasks(updatedTasks)
 
       setAllTasks(
@@ -147,8 +147,47 @@ const useProjectData = (project_id) => {
     }
   }, [fetchProjectData])
 
+  const sampleProject = useMemo(() => {
+    if (!project) return null
+  
+    return {
+      project_name: project.name || "",
+      project_description: project.description || "",
+      start_date: project.start_date ? new Date(project.start_date).toISOString().split("T")[0] : "",
+      end_date: project.deadline ? new Date(project.deadline).toISOString().split("T")[0] : "",
+      project_priority: project.project_priority || "",
+      taskCount: project.taskCount || 0,
+      inProgress: project.inProgress || 0,
+      done: project.done || 0,
+    }
+  }, [project])
+
+  const taskCircularData = useMemo(() => {
+    if (!project) return null
+  
+    return {
+      todo: parseInt(project.todo) || 0,
+      "in-progress": parseInt(project.inProgress) || 0,
+      verify: parseInt(project.verify) || 0,
+      done: parseInt(project.done) || 0,
+    }
+  }, [project])
+  
+  const deadlineData = useMemo(() => {
+    if (!project) return null
+  
+    return {
+      nearDeadline: parseInt(project.taskNearDeadline) || 0,
+      lateDeadline: parseInt(project.taskLateDeadline) || 0,
+    }
+  }, [project])
+  
+
   return useMemo(() => ({
     project,
+    taskCircularData,
+    deadlineData,
+    sampleProject,
     countUserToProject,
     projectDeadLine,
     tasks,

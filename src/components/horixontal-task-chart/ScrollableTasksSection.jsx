@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import TaskProgressBarSection from "./TaskProgressBarSection"
 export default function ScrollableTasksSection({
     data,
@@ -40,7 +40,7 @@ export default function ScrollableTasksSection({
                                     setHoveredSection(null)
                                 }}>
                                 <div className="relative">
-                                    <div className="relative h-8 bg-gray-100 rounded-lg overflow-hidden">
+                                    <div className="relative h-8 bg-gray-100/30 rounded-lg overflow-hidden">
                                         {/* Grid lines */}
                                         <div className="absolute inset-0 flex">
                                             {ticks.map((tick, i) => (
@@ -49,7 +49,7 @@ export default function ScrollableTasksSection({
                                                     className="h-full border-l border-gray-200"
                                                     style={{
                                                         left: `${(tick / scaleMax) * 100}%`,
-                                                    }}></div>
+                                                    }}/>
                                             ))}
                                         </div>
 
@@ -121,7 +121,7 @@ export default function ScrollableTasksSection({
 
                 {/* Numerical scale */}
                 <div className="relative h-6 px-4 mb-4">
-                    <div className="absolute left-4 right-4 top-0 h-[1px] bg-gray-300"></div>
+                    <div className="absolute left-4 right-4 top-0 h-[1px] bg-gray-300"/>
 
                     {ticks.map((tick, index) => {
                         const position = (tick / scaleMax) * 100
@@ -130,7 +130,7 @@ export default function ScrollableTasksSection({
                                 key={index}
                                 className="absolute"
                                 style={{ left: `calc(${position}% + 4px)` }}>
-                                <div className="h-2 w-[1px] bg-gray-400"></div>
+                                <div className="h-2 w-[1px] bg-gray-400"/>
                                 <div className="text-xs text-gray-600 mt-1 transform -translate-x-1/2">
                                     {tick}
                                 </div>

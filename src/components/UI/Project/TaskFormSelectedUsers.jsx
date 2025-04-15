@@ -21,7 +21,7 @@ export default function TaskFormSelectedUsers({ selectedUser, inChargeUserId, se
       >
         {inChargeUserId === selectedUser.id ? (
           <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-white-css animate-pulse"></span>
+            <span className="w-2 h-2 rounded-full bg-white-css animate-pulse"/>
             Đang phụ trách
           </span>
         ) : (

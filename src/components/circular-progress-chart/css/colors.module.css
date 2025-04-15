@@ -1,0 +1,29 @@
+.colors {
+    /* Task status colors */
+    --color-todo: var(--color-blue);
+    --color-in-progress: var(--color-yellow);
+    --color-verify: var(--color-red);
+    --color-done: var(--color-green);
+  
+    /* Background colors - white-based lunar theme */
+    --color-background: var(--color-white);
+    --color-background-light: var(--color-whiteGray);
+  
+    /* Text colors */
+    --color-text: var(--color-black);
+    --color-text-secondary: var(--color-black-gray);
+  
+    /* Accent colors */
+    --color-accent: #64748b;
+    --color-moon-glow: #e2e8f0;
+  
+    /* Status colors */
+    --color-warning: #f59e0b;
+    --color-danger: #dc2626;
+  
+    /* Gradient colors */
+    --color-gradient-start: var(--color-yellow);
+    --color-gradient-middle: var(--color-blue);
+    --color-gradient-end: var(--color-green);
+  }
+  

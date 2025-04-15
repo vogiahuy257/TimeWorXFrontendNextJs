@@ -9,8 +9,8 @@ export default function HeaderHorixontal({
     sortOrder,
 }) {
     return (
-        <div className="flex justify-between items-center px-3 py-3">
-            <h2 className="text-xl font-bold text-gray-800">
+        <div className="flex rounded-lg justify-between items-center p-3">
+            <h2 className="text-xl font-bold text-gray-black-css">
                 Task Distribution
             </h2>
 
@@ -29,11 +29,11 @@ export default function HeaderHorixontal({
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute right-0 top-full mt-1 bg-white shadow-lg rounded-md overflow-hidden z-20 w-40 border border-gray-200">
+                            className="absolute right-0 top-full mt-1 bg-white-css shadow-lg rounded-md overflow-hidden z-20 w-40 ring-gray-css">
                             <button
                                 className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-100 transition-colors ${
                                     sortOrder === 'asc'
-                                        ? 'bg-gray-100 font-medium'
+                                        ? 'bg-gray-700/80 font-medium'
                                         : ''
                                 }`}
                                 onClick={() => {
@@ -51,9 +51,9 @@ export default function HeaderHorixontal({
                                 />
                             </button>
                             <button
-                                className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-100 transition-colors ${
+                                className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-700/80 transition-colors ${
                                     sortOrder === 'desc'
-                                        ? 'bg-gray-100 font-medium'
+                                        ? 'bg-gray-700/80 font-medium'
                                         : ''
                                 }`}
                                 onClick={() => {
@@ -71,9 +71,9 @@ export default function HeaderHorixontal({
                                 />
                             </button>
                             <button
-                                className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-100 transition-colors ${
+                                className={`w-full text-left px-4 py-2 text-sm flex items-center justify-between hover:bg-gray-700/80 transition-colors ${
                                     sortOrder === null
-                                        ? 'bg-gray-100 font-medium'
+                                        ? 'bg-gray-700/80 font-medium'
                                         : ''
                                 }`}
                                 onClick={() => {

@@ -9,9 +9,9 @@ export default function CircularMenu({ pathname, isBroad, isTimeline, isDashboar
     const router = useRouter()
 
     const switchView = (view) => {
-        const basePath = pathname.split('/').slice(0, 4).join('/'); // Lấy phần cơ bản như "/dashboard/project/2"
-        const newPath = `${basePath}/${view}`; // Thêm view mới vào sau base path
-        router.push(newPath);
+        const basePath = pathname.split('/').slice(0, 4).join('/') // Lấy phần cơ bản như "/dashboard/project/2"
+        const newPath = `${basePath}/${view}` // Thêm view mới vào sau base path
+        router.push(newPath)
     }
     
 

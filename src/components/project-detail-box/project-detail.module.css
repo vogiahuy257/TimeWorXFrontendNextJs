@@ -1,0 +1,18 @@
+.projectCard {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.badge {
+  transition: all 0.2s ease;
+}
+
+.badge:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 640px) {
+  .projectCard {
+    border-radius: 0.5rem;
+  }
+}

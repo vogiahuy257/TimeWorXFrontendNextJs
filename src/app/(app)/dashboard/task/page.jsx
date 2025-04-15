@@ -69,7 +69,7 @@ export default function Task() {
                 updateTaskStatus={updateTaskStatus}
                 tasks={tasks}
                 handleAddTask={handleAddTask}
-                handleShowReportClick={handleReportClick}
+                handleReportClick={handleReportClick}
                 handleViewClick={handleViewClick}
                 handleCommentClick={handleCommentClick}
                 handleDeleteTask={handleDeleteTask}

@@ -589,6 +589,10 @@
 {
     color: #bec1c6;
 }
+#dashboard.dark-mode .ring-gray-css{
+
+    border: 1px solid var(--color-shadow);
+}
 
 #dashboard .cardBox {
     background-color: var(--color-white); /* bg-white-css */

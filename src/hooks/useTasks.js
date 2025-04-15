@@ -155,7 +155,6 @@ export default function useTasks() {
                     ...updatedPersonalPlans['done'],
                 ],
             }
-            console.log('mergedTasks', response.data)
             // Thiết lập trạng thái
             setTasks(mergedTasks)
         } catch (error) {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState,useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import axios from '@/libs/axios'
 import { toast } from 'react-toastify'
 import dynamic from 'next/dynamic'
@@ -51,8 +51,7 @@ export default function Folder() {
     const { user } = useAuthContext()
     const [projects, setProjects] = useState([])
     // lam animation
-    const [bouncingProjectIds, setBouncingProjectIds] = useState([]);
-
+    const [bouncingProjectIds, setBouncingProjectIds] = useState([])
     const [filteredProjects, setFilteredProjects] = useState([])
     const [isDeletedFormOpen, setIsDeletedFormOpen] = useState(false)
     const [isFormOpen, setIsFormOpen] = useState(false)
@@ -75,14 +74,14 @@ export default function Folder() {
         'in-progress': 2,
         'to-do': 3,
         done: 4,
-    };
+    }
     
 
     const sortProjectsByStatus = (projects) => {
         return [...projects].sort((a, b) => {
-            return statusOrder[a.project_status] - statusOrder[b.project_status];
-        });
-    };
+            return statusOrder[a.project_status] - statusOrder[b.project_status]
+        })
+    }
     
 
     const fetchProjectData = async () => {
@@ -132,10 +131,10 @@ export default function Folder() {
                     project.project_id === event.project_id
                         ? { ...project, project_status: event.project_status }
                         : project
-                );
+                )
         
-                return sortProjectsByStatus(updatedProjects);
-            });
+                return sortProjectsByStatus(updatedProjects)
+            })
 
             setBouncingProjectIds((prev) => [...prev, event.project_id])
             setTimeout(() => {

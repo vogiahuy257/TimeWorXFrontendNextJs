@@ -25,7 +25,7 @@ export default function HorizontalTaskChart({ data, scaleMax, ticks,sortOrder,se
   const [showSortOptions, setShowSortOptions] = useState(false)
 
   return (
-    <div className="w-full bg-white-css rounded-xl shadow-md overflow-hidden">
+    <div className="w-full bg-white-css ring-gray-css pt-4 rounded-lg shadow-lg overflow-hidden">
       <HeaderHorixontal
           setShowSortOptions = {setShowSortOptions}
           showSortOptions = {showSortOptions}

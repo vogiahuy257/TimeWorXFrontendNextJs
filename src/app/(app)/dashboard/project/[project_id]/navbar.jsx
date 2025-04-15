@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { BarChart, Activity } from "lucide-react"
+import { BarChart, Activity,LayoutDashboard } from "lucide-react"
+import IconChevronRight from "@/components/icon/iconChevronRight"
 
 export default function NavBar({
     projectName,
@@ -28,25 +29,29 @@ export default function NavBar({
                     </svg>
                 </Link>
                 <div className="block-project-name">
-                    <h1 className="text-xl font-semibold flex items-center gap-2">
-                    {projectName ? projectName : "Your Project"}
-                    <span>-</span>
+                    <h1 className=" text-xl font-semibold flex items-center gap-1">
+                    <span className="text-xl pb-1">{projectName ? projectName : "Your Project"}</span>
+                    <IconChevronRight
+                        size={'24'}
+                    />
                     {isBroad && (
-                        <span className="flex items-center gap-1">
-                            <BarChart size={20} />
+                        <span className="flex items-center text-white gap-1 px-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-400">
+                            
                             Board
+                            <BarChart size={20}/>
                         </span>
                     )} 
                     {isTimeline && (
-                        <span className="flex items-center gap-1">
-                            <Activity size={20} />
+                        <span className="flex items-center text-white gap-2 px-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-400">
+                            
                             Timeline
+                            <Activity size={20} />
                         </span>
                     )}
                     {isDashboard && (
-                        <span className="flex items-center gap-1">
-                            <Activity size={20} />
+                        <span className="flex items-center text-white gap-2 px-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-400">
                             Dashboard
+                            <LayoutDashboard size={20} />
                         </span>
                     )}
                     </h1>
