@@ -28,6 +28,20 @@ export default function ScrollableTasksSection({
 
                         const isHovered = hoveredUser === user.username
 
+                        const sections = [
+                            { type: 'todo', value: user.todo },
+                            { type: 'pending', value: user.in_progress },
+                            { type: 'verify', value: user.verify },
+                            { type: 'done', value: user.done },
+                        ]
+                        let lastNonZeroType = null
+                        for (let i = sections.length - 1; i >= 0; i--) {
+                            if (sections[i].value > 0) 
+                            {
+                                lastNonZeroType = sections[i].type
+                                break
+                            }
+                        }
                         return (
                             <div
                                 key={`task-${index}`}
@@ -70,6 +84,7 @@ export default function ScrollableTasksSection({
                                                 isHovered={isHovered}
                                                 hoveredSection={hoveredSection}
                                                 setHoveredSection={setHoveredSection}
+                                                roundedRight = {lastNonZeroType === 'todo'}
                                                 />
 
                                                 <TaskProgressBarSection
@@ -81,6 +96,7 @@ export default function ScrollableTasksSection({
                                                 isHovered={isHovered}
                                                 hoveredSection={hoveredSection}
                                                 setHoveredSection={setHoveredSection}
+                                                roundedRight = {lastNonZeroType === 'pending'}
                                                 />
 
                                                 <TaskProgressBarSection
@@ -92,6 +108,7 @@ export default function ScrollableTasksSection({
                                                 isHovered={isHovered}
                                                 hoveredSection={hoveredSection}
                                                 setHoveredSection={setHoveredSection}
+                                                roundedRight = {lastNonZeroType === 'verify'}
                                                 />
 
                                                 <TaskProgressBarSection
@@ -103,7 +120,7 @@ export default function ScrollableTasksSection({
                                                 isHovered={isHovered}
                                                 hoveredSection={hoveredSection}
                                                 setHoveredSection={setHoveredSection}
-                                                roundedRight
+                                                roundedRight = {lastNonZeroType === 'done'}
                                                 />
 
                                             

@@ -50,7 +50,6 @@ const ConfirmationForm = dynamic(
 export default function Folder() {
     const { user } = useAuthContext()
     const [projects, setProjects] = useState([])
-    // lam animation
     const [bouncingProjectIds, setBouncingProjectIds] = useState([])
     const [filteredProjects, setFilteredProjects] = useState([])
     const [isDeletedFormOpen, setIsDeletedFormOpen] = useState(false)

@@ -180,10 +180,6 @@
     color: var(--color-blue);
 }
 
-#dashboard .block #main .content main #project-view .user-list {
-    background-color: rgba(var(--color-black-rgb), 0.1);
-}
-
 #dashboard .block #main #project-view .custom-select {
     background-color: rgba(var(--color-white-rgb), 0.8);
     color: var(--color-black);

@@ -142,7 +142,7 @@ const MeetingForm = ({ styles, onClose, meeting, getData }) => {
                             className="w-full p-1 mb-4 border border-gray-300 rounded"
                         />
 
-                        <ul className="h-full py-2 flex justify-center items-center gap-2 flex-col max-h-[180px] overflow-y-auto scrollbar-hide">
+                        <ul className="h-full p-2 flex justify-start items-center gap-2 flex-col max-h-[180px] overflow-y-auto scrollbar-hide">
                             {filteredUsers.map(users => {
                                 if (
                                     users &&

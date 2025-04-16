@@ -167,8 +167,8 @@ const TaskUsers = ({ projectId, onClose, setCountUserToProject }) => {
                     {loadingDataUsers ? (
                         <LoadingBox />
                     ):(
-                        <div className="mt-10 max-h-[508px] h-full overflow-y-auto scrollbar-hide rounded-md">
-                            <ul className="user-list h-full space-y-3 p-4 flex flex-col justify-start items-center ">
+                        <div className="mt-10  h-full rounded-md">
+                            <ul className="user-list h-full max-h-[508px] overflow-y-auto scrollbar-hide space-y-3 p-4 py-8 flex flex-col justify-start items-center ">
                                 {users.length > 0 ? (
                                     users.map(user => (
                                         <li
@@ -265,8 +265,8 @@ const TaskUsers = ({ projectId, onClose, setCountUserToProject }) => {
                                     <path d="M380-320q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l224 224q11 11 11 28t-11 28q-11 11-28 11t-28-11L532-372q-30 24-69 38t-83 14Zm0-80q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
                                 </svg>
                             </div>
-                            <div className="mt-4 max-h-[450px] h-full overflow-y-auto scrollbar-hide rounded-md">
-                                <ul className="user-list m-auto p-4 flex flex-col justify-start items-center ">
+                            <div className="mt-4 h-full rounded-md">
+                                <ul className="user-list m-auto p-4 overflow-y-auto  max-h-[450px] scrollbar-hide flex flex-col justify-start items-center ">
                                     {filteredUsers.length > 0 ? (
                                         filteredUsers.map(user => (
                                             <li
