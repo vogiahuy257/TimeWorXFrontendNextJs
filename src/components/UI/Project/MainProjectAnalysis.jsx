@@ -18,7 +18,6 @@ export default function MainProjectAnalysis({loading,setLoading}){
             setProjects(response.data) // axios trả dữ liệu trong `response.data`
         } catch{
             toast.error('Error loading project statistics')
-            onClose()
         } finally {
             setLoading(false)
         }
