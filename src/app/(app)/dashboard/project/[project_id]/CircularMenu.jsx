@@ -16,7 +16,7 @@ export default function CircularMenu({ pathname, isBroad, isTimeline, isDashboar
     
 
     return (
-        <div className='fixed p-5 bottom-0 right-0 flex items-center'>
+        <div className='fixed md:bottom-[18px] bottom-[82px] right-[18px] flex items-center'>
             <div className="relative flex">
                 {/* Main Button */}
                 <motion.button

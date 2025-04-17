@@ -7,7 +7,7 @@ import IconCalendar from '@/components/icon/iconCalendar'
 import IconReport from '@/components/icon/iconReport'
 import IconSetting from '@/components/icon/iconSetting'
 import Link from 'next/link'
-export default function Navigation({ url,logout }) {
+export default function Navigation({ url }) {
     const [expanded, setExpanded] = useState(false)
     return (
         <div className={'block-menu-left' + (expanded ? ' expanded' : '')}>
@@ -117,28 +117,6 @@ export default function Navigation({ url,logout }) {
                                 <IconSetting />
                                 <p>Setting</p>
                             </Link>
-                        </li>
-                        <li className="mt-2">
-                            <button
-                                className={`m-auto relative flex justify-center items-center p-2 rounded-md group`}
-                                onClick={logout}>
-                                {/* SVG Icon */}
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    height="24px"
-                                    viewBox="0 -960 960 960"
-                                    width="24px"
-                                    fill="currentColor"
-                                    className={`absolute transition-transform duration-300 
-                                                ${expanded ? '-left-6' : 'group-hover:-translate-y-4'}`}>
-                                    <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h240q17 0 28.5 11.5T480-800q0 17-11.5 28.5T440-760H200v560h240q17 0 28.5 11.5T480-160q0 17-11.5 28.5T440-120H200Zm487-320H400q-17 0-28.5-11.5T360-480q0-17 11.5-28.5T400-520h287l-75-75q-11-11-11-27t11-28q11-12 28-12.5t29 11.5l143 143q12 12 12 28t-12 28L669-309q-12 12-28.5 11.5T612-310q-11-12-10.5-28.5T613-366l74-74Z" />
-                                </svg>
-
-                                <span
-                                    className={`${expanded ? 'opacity-100' : 'opacity-0 transition-all duration-300 group-hover:opacity-100'} text-sx `}>
-                                    Logout
-                                </span>
-                            </button>
                         </li>
                     </ul>
                 </nav>

@@ -30,7 +30,7 @@ export default function Notification({user}) {
     }
     return (
         <div
-            className={`box-notification p-2 rounded-t-lg ${openNotification && 'active'} relative inline-block`}
+            className={`ml-auto mr-2 md:ml-0 md:mr-0 box-notification p-2 rounded-t-lg ${openNotification && 'active'} relative inline-block`}
             ref={notificationRef}>
             <button
                 className={`flex rounded-md p-1 items-center justify-center relative m-auto`}
@@ -44,9 +44,9 @@ export default function Notification({user}) {
             )}
 
             {openNotification && (
-                <div className="content-notification absolute z-50 top-full right-0 rounded-b-lg rounded-tl-lg pb-4 w-96">
+                <div className="content-notification absolute z-50 top-full right-0 rounded-b-lg rounded-tl-lg pb-4 w-80 md:w-96">
                     <div className="p-4 flex items-center">
-                        <h3 className="font-semibold">Thông báo</h3>
+                        <h3 className="font-semibold md:text-base text-xs">Thông báo</h3>
                         <div className="ml-auto flex gap-2">
                             <button
                                 className="btn-done-all flex gap-1 text-xs p-1 rounded-md w-6 h-6 transition-all duration-200 ease-in-out hover:w-[138px] active:bg-black/[.8]"
@@ -65,7 +65,7 @@ export default function Notification({user}) {
                         </div>
                     </div>
                     {notifications.length > 0 ? (
-                        <ul className="list-notification custom-scrollbar p-4 mx-2 mb-2 flex flex-col gap-2 max-h-60 overflow-y-auto">
+                        <ul className="list-notification custom-scrollbar p-4 mx-2 mb-2 flex flex-col gap-2 max-h-80 overflow-y-auto">
                             {notifications.map((notif, index) => (
                                 <li
                                     key={index}
@@ -77,7 +77,7 @@ export default function Notification({user}) {
                                             handleMarkAsReadOnClick(notif.id,notif.link)
                                         }}
                                     >
-                                        <p className="text-sm text-gray-black-css text-start">
+                                        <p className="md:text-sm text-xs text-gray-black-css text-start">
                                             {notif.message}
                                         </p>
                                         <span className="text-xs text-gray-css">

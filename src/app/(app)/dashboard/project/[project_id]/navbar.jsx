@@ -30,26 +30,26 @@ export default function NavBar({
                 </Link>
                 <div className="block-project-name">
                     <h1 className=" text-xl font-semibold flex items-center gap-1">
-                    <span className="text-xl pb-1">{projectName ? projectName : "Your Project"}</span>
+                    <span className=" md:text-xl text-sm pb-1">{projectName ? projectName : "Your Project"}</span>
                     <IconChevronRight
                         size={'24'}
                     />
                     {isBroad && (
-                        <span className="flex items-center text-white gap-1 px-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-400">
+                        <span className="md:text-base py-1 text-xs flex items-center text-white gap-1 px-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-400">
                             
                             Board
-                            <BarChart size={20}/>
+                            <BarChart size={18}/>
                         </span>
                     )} 
                     {isTimeline && (
-                        <span className="flex items-center text-white gap-2 px-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-400">
+                        <span className="md:text-base py-1 text-xs flex items-center text-white gap-2 px-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-400">
                             
                             Timeline
                             <Activity size={20} />
                         </span>
                     )}
                     {isDashboard && (
-                        <span className="flex items-center text-white gap-2 px-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-400">
+                        <span className="md:text-base py-1 text-xs flex items-center text-white gap-2 px-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-400">
                             Dashboard
                             <LayoutDashboard size={20} />
                         </span>

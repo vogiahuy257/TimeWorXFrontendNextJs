@@ -1,0 +1,22 @@
+.menuBackground {
+  background-color: var(--color-white);
+}
+
+.menuItem {
+  --item-text: 0, 0, 0;
+  --item-active: 59, 130, 246;
+  --item-active-bg: 239, 246, 255;
+  color: var(--color-black);
+}
+
+.activeItem {
+  color: rgb(var(--item-active));
+}
+
+.activeBackground {
+  background-color: rgb(var(--item-active-bg));
+}
+
+.activeIndicator {
+  background-color: rgb(var(--item-active));
+}

@@ -8,7 +8,7 @@ const MeetingList = ({ meetings, handleEditMeeting }) => {
                     Không có cuộc họp nào.
                 </p>
             ) : (
-                <ul className="p-3 meeting-list w-full flex flex-col h-auto overflow-y-auto max-h-[218px] scrollbar-hide rounded-xl sm:max-h-[500px]">
+                <ul className="p-3 meeting-list w-full flex flex-col h-auto overflow-y-auto max-h-[218px] scrollbar-hide rounded-xl md:max-h-[500px]">
                     {meetings.map(meeting => (
                         <li
                             key={meeting.meeting_id}

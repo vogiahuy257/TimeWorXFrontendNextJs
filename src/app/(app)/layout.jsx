@@ -22,14 +22,14 @@ const AppLayout = ({ children }) => {
 }
 
 const DashboardContent = ({ children }) => {
-    const { user,settings, logout } = useAuthContext()
+    const { user,settings } = useAuthContext()
     
     if (!settings) {
         return <LoadingBox />
     }
 
     return (
-        <AuthenticatedLayout user={user} settings={settings} logout={logout}>
+        <AuthenticatedLayout user={user} settings={settings}>
             <ToastContainer className="custom_toast" />
             {children}
         </AuthenticatedLayout>

@@ -88,14 +88,14 @@ const ReportProjectDetail = ({ project }) => {
 
     return (
         <div className="project-detail">
-            <h3 className="project-name text-sm shadow-md px-2 py-3 text-center font-semibold break-words whitespace-nowrap">
+            <h3 className="project-name text-sm shadow-md px-2 py-4 text-center font-semibold break-words whitespace-nowrap">
                 {project.project_name}
             </h3>
             <h3 className="project-date rounded-lg py-1 text-center break-words whitespace-normal">
                 {formatDateRange(project.start_date, project.end_date)}
             </h3>
-            <div className="detail-content rounded-lg shadow-md flex">
-                <div className="w-1/2 pl-4 flex flex-col justify-center gap-3 overflow-y-auto scrollbar-hide">
+            <div className="detail-content rounded-lg shadow-md flex flex-col-reverse md:flex-row ">
+                <div className="md:w-1/2 w-full p-4 md:pl-4 flex flex-col justify-center gap-3 overflow-y-auto scrollbar-hide">
                     <div className="flex flex-col items-start gap-2">
                         <h3 className="text-sm font-medium ">Description:</h3>
                         <p className="text-sm break-words whitespace-normal overflow-hidden">
@@ -144,9 +144,7 @@ const ReportProjectDetail = ({ project }) => {
                     </div>
                 </div>
 
-
-
-                <div className="w-1/2 overflow-hidden flex items-center justify-center">
+                <div className=" md:w-1/2 w-full overflow-hidden items-center justify-center">
                     {project.project_status == 'done' ? (
                         <div className="flex flex-col justify-center items-center">
                             <svg

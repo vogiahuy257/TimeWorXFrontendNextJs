@@ -20,7 +20,7 @@ export default function SummaryLayoutReport({
             <h2 className="text-header">Summary Report</h2>
             <section className="custom-sumary-report h-[536px] flex flex-col relative p-3">
                 {/* nút bấm mở formSummaryReport */}
-                <div className="flex justify-end px-4 items-center gap-2 mt-4 mb-2">
+                <div className="flex justify-start px-4 items-center gap-2 mt-4 mb-2">
                     <div className="flex items-center gap-2 relative">
                         <svg
                             className=" absolute right-2 top-1/2 -translate-y-1/2"
@@ -36,14 +36,14 @@ export default function SummaryLayoutReport({
                             placeholder="Search reports..."
                             value={searchTerm}
                             onChange={e => setSearchTerm(e.target.value)}
-                            className="outline-none rounded-full w-auto text-sm py-1 bg-white-css"
+                            className="outline-none rounded-full w-auto md:text-sm text-xs py-1 bg-white-css"
                         />
                     </div>
 
                     <button
                         onClick={handleOpenForm}
-                        className="bg-black text-white px-3 py-1 transition duration-100 ease-in-out hover:bg-gray-700 active:bg-gray-500 rounded-md flex justify-center items-center gap-1">
-                        <p>Create</p>
+                        className="ml-auto bg-black text-white md:px-3 md:py-1 p-2 transition duration-100 ease-in-out hover:bg-gray-700 active:bg-gray-500 rounded-md flex justify-center items-center gap-1">
+                        <p className='md:block hidden'>Create</p>
                         <svg
                             width="18"
                             height="18"
@@ -61,8 +61,8 @@ export default function SummaryLayoutReport({
                     
                     <button
                         onClick={() => {setModelHistorySummaryReport(true)}}
-                        className="bg-black text-white px-3 py-1 transition duration-100 ease-in-out hover:bg-gray-700 active:bg-gray-500 rounded-md flex justify-center items-center gap-1">
-                        <p>History</p>
+                        className="md:px-3 md:py-1 p-2 bg-black text-white transition duration-100 ease-in-out hover:bg-gray-700 active:bg-gray-500 rounded-md flex justify-center items-center gap-1">
+                        <p className='md:block hidden'>History</p>
                         <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M480-144q-140 0-238-98t-98-238h72q0 109 77.5 186.5T480-216q109 0 186.5-77.5T744-480q0-109-77.5-186.5T480-744q-62 0-114.55 25.6Q312.91-692.8 277-648h107v72H144v-240h72v130q46-60 114.5-95T480-816q70 0 131.13 26.6 61.14 26.6 106.4 71.87 45.27 45.26 71.87 106.4Q816-550 816-480t-26.6 131.13q-26.6 61.14-71.87 106.4-45.26 45.27-106.4 71.87Q550-144 480-144Zm100-200L444-480v-192h72v162l115 115-51 51Z"/></svg>
                     </button>
                 </div>

@@ -11,6 +11,7 @@ import axios from '@/libs/axios'
 import dynamic from 'next/dynamic'
 import EditableName from './EditableName'
 import ToastNotification from '@/components/ToastNotification'
+import IconLogout from '@/components/icon/iconLogout'
 
 const DeleteAccountForm = dynamic(
     () => import('./DeleteAccountForm'),
@@ -21,7 +22,7 @@ const DeleteAccountForm = dynamic(
 )
 
 const PageUserSetting = () => {
-    const { user, handleLinkGoogleAccount } = useAuthContext()
+    const { user, handleLinkGoogleAccount,logout } = useAuthContext()
     const [name, setName] = useState("")
     const [profilePicture, setProfilePicture] = useState("")
     const [email, setEmail] = useState("")
@@ -36,7 +37,7 @@ const PageUserSetting = () => {
     useEffect(() => {
         if (user) {
             setName(user.name || "")
-            setProfilePicture(user.profile_picture || "")
+            setProfilePicture(user?.profile_picture || "")
             setEmail(user.email || "")
             setIsLoading(false)
             setGoogleId(user.google_id || false)
@@ -148,7 +149,19 @@ const PageUserSetting = () => {
     return (
         <div className="animate-fade-in py-32 scrollbar-hide w-full max-w-[540px] m-auto flex flex-col justify-center items-center">
             
-            <div className="box-setting shadow-xl rounded-md w-full h-72 relative sm:h-44">
+            <div className="box-setting shadow-xl rounded-md w-full h-48 relative sm:h-44">
+            <button 
+                className="group absolute -top-[48px] z-50 w-[34px] h-[34px] px-2 flex items-center justify-start rounded-md bg-black text-white text-sm cursor-pointer overflow-hidden transition-all duration-200 ease-in-out hover:w-[82px]"
+                onClick={logout}
+            >
+                <IconLogout size={20} className="flex-shrink-0" />
+                <span
+                    className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap"
+                >
+                    logout
+                </span>
+            </button>
+
                 <Avatar
                     name={name}
                     src={`${profilePicture}`}
@@ -197,7 +210,6 @@ const PageUserSetting = () => {
                     )}
                 </div>
             </div>
-
             <div className='box-setting shadow-xl p-4 rounded-md w-full h-auto mt-12 relative flex flex-col justify-center items-start'>
                 <h1 className='box-header rounded-t-md'>Delete account</h1>
                 <p className="text-sm mb-3">This action is permanent and cannot be undone.</p>

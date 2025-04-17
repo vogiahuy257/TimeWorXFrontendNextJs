@@ -46,7 +46,7 @@ const EditableEmail = ({ email, onSaveEmail }) => {
               }}
               onBlur={handleBlur}
               onKeyDown={(e) => e.key === "Enter" && handleSave()}
-              className="text-sm px-2 py-1 border-2 border-gray-300 rounded-md focus:ring focus:ring-blue-300 outline-none"
+              className="text-sm px-1 py-1 border-2 border-gray-300 rounded-md focus:ring focus:ring-blue-300 outline-none"
               autoFocus
             />
             <button

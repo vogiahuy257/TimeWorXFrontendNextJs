@@ -53,6 +53,7 @@ const Avatar: React.FC<AvatarProps> = ({
               height={size}
               onError={() => setImageError(true)}
               unoptimized
+              priority
             />          
           ) : (
             <span>{initials}</span>

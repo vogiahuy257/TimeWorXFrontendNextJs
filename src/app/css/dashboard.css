@@ -148,7 +148,37 @@
         'navbar-left main';
     gap: 0px;
 }
+@media screen and (max-width: 768px){
+    #dashboard .block{
+        width: 100vw;
+        max-height: none;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas:
+            'navbar-top'
+            'main'
+            'navbar-bottom';
+        gap: 0px;
+        border-radius: 0;
+    }
 
+    #dashboard .block .block-menu-left{
+        display: none;
+    }
+
+    #dashboard .block #main{
+        border-bottom-right-radius: 0;
+    }
+
+    #dashboard .block #main .content::before{
+        display: none;
+    }
+
+}
+
+#dashboard #NavigationBottom{
+    grid-area: navbar-bottom;
+}
 /* Chế độ full màn hình */
 #dashboard .block.full {
     width: 100%;

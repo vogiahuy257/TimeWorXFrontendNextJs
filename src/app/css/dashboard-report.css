@@ -109,6 +109,7 @@
     top: 0;
     left: 0;
     width: 49%;
+    height: auto;
     background-color: #000000;
     color: #f9f9f9;
     border-top-left-radius: 0.5rem;
@@ -116,7 +117,7 @@
 }
 #dashboard #report .project-detail .project-name::before {
     position: absolute;
-    bottom: -16px;
+    bottom: -10px;
     left: 2px;
     content: '';
     width: 1rem;
@@ -128,7 +129,7 @@
 
 #dashboard #report .project-detail .project-name::after {
     position: absolute;
-    bottom: 1px;
+    bottom: 7px;
     right: -20px;
     content: '';
     width: 20px;
@@ -157,10 +158,16 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 85%;
+    height: 244px;
     background-color: var(--color-white);
     border: 3px solid #000000;
     border-top-left-radius: 0px;
+}
+
+@media screen and (max-width: 768px) {
+    #dashboard #report .project-detail .detail-content {
+        height: 436px;
+    }
 }
 
 @media screen and (max-width: 1080px) {
