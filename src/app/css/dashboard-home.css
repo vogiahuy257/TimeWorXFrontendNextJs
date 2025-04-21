@@ -26,13 +26,6 @@
 /* Responsive cho màn hình nhỏ hơn (ví dụ: dưới 1024px) */
 @media (max-width: 1024px) {
     #dashboard #home {
-        grid-template-columns: 300px auto; /* Giảm kích thước cột đầu tiên */
-    }
-}
-
-/* Responsive cho màn hình nhỏ hơn (ví dụ: dưới 768px) */
-@media (max-width: 768px) {
-    #dashboard #home {
         height: auto;
         grid-template-columns: auto; /* Chuyển sang 1 cột */
         grid-template-rows: 200px 300px 400px;

@@ -32,8 +32,7 @@ const AuthenticatedLayout = ({ user,settings,children }) => {
                         <main className="overflow-x-hidden">{children}</main>
                     </div>
                 </section>
-                <BottomNavigation 
-                pathname={url}/>
+                <BottomNavigation pathname={url}/>
             </div>
         </section>
     )

@@ -85,7 +85,7 @@ const pageSystemSetting = () => {
                 </div>
 
 
-                <div className="box-setting rounded-b-md rounded-tr-md relative px-2 py-4 shadow-md mt-12 flex items-center space-x-3">
+                {/* <div className="box-setting rounded-b-md rounded-tr-md relative px-2 py-4 shadow-md mt-12 flex items-center space-x-3">
                     <h1 className='box-header rounded-t-md'>Text Settings</h1>
                     <label className="text-base">Language:</label>
                     <select
@@ -97,7 +97,7 @@ const pageSystemSetting = () => {
                         <option value="en">English</option>
                         <option value="jp">Japanese</option>
                     </select>
-                </div>
+                </div> */}
             </div>
         </div>
     )

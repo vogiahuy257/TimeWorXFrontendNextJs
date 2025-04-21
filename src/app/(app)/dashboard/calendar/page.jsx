@@ -264,7 +264,7 @@ export default function Calendar() {
     return (
         <CalendarLayout>
             {/* Sidebar */}
-            <div className="w-1/4 max-h-[590px] overflow-auto border-r p-2 pr-4 flex flex-col scrollbar-hide">
+            <div className="w-1/4 overflow-auto border-r p-2 pr-4 flex flex-col scrollbar-hide">
                 <SimpleCalendar
                     selectedDate={date}
                     onChange={handleDateChange}

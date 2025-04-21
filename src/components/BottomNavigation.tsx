@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Home, FolderKanban, CheckSquare, BarChart3, Settings } from "lucide-react"
+import IconHome from "./icon/iconHome"
+import IconProject from "./icon/iconProject"
+import IconTask from "./icon/iconTask"
+import IconReport from "./icon/iconReport"
+import IconSetting from "./icon/iconSetting"
 import colorStyles from "@/components/bottom-navigation/css/colors.module.css"
 import Link from "next/link" // Import Link from Next.js
 interface BottomNavigationProps {
@@ -11,11 +15,11 @@ export default function BottomNavigation({ pathname }: BottomNavigationProps) {
   const [activeItem, setActiveItem] = useState("Home") // Default active item
 
   const menuItems = [
-    { name: "Home", icon: <Home className="w-5 h-5" />, path: "/dashboard/home" },
-    { name: "Project", icon: <FolderKanban className="w-5 h-5" />, path: "/dashboard/project" },
-    { name: "Task", icon: <CheckSquare className="w-5 h-5" />, path: "/dashboard/task" },
-    { name: "Reports", icon: <BarChart3 className="w-5 h-5" />, path: "/dashboard/reports" },
-    { name: "Setting", icon: <Settings className="w-5 h-5" />, path: "/setting/system" },
+    { name: "Home", icon: <IconHome classname={'w-5 h-5'}/>, path: "/dashboard/home" },
+    { name: "Project", icon: <IconProject classname={"w-5 h-5"} />, path: "/dashboard/project" },
+    { name: "Task", icon: <IconTask classname={'w-5 h-5'} />, path: "/dashboard/task" },
+    { name: "Reports", icon: <IconReport classname={"w-5 h-5"} />, path: "/dashboard/reports" },
+    { name: "Setting", icon: <IconSetting classname={'w-5 h-5'} />, path: "/setting/system" },
   ]
 
   // Effect để cập nhật activeItem khi URL thay đổi

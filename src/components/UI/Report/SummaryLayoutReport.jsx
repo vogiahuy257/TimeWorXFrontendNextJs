@@ -18,7 +18,7 @@ export default function SummaryLayoutReport({
     return (
         <div className="w-full report-content report-summary p-2 rounded-md shadow-md  relative">
             <h2 className="text-header">Summary Report</h2>
-            <section className="custom-sumary-report h-[536px] flex flex-col relative p-3">
+            <section className="custom-sumary-report h-[680px] flex flex-col relative p-3">
                 {/* nút bấm mở formSummaryReport */}
                 <div className="flex justify-start px-4 items-center gap-2 mt-4 mb-2">
                     <div className="flex items-center gap-2 relative">
@@ -67,7 +67,7 @@ export default function SummaryLayoutReport({
                     </button>
                 </div>
 
-                <div className="w-full h-auto bg-while p-4 overflow-y-auto  max-h-[480px] scrollbar-hide rounded-md">
+                <div className="w-full h-auto bg-while p-4 overflow-y-auto  max-h-[580px] scrollbar-hide rounded-md">
                     {children}
                 </div>
             </section>
